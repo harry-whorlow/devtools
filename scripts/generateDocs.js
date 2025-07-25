@@ -14,15 +14,25 @@ const packages = [
   },
   {
     name: 'react-devtools',
-    entryPoints: [resolve(__dirname, '../packages/react-devtools/src/index.ts')],
-    tsconfig: resolve(__dirname, '../packages/react-devtools/tsconfig.docs.json'),
+    entryPoints: [
+      resolve(__dirname, '../packages/react-devtools/src/index.ts'),
+    ],
+    tsconfig: resolve(
+      __dirname,
+      '../packages/react-devtools/tsconfig.docs.json',
+    ),
     outputDir: resolve(__dirname, '../docs/framework/react/reference'),
     exclude: ['packages/devtools/**/*'],
   },
   {
     name: 'solid-devtools',
-    entryPoints: [resolve(__dirname, '../packages/solid-devtools/src/index.ts')],
-    tsconfig: resolve(__dirname, '../packages/solid-devtools/tsconfig.docs.json'),
+    entryPoints: [
+      resolve(__dirname, '../packages/solid-devtools/src/index.ts'),
+    ],
+    tsconfig: resolve(
+      __dirname,
+      '../packages/solid-devtools/tsconfig.docs.json',
+    ),
     outputDir: resolve(__dirname, '../docs/framework/solid/reference'),
     exclude: ['packages/devtools/**/*'],
   },
