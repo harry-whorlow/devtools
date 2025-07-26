@@ -1,6 +1,6 @@
 {
   "name": "@tanstack/react-devtools",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "Headless UI for creating advanced custom devtools, autocomplete, and dropdown components in React.",
   "author": "Tanner Linsley",
   "license": "MIT",

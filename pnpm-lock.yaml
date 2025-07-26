@@ -75,7 +75,7 @@ importers:
   examples/react/basic:
     dependencies:
       '@tanstack/react-devtools':
-        specifier: ^0.0.1
+        specifier: ^0.0.0
         version: link:../../../packages/react-devtools
       react:
         specifier: ^19.1.0
@@ -100,7 +100,7 @@ importers:
   examples/solid/basic:
     dependencies:
       '@tanstack/solid-devtools':
-        specifier: ^0.0.1
+        specifier: ^0.0.0
         version: link:../../../packages/solid-devtools
       solid-js:
         specifier: ^1.9.5
@@ -112,6 +112,8 @@ importers:
       vite-plugin-solid:
         specifier: ^2.11.6
         version: 2.11.6(@testing-library/jest-dom@6.6.3)(solid-js@1.9.5)(vite@6.3.3(@types/node@22.15.2)(jiti@2.4.2)(yaml@2.7.1))
+
+  packages/devtools: {}
 
   packages/react-devtools:
     dependencies:
@@ -140,8 +142,6 @@ importers:
       react:
         specifier: ^19.1.0
         version: 19.1.0
-
-  packages/devtools: {}
 
   packages/solid-devtools:
     dependencies:
