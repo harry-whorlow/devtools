@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom/client'
-import { Devtools } from "@tanstack/react-devtools"
+import { Devtools } from '@tanstack/react-devtools'
 function App() {
   return (
     <div>

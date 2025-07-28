@@ -1,7 +1,6 @@
-
-import type { DevtoolsOptions } from "@tanstack/devtools"
-import { TanStackRouterDevtoolsCore } from "@tanstack/devtools"
-import { createEffect, createSignal, onCleanup, onMount } from "solid-js"
+import type { DevtoolsOptions } from '@tanstack/devtools'
+import { TanStackRouterDevtoolsCore } from '@tanstack/devtools'
+import { createEffect, createSignal, onCleanup, onMount } from 'solid-js'
 
 export const Devtools = (opts: DevtoolsOptions) => {
   const [devtools] = createSignal(new TanStackRouterDevtoolsCore(opts))
@@ -18,7 +17,5 @@ export const Devtools = (opts: DevtoolsOptions) => {
       })
     }
   })
-  return (
-    <div ref={devToolRef} />
-  )
+  return <div ref={devToolRef} />
 }
