@@ -14,7 +14,7 @@ export interface DevtoolsOptions {
 
 class TanStackDevtoolsCore {
   #options: DevtoolsSettings = {
-    ...initialState.settings
+    ...initialState.settings,
   }
   #plugins: DevtoolsPlugin[] = []
   #isMounted = false

@@ -1,4 +1,4 @@
-import { createEffect, createSignal, } from 'solid-js'
+import { createEffect, createSignal } from 'solid-js'
 import {
   useHeight,
   usePersistOpen,
@@ -11,7 +11,7 @@ import { MainPanel } from './components/main-panel'
 import { ContentPanel } from './components/content-panel'
 
 export default function DevTools() {
-  const { settings, } = useDevtoolsSettings()
+  const { settings } = useDevtoolsSettings()
   const { setHeight } = useHeight()
   const { persistOpen, setPersistOpen } = usePersistOpen()
   const [rootEl, setRootEl] = createSignal<HTMLDivElement>()
@@ -29,7 +29,7 @@ export default function DevTools() {
   // Used to resize the panel
   const handleDragStart = (
     panelElement: HTMLDivElement | undefined,
-    startEvent: MouseEvent
+    startEvent: MouseEvent,
   ) => {
     if (startEvent.button !== 0) return // Only allow left click for drag
 
@@ -62,7 +62,6 @@ export default function DevTools() {
     document.addEventListener('mousemove', run)
     document.addEventListener('mouseup', unsub)
   }
-
 
   // Handle resizing and padding adjustments
   createEffect(() => {
@@ -129,7 +128,10 @@ export default function DevTools() {
     <div ref={setRootEl} data-testid={TANSTACK_DEVTOOLS}>
       <Trigger isOpen={isOpen} setIsOpen={toggleOpen} />
       <MainPanel isResizing={isResizing} isOpen={isOpen}>
-        <ContentPanel ref={ref => panelRef = ref} handleDragStart={e => handleDragStart(panelRef, e)}>
+        <ContentPanel
+          ref={(ref) => (panelRef = ref)}
+          handleDragStart={(e) => handleDragStart(panelRef, e)}
+        >
           hello
         </ContentPanel>
       </MainPanel>

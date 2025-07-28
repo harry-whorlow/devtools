@@ -1,14 +1,10 @@
-import React, { useEffect, useRef, useState } from "react"
-import type { DevtoolsOptions } from "@tanstack/devtools"
-import { TanStackRouterDevtoolsCore } from "@tanstack/devtools"
+import React, { useEffect, useRef, useState } from 'react'
+import type { DevtoolsOptions } from '@tanstack/devtools'
+import { TanStackRouterDevtoolsCore } from '@tanstack/devtools'
 
 export const Devtools = (opts: DevtoolsOptions) => {
-
   const devToolRef = useRef<HTMLDivElement>(null)
-  const [devtools] = useState(
-    () =>
-      new TanStackRouterDevtoolsCore(opts),
-  )
+  const [devtools] = useState(() => new TanStackRouterDevtoolsCore(opts))
   useEffect(() => {
     if (devToolRef.current) {
       devtools.mount(devToolRef.current)
@@ -19,7 +15,5 @@ export const Devtools = (opts: DevtoolsOptions) => {
     }
   }, [devtools])
 
-  return (
-    <div ref={devToolRef} />
-  )
+  return <div ref={devToolRef} />
 }

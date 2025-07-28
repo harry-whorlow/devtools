@@ -3,7 +3,7 @@ import { useStyles } from '../styles/use-styles'
 
 export function TanStackLogo() {
   const id = createUniqueId()
-  const styles = useStyles();
+  const styles = useStyles()
   return (
     <svg
       class={styles().logo}
