@@ -1,12 +1,11 @@
 import { lazy } from 'solid-js'
 import { Portal, render } from 'solid-js/web'
-import {
-  DevtoolsProvider,
-} from './context/devtools-context'
+import { DevtoolsProvider } from './context/devtools-context'
 import { initialState } from './context/devtools-store'
 import type {
   DevtoolsPlugin,
-  DevtoolsSettings} from './context/devtools-context';
+  DevtoolsSettings,
+} from './context/devtools-context'
 
 export interface DevtoolsOptions {
   options?: Partial<DevtoolsSettings>
