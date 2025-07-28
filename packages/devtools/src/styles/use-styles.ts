@@ -1,8 +1,8 @@
 import * as goober from 'goober'
 import { createSignal } from 'solid-js'
 import { tokens } from './tokens'
+import type { DevtoolsSettings } from '../context/devtools-context'
 import type { Accessor } from 'solid-js'
-import { DevtoolsSettings } from '../context/devtools-context'
 
 const stylesFactory = () => {
   const { colors, font, size, alpha, border } = tokens

@@ -1,9 +1,9 @@
 import clsx from 'clsx'
-import { Accessor } from 'solid-js'
-import { JSX } from 'solid-js/jsx-runtime'
 import { useHeight } from '../context/use-devtools-context'
 import { useStyles } from '../styles/use-styles'
 import { TANSTACK_DEVTOOLS } from '../utils/storage'
+import type { JSX } from 'solid-js/jsx-runtime'
+import type { Accessor } from 'solid-js'
 
 export const MainPanel = (props: {
   isOpen: Accessor<boolean>

@@ -53,7 +53,7 @@ export type DevtoolsStore = {
     activePlugin?: DevtoolsPlugin | undefined
     persistOpen: boolean
   }
-  plugins?: DevtoolsPlugin[]
+  plugins?: Array<DevtoolsPlugin>
 }
 
 export const initialState: DevtoolsStore = {

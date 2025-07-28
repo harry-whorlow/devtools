@@ -1,8 +1,8 @@
 import { createEffect, createSignal } from 'solid-js'
 import {
+  useDevtoolsSettings,
   useHeight,
   usePersistOpen,
-  useDevtoolsSettings,
 } from './context/use-devtools-context'
 import { useDisableTabbing } from './hooks/use-disable-tabbing'
 import { TANSTACK_DEVTOOLS } from './utils/storage'

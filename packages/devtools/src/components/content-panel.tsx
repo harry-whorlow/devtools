@@ -1,5 +1,5 @@
-import { JSX } from 'solid-js/jsx-runtime'
 import { useStyles } from '../styles/use-styles'
+import type { JSX } from 'solid-js/jsx-runtime'
 
 export const ContentPanel = (props: {
   ref: (el: HTMLDivElement | undefined) => void

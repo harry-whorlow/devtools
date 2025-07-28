@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
-import type { DevtoolsOptions } from '@tanstack/devtools'
 import { TanStackRouterDevtoolsCore } from '@tanstack/devtools'
+import type { DevtoolsOptions } from '@tanstack/devtools'
 
 export const Devtools = (opts: DevtoolsOptions) => {
   const devToolRef = useRef<HTMLDivElement>(null)

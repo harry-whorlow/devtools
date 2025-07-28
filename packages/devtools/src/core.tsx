@@ -1,22 +1,23 @@
 import { lazy } from 'solid-js'
 import { Portal, render } from 'solid-js/web'
 import {
-  DevtoolsSettings,
-  DevtoolsPlugin,
   DevtoolsProvider,
 } from './context/devtools-context'
 import { initialState } from './context/devtools-store'
+import type {
+  DevtoolsPlugin,
+  DevtoolsSettings} from './context/devtools-context';
 
 export interface DevtoolsOptions {
   options?: Partial<DevtoolsSettings>
-  plugins?: DevtoolsPlugin[]
+  plugins?: Array<DevtoolsPlugin>
 }
 
 class TanStackDevtoolsCore {
   #options: DevtoolsSettings = {
     ...initialState.settings,
   }
-  #plugins: DevtoolsPlugin[] = []
+  #plugins: Array<DevtoolsPlugin> = []
   #isMounted = false
   #dispose?: () => void
   #Component: any
