@@ -1,7 +1,3 @@
 export const SettingsTab = () => {
-  return (
-    <div>
-      Settings
-    </div>
-  )
+  return <div>Settings</div>
 }
