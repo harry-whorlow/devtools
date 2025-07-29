@@ -115,6 +115,9 @@ importers:
 
   packages/devtools:
     dependencies:
+      '@solid-primitives/keyboard':
+        specifier: ^1.2.8
+        version: 1.2.8(solid-js@1.9.5)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -953,6 +956,26 @@ packages:
     resolution: {integrity: sha512-RFbbIVfv8/QDgTPyXzjo5NKO6CYyK5Uq5xtNLHLbw5RgSKrgo8WpiB/fNivZuNd/5Wk0s91PtaJ9ThNcnFuI3g==}
     peerDependencies:
       size-limit: 11.2.0
+
+  '@solid-primitives/event-listener@2.4.3':
+    resolution: {integrity: sha512-h4VqkYFv6Gf+L7SQj+Y6puigL/5DIi7x5q07VZET7AWcS+9/G3WfIE9WheniHWJs51OEkRB43w6lDys5YeFceg==}
+    peerDependencies:
+      solid-js: ^1.6.12
+
+  '@solid-primitives/keyboard@1.2.8':
+    resolution: {integrity: sha512-pJtcbkjozS6L1xvTht9rPpyPpX55nAkfBzbFWdf3y0Suwh6qClTibvvObzKOf7uzQ+8aZRDH4LsoGmbTKXtJjQ==}
+    peerDependencies:
+      solid-js: ^1.6.12
+
+  '@solid-primitives/rootless@1.5.2':
+    resolution: {integrity: sha512-9HULb0QAzL2r47CCad0M+NKFtQ+LrGGNHZfteX/ThdGvKIg2o2GYhBooZubTCd/RTu2l2+Nw4s+dEfiDGvdrrQ==}
+    peerDependencies:
+      solid-js: ^1.6.12
+
+  '@solid-primitives/utils@6.3.2':
+    resolution: {integrity: sha512-hZ/M/qr25QOCcwDPOHtGjxTD8w2mNyVAYvcfgwzBHq2RwNqHNdDNsMZYap20+ruRwW4A3Cdkczyoz0TSxLCAPQ==}
+    peerDependencies:
+      solid-js: ^1.6.12
 
   '@stylistic/eslint-plugin-js@4.2.0':
     resolution: {integrity: sha512-MiJr6wvyzMYl/wElmj8Jns8zH7Q1w8XoVtm+WM6yDaTrfxryMyb8n0CMxt82fo42RoLIfxAEtM6tmQVxqhk0/A==}
@@ -4187,6 +4210,27 @@ snapshots:
       '@size-limit/esbuild': 11.2.0(size-limit@11.2.0)
       '@size-limit/file': 11.2.0(size-limit@11.2.0)
       size-limit: 11.2.0
+
+  '@solid-primitives/event-listener@2.4.3(solid-js@1.9.5)':
+    dependencies:
+      '@solid-primitives/utils': 6.3.2(solid-js@1.9.5)
+      solid-js: 1.9.5
+
+  '@solid-primitives/keyboard@1.2.8(solid-js@1.9.5)':
+    dependencies:
+      '@solid-primitives/event-listener': 2.4.3(solid-js@1.9.5)
+      '@solid-primitives/rootless': 1.5.2(solid-js@1.9.5)
+      '@solid-primitives/utils': 6.3.2(solid-js@1.9.5)
+      solid-js: 1.9.5
+
+  '@solid-primitives/rootless@1.5.2(solid-js@1.9.5)':
+    dependencies:
+      '@solid-primitives/utils': 6.3.2(solid-js@1.9.5)
+      solid-js: 1.9.5
+
+  '@solid-primitives/utils@6.3.2(solid-js@1.9.5)':
+    dependencies:
+      solid-js: 1.9.5
 
   '@stylistic/eslint-plugin-js@4.2.0(eslint@9.25.1(jiti@2.4.2))':
     dependencies:

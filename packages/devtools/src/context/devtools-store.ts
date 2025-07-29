@@ -1,5 +1,8 @@
 import type { DevtoolsPlugin } from './devtools-context'
 
+type ModifierKey = 'Alt' | 'Control' | 'Meta' | 'Shift'
+type KeyboardKey = ModifierKey | (string & {})
+
 type TriggerPosition =
   | 'top-left'
   | 'top-right'
@@ -35,7 +38,7 @@ export type DevtoolsStore = {
      * The hotkey to open the dev tools
      * @default "shift+a"
      */
-    openHotkey: string
+    openHotkey: Array<KeyboardKey>
     /**
      * Whether to require the URL flag to open the dev tools
      * @default false
@@ -62,7 +65,7 @@ export const initialState: DevtoolsStore = {
     hideUntilHover: false,
     position: 'bottom-right',
     panelLocation: 'bottom',
-    openHotkey: 'shift+a',
+    openHotkey: ['Shift', 'A'],
     requireUrlFlag: false,
     urlFlag: 'tanstack-devtools',
   },

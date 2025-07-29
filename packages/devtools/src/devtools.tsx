@@ -1,4 +1,5 @@
 import { createEffect, createSignal } from 'solid-js'
+import { createShortcut } from '@solid-primitives/keyboard'
 import {
   useDevtoolsSettings,
   useHeight,
@@ -123,7 +124,9 @@ export default function DevTools() {
       el?.style.setProperty('--tsrd-font-size', fontSize)
     }
   })
-
+  createShortcut(settings().openHotkey, () => {
+    toggleOpen()
+  })
   return (
     <div ref={setRootEl} data-testid={TANSTACK_DEVTOOLS}>
       <Trigger isOpen={isOpen} setIsOpen={toggleOpen} />

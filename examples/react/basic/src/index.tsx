@@ -4,7 +4,9 @@ function App() {
   return (
     <div>
       <h1>TanStack Devtools Basic Example</h1>
-      <Devtools />
+      <Devtools options={{
+        openHotkey: ["Shift", "B"]
+      }} />
     </div>
   )
 }
