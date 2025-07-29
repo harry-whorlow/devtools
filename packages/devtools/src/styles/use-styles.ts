@@ -201,6 +201,48 @@ const stylesFactory = () => {
         color: ${colors.gray[300]};
       }
     `,
+    tabContent: css`
+      transition: all 0.2s ease-in-out;
+      width: 100%;
+      height: 100%;
+    `,
+    pluginsTabPanel: css`
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    `,
+    pluginsTabSidebar: css`
+      width: ${size[48]};
+      background-color: ${colors.darkGray[800]};
+      border-right: 1px solid ${colors.gray[700]};
+      box-shadow: 0 1px 0 ${colors.gray[700]};
+      overflow-y: auto;
+    `,
+    pluginName: css`
+      font-size: ${fontSize.xs};
+      font-family: ${fontFamily.sans};
+      color: ${colors.gray[300]};
+      padding: ${size[2]};
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s ease-in-out;
+      &:hover {
+        background-color: ${colors.gray[700]};
+        color: ${colors.gray[100]};
+        padding: ${size[2]};
+      }
+      &.active {
+        background-color: ${colors.purple[500]};
+        color: ${colors.gray[100]};
+      }
+    `,
+    pluginsTabContent: css`
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+    `,
   }
 }
 

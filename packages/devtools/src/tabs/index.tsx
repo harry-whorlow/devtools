@@ -6,7 +6,7 @@ export const tabs = [
   {
     name: 'Plugins',
     id: 'plugins',
-    component: <PluginsTab />,
+    component: () => <PluginsTab />,
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -28,7 +28,7 @@ export const tabs = [
   {
     name: 'Settings',
     id: 'settings',
-    component: <SettingsTab />,
+    component: () => <SettingsTab />,
     icon: (
       <svg
         xmlns="http://www.w3.org/2000/svg"

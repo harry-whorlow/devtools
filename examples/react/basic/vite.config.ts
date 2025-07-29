@@ -10,7 +10,4 @@ export default defineConfig({
       // },
     }),
   ],
-  ssr: {
-    external: ['@tanstack/react-devtools'],
-  },
 })
