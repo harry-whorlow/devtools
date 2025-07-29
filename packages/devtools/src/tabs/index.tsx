@@ -1,6 +1,5 @@
 import { SettingsTab } from './settings-tab'
 import { PluginsTab } from './plugins-tab'
-import type { JSX } from 'solid-js/jsx-runtime'
 
 export const tabs = [
   {
@@ -59,12 +58,5 @@ export const tabs = [
     ),
   },
 ] as const
-
-export interface Tab {
-  name: string
-  icon: JSX.Element
-  id: string
-  component: JSX.Element
-}
 
 export type TabName = (typeof tabs)[number]['id']
