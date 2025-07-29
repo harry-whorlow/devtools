@@ -69,6 +69,8 @@
     "react": "^19.1.0"
   },
   "peerDependencies": {
+    "@types/react": ">=16.8",
+    "@types/react-dom": ">=16.8",
     "react": ">=16.8",
     "react-dom": ">=16.8"
   }

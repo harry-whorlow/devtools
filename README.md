@@ -68,6 +68,21 @@ npm install @tanstack/react-devtools
 npm install @tanstack/devtools # no framework, just vanilla js
 ```
 
+## Development
+
+To contribute to the development of TanStack Devtools, you can clone the repository and run the following commands:
+
+```bash
+pnpm install
+pnpm dev
+```
+
+Then go to any of the example directories and run:
+
+```bash
+pnpm dev
+```
+
 ## How to help?
 
 ### [Become a Sponsor](https://github.com/sponsors/tannerlinsley/)
