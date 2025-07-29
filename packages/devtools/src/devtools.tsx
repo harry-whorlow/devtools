@@ -10,6 +10,8 @@ import { TANSTACK_DEVTOOLS } from './utils/storage'
 import { Trigger } from './components/trigger'
 import { MainPanel } from './components/main-panel'
 import { ContentPanel } from './components/content-panel'
+import { Tabs } from './components/tabs'
+import { TabContent } from './components/tab-content'
 
 export default function DevTools() {
   const { settings } = useDevtoolsSettings()
@@ -135,7 +137,8 @@ export default function DevTools() {
           ref={(ref) => (panelRef = ref)}
           handleDragStart={(e) => handleDragStart(panelRef, e)}
         >
-          hello
+          <Tabs toggleOpen={toggleOpen} />
+          <TabContent />
         </ContentPanel>
       </MainPanel>
     </div>

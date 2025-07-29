@@ -74,7 +74,7 @@ const stylesFactory = () => {
       background-color: ${colors.darkGray[700]};
       color: ${colors.gray[300]};
       width: w-screen;
-      flex-direction: column;
+      flex-direction: row;
       overflow: auto;
       height: 100%;
     `,
@@ -144,6 +144,63 @@ const stylesFactory = () => {
         visibility: hidden;
       `
     },
+    tabContainer: css`
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      height: 100%;
+      background-color: ${colors.darkGray[800]};
+      border-right: 1px solid ${colors.gray[700]};
+      box-shadow: 0 1px 0 ${colors.gray[700]};
+      position: relative;
+      width: ${size[10]};
+    `,
+
+    tab: css`
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: ${size[10]};
+      cursor: pointer;
+      font-size: ${fontSize.sm};
+      font-family: ${fontFamily.sans};
+      color: ${colors.gray[300]};
+      background-color: transparent;
+      border: none;
+      transition: all 0.2s ease-in-out;
+      border-left: 2px solid transparent;
+      &:hover:not(.close):not(.active) {
+        background-color: ${colors.gray[700]};
+        color: ${colors.gray[100]};
+        border-left: 2px solid ${colors.purple[500]};
+      }
+      &.active {
+        background-color: ${colors.purple[500]};
+        color: ${colors.gray[100]};
+        border-left: 2px solid ${colors.purple[500]};
+      }
+      &.close {
+        margin-top: auto;
+        &:hover {
+          background-color: ${colors.gray[700]};
+        }
+        &:hover {
+          color: ${colors.red[500]};
+        }
+      }
+
+      &.disabled {
+        cursor: not-allowed;
+        opacity: 0.2;
+        pointer-events: none;
+      }
+      &.disabled:hover {
+        background-color: transparent;
+        color: ${colors.gray[300]};
+      }
+    `,
   }
 }
 

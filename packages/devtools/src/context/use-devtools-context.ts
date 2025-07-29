@@ -36,7 +36,7 @@ export const usePlugins = () => {
   return { plugins, setActivePlugin, activePlugin }
 } */
 
-const useDevtoolsState = () => {
+export const useDevtoolsState = () => {
   const { store, setStore } = useDevtoolsContext()
   const state = createMemo(() => store.state)
   const setState = (newState: Partial<DevtoolsStore['state']>) => {

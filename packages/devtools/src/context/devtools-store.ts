@@ -1,3 +1,4 @@
+import type { TabName } from '../tabs'
 import type { DevtoolsPlugin } from './devtools-context'
 
 type ModifierKey = 'Alt' | 'Control' | 'Meta' | 'Shift'
@@ -51,7 +52,7 @@ export type DevtoolsStore = {
     urlFlag: string
   }
   state: {
-    activeTab: string
+    activeTab: TabName
     height: number
     activePlugin?: DevtoolsPlugin | undefined
     persistOpen: boolean
@@ -70,7 +71,7 @@ export const initialState: DevtoolsStore = {
     urlFlag: 'tanstack-devtools',
   },
   state: {
-    activeTab: 'pages',
+    activeTab: 'plugins',
     height: 400,
     activePlugin: undefined,
     persistOpen: false,
