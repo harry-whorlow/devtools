@@ -1,7 +1,9 @@
 import { TanStackRouterDevtoolsCore } from '@tanstack/devtools'
-import { createEffect, createSignal, JSX, onCleanup, onMount } from 'solid-js'
-import type { DevtoolsOptions, DevtoolsPlugin } from '@tanstack/devtools'
+import { createEffect, createSignal, onCleanup, onMount } from 'solid-js'
 import { Portal } from 'solid-js/web'
+import type { JSX} from 'solid-js';
+import type { DevtoolsOptions, DevtoolsPlugin } from '@tanstack/devtools'
+
 type Render = JSX.Element | (() => JSX.Element)
 const convertRender = (
   el: HTMLDivElement | HTMLHeadingElement,
