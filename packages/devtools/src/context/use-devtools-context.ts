@@ -1,6 +1,5 @@
 import { createMemo, useContext } from 'solid-js'
 import { DevtoolsContext } from './devtools-context.jsx'
-import type { DevtoolsPlugin } from './devtools-context.jsx'
 /* import type { DevtoolsPlugin } from './devtools-context' */
 import type { DevtoolsStore } from './devtools-store.js'
 
@@ -24,12 +23,12 @@ export const usePlugins = () => {
   const plugins = createMemo(() => store.plugins)
   const activePlugin = createMemo(() => store.state.activePlugin)
 
-  const setActivePlugin = (plugin: DevtoolsPlugin) => {
+  const setActivePlugin = (pluginId: string) => {
     setStore((prev) => ({
       ...prev,
       state: {
         ...prev.state,
-        activePlugin: plugin,
+        activePlugin: pluginId,
       },
     }))
   }

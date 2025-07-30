@@ -6,9 +6,10 @@ import { useStyles } from '../styles/use-styles'
 export const PluginsTab = () => {
   const { plugins, activePlugin, setActivePlugin } = usePlugins()
   let activePluginRef: HTMLDivElement | undefined
+
   createEffect(() => {
     const currentActivePlugin = plugins()?.find(
-      (plugin) => plugin.id === activePlugin()?.id,
+      (plugin) => plugin.id === activePlugin(),
     )
     if (activePluginRef && currentActivePlugin) {
       currentActivePlugin.render(activePluginRef)
@@ -30,9 +31,9 @@ export const PluginsTab = () => {
             })
             return (
               <div
-                onClick={() => setActivePlugin(plugin)}
+                onClick={() => setActivePlugin(plugin.id!)}
                 class={clsx(styles().pluginName, {
-                  active: activePlugin()?.id === plugin.id,
+                  active: activePlugin() === plugin.id,
                 })}
               >
                 <h3 ref={pluginHeading} />

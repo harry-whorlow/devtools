@@ -10,7 +10,6 @@ import {
 } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { Devtools } from '@tanstack/react-devtools'
-import { createRoot } from 'react-dom/client'
 
 const rootRoute = createRootRoute({
   component: () => (
@@ -41,13 +40,13 @@ const indexRoute = createRoute({
     )
   },
 })
-
+function About() {
+  return <div className="p-2">Hello from About!</div>
+}
 const aboutRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/about',
-  component: function About() {
-    return <div className="p-2">Hello from About!</div>
-  },
+  component: About,
 })
 
 const routeTree = rootRoute.addChildren([indexRoute, aboutRoute])
@@ -62,22 +61,16 @@ export default function DevtoolsExample() {
       <Devtools
         plugins={[
           {
-            id: 'query',
             name: 'Tanstack Query',
-            render: (el) =>
-              createRoot(el).render(
-                <QueryClientProvider client={queryClient}>
-                  <ReactQueryDevtoolsPanel />
-                </QueryClientProvider>,
-              ),
+            render: (
+              <QueryClientProvider client={queryClient}>
+                <ReactQueryDevtoolsPanel />
+              </QueryClientProvider>
+            ),
           },
           {
-            id: 'router',
             name: 'Tanstack Router',
-            render: (el) =>
-              createRoot(el).render(
-                <TanStackRouterDevtoolsPanel router={router} />,
-              ),
+            render: <TanStackRouterDevtoolsPanel router={router} />,
           },
         ]}
       />

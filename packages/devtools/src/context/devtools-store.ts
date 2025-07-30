@@ -54,7 +54,7 @@ export type DevtoolsStore = {
   state: {
     activeTab: TabName
     height: number
-    activePlugin?: DevtoolsPlugin | undefined
+    activePlugin?: string | undefined
     persistOpen: boolean
   }
   plugins?: Array<DevtoolsPlugin>

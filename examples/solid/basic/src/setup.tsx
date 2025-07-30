@@ -9,8 +9,6 @@ import {
 } from '@tanstack/solid-router'
 import { TanStackRouterDevtools } from '@tanstack/solid-router-devtools'
 import { Devtools } from '@tanstack/solid-devtools'
-import { Portal } from 'solid-js/web'
-
 const rootRoute = createRootRoute({
   component: () => (
     <>
@@ -33,13 +31,13 @@ const indexRoute = createRoute({
     )
   },
 })
-
+function About() {
+  return <div class="p-2">Hello from About!</div>
+}
 const aboutRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/about',
-  component: function About() {
-    return <div class="p-2">Hello from About!</div>
-  },
+  component: About,
 })
 
 const routeTree = rootRoute.addChildren([indexRoute, aboutRoute])
@@ -54,25 +52,16 @@ export default function DevtoolsExample() {
       <Devtools
         plugins={[
           {
-            id: 'query',
             name: 'Tanstack Query',
-            render: (el) => (
-              <Portal mount={el}>
-                {' '}
-                <QueryClientProvider client={queryClient}>
-                  <SolidQueryDevtools />
-                </QueryClientProvider>{' '}
-              </Portal>
+            render: (
+              <QueryClientProvider client={queryClient}>
+                <SolidQueryDevtools />
+              </QueryClientProvider>
             ),
           },
           {
-            id: 'router',
             name: 'Tanstack Router',
-            render: (el) => (
-              <Portal mount={el}>
-                <TanStackRouterDevtoolsPanel router={router} />
-              </Portal>
-            ),
+            render: <TanStackRouterDevtoolsPanel router={router} />,
           },
         ]}
       />
