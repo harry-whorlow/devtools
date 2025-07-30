@@ -6,3 +6,6 @@ export const tryParseJson = <T>(json: string | null): T | undefined => {
     return undefined
   }
 }
+
+export const uppercaseFirstLetter = (value: string) =>
+  value.charAt(0).toUpperCase() + value.slice(1)

@@ -10,10 +10,12 @@ const stylesFactory = () => {
   const css = goober.css
 
   return {
-    devtoolsPanelContainer: css`
+    devtoolsPanelContainer: (
+      panelLocation: DevtoolsSettings['panelLocation'],
+    ) => css`
       direction: ltr;
       position: fixed;
-      bottom: 0;
+      ${panelLocation}: 0;
       right: 0;
       z-index: 99999;
       width: 100%;
@@ -78,10 +80,10 @@ const stylesFactory = () => {
       overflow: auto;
       height: 100%;
     `,
-    dragHandle: css`
+    dragHandle: (panelLocation: DevtoolsSettings['panelLocation']) => css`
       position: absolute;
       left: 0;
-      top: 0;
+      ${panelLocation === 'bottom' ? 'top' : 'bottom'}: 0;
       width: 100%;
       height: 4px;
       cursor: row-resize;
@@ -105,6 +107,16 @@ const stylesFactory = () => {
       font-size: ${font.size.xs};
       cursor: pointer;
       transition: all 0.25s ease-out;
+      &:hide-until-hover {
+        opacity: 0;
+        pointer-events: none;
+        visibility: hidden;
+      }
+      &:hide-until-hover:hover {
+        opacity: 1;
+        pointer-events: auto;
+        visibility: visible;
+      }
       &:focus-visible {
         outline-offset: 2px;
         border-radius: ${border.radius.full};
@@ -130,13 +142,23 @@ const stylesFactory = () => {
       `
       return base
     },
-    mainCloseBtnAnimation: (isOpen: boolean) => {
+    mainCloseBtnAnimation: (isOpen: boolean, hideUntilHover: boolean) => {
       if (!isOpen) {
-        return css`
-          opacity: 1;
-          pointer-events: auto;
-          visibility: visible;
-        `
+        return hideUntilHover
+          ? css`
+              opacity: 0;
+
+              &:hover {
+                opacity: 1;
+                pointer-events: auto;
+                visibility: visible;
+              }
+            `
+          : css`
+              opacity: 1;
+              pointer-events: auto;
+              visibility: visible;
+            `
       }
       return css`
         opacity: 0;
@@ -242,6 +264,119 @@ const stylesFactory = () => {
       width: 100%;
       height: 100%;
       overflow-y: auto;
+    `,
+    selectWrapper: css`
+      width: 100%;
+      max-width: 250px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    `,
+    selectLabel: css`
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #d1d5db; /* text-gray-300 */
+    `,
+    select: css`
+      appearance: none;
+      width: 100%;
+      padding: 0.5rem 2.5rem 0.5rem 0.75rem;
+      border-radius: 0.5rem;
+      background-color: #1f2937; /* gray-800 */
+      color: #f3f4f6; /* gray-100 */
+      border: 1px solid #374151; /* gray-700 */
+      font-size: 0.875rem;
+      transition: all 0.2s ease;
+      cursor: pointer;
+
+      /* Custom arrow */
+      background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+      background-repeat: no-repeat;
+      background-position: right 0.75rem center;
+      background-size: 1.25rem;
+
+      &:hover {
+        border-color: #4b5563; /* gray-600 */
+      }
+
+      &:focus {
+        outline: none;
+        border-color: #60a5fa; /* blue-400 */
+        box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.5);
+      }
+    `,
+    inputWrapper: css`
+      width: 100%;
+      max-width: 250px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    `,
+    inputLabel: css`
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #d1d5db; /* text-gray-300 */
+    `,
+    input: css`
+      appearance: none;
+      width: 100%;
+      padding: 0.5rem 0.75rem;
+      border-radius: 0.5rem;
+      background-color: #1f2937; /* gray-800 */
+      color: #f3f4f6; /* gray-100 */
+      border: 1px solid #374151; /* gray-700 */
+      font-size: 0.875rem;
+      transition: all 0.2s ease;
+
+      &:hover {
+        border-color: #4b5563; /* gray-600 */
+      }
+
+      &:focus {
+        outline: none;
+        border-color: #60a5fa; /* blue-400 */
+        box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.5);
+      }
+    `,
+    checkboxWrapper: css`
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      user-select: none;
+    `,
+    checkbox: css`
+      appearance: none;
+      width: 1.1rem;
+      height: 1.1rem;
+      border: 2px solid #374151; /* gray-700 */
+      border-radius: 0.25rem;
+      background-color: #1f2937; /* gray-800 */
+      display: grid;
+      place-items: center;
+      transition: all 0.2s ease;
+
+      &:hover {
+        border-color: #4b5563; /* gray-600 */
+      }
+
+      &:checked {
+        background-color: #3b82f6; /* blue-500 */
+        border-color: #3b82f6; /* blue-500 */
+      }
+
+      &:checked::after {
+        content: '';
+        width: 0.4rem;
+        height: 0.7rem;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        transform: rotate(45deg);
+      }
+    `,
+    checkboxLabel: css`
+      color: #d1d5db; /* gray-300 */
+      font-size: 0.875rem;
     `,
   }
 }

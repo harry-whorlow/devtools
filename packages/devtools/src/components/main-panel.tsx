@@ -1,5 +1,5 @@
 import clsx from 'clsx'
-import { useHeight } from '../context/use-devtools-context'
+import { useDevtoolsSettings, useHeight } from '../context/use-devtools-context'
 import { useStyles } from '../styles/use-styles'
 import { TANSTACK_DEVTOOLS } from '../utils/storage'
 import type { JSX } from 'solid-js/jsx-runtime'
@@ -12,6 +12,7 @@ export const MainPanel = (props: {
 }) => {
   const styles = useStyles()
   const { height } = useHeight()
+  const { settings } = useDevtoolsSettings()
   return (
     <div
       id={TANSTACK_DEVTOOLS}
@@ -19,7 +20,7 @@ export const MainPanel = (props: {
         height: height() + 'px',
       }}
       class={clsx(
-        styles().devtoolsPanelContainer,
+        styles().devtoolsPanelContainer(settings().panelLocation),
         styles().devtoolsPanelContainerAnimation(props.isOpen(), height()),
         styles().devtoolsPanelContainerVisibility(props.isOpen()),
         styles().devtoolsPanelContainerResizing(props.isResizing),
