@@ -25,7 +25,19 @@ const convertRender = (
   setComponent(typeof Component === 'function' ? Component() : Component)
 }
 
+let hydrated = false
+
+const useHydrated = () => {
+  useEffect(() => {
+    if (!hydrated) {
+      hydrated = true
+    }
+  }, [])
+  return hydrated
+}
+
 export const Devtools = ({ plugins, options }: DevtoolsProps) => {
+  const isHydrated = useHydrated()
   const devToolRef = useRef<HTMLDivElement>(null)
   const [PluginComponent, setPluginComponent] = useState<JSX.Element | null>(
     null,
@@ -57,6 +69,8 @@ export const Devtools = ({ plugins, options }: DevtoolsProps) => {
       devtools.unmount()
     }
   }, [devtools])
+  // we only render on the client side after hydration
+  if (!isHydrated) return null
   const pluginContainer = document.getElementById(PLUGIN_CONTAINER_ID)
   const titleContainer = document.getElementById(PLUGIN_TITLE_CONTAINER_ID)
   return (
