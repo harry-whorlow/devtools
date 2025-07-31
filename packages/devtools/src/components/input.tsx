@@ -7,6 +7,7 @@ interface InputProps {
   value?: string
   placeholder?: string
   onChange?: (value: string) => void
+  description?: string
 }
 
 export function Input(props: InputProps) {
@@ -20,15 +21,22 @@ export function Input(props: InputProps) {
   }
 
   return (
-    <div class={styles().inputWrapper}>
-      {props.label && <label class={styles().inputLabel}>{props.label}</label>}
-      <input
-        type={props.type || 'text'}
-        class={styles().input}
-        value={val()}
-        placeholder={props.placeholder}
-        onInput={handleChange}
-      />
+    <div class={styles().inputContainer}>
+      <div class={styles().inputWrapper}>
+        {props.label && (
+          <label class={styles().inputLabel}>{props.label}</label>
+        )}
+        {props.description && (
+          <p class={styles().inputDescription}>{props.description}</p>
+        )}
+        <input
+          type={props.type || 'text'}
+          class={styles().input}
+          value={val()}
+          placeholder={props.placeholder}
+          onInput={handleChange}
+        />
+      </div>
     </div>
   )
 }

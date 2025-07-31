@@ -5,6 +5,7 @@ interface CheckboxProps {
   label?: string
   checked?: boolean
   onChange?: (checked: boolean) => void
+  description?: string
 }
 
 export function Checkbox(props: CheckboxProps) {
@@ -18,14 +19,25 @@ export function Checkbox(props: CheckboxProps) {
   }
 
   return (
-    <label class={styles().checkboxWrapper}>
-      <input
-        type="checkbox"
-        checked={isChecked()}
-        class={styles().checkbox}
-        onInput={handleChange}
-      />
-      {props.label && <span class={styles().checkboxLabel}>{props.label}</span>}
-    </label>
+    <div class={styles().checkboxContainer}>
+      <label class={styles().checkboxWrapper}>
+        <input
+          type="checkbox"
+          checked={isChecked()}
+          class={styles().checkbox}
+          onInput={handleChange}
+        />
+        <div class={styles().checkboxLabelContainer}>
+          {props.label && (
+            <span class={styles().checkboxLabel}>{props.label}</span>
+          )}
+          {props.description && (
+            <span class={styles().checkboxDescription}>
+              {props.description}
+            </span>
+          )}
+        </div>
+      </label>
+    </div>
   )
 }

@@ -15,6 +15,8 @@ const stylesFactory = () => {
     ) => css`
       direction: ltr;
       position: fixed;
+      overflow-y: hidden;
+      overflow-x: hidden;
       ${panelLocation}: 0;
       right: 0;
       z-index: 99999;
@@ -77,7 +79,8 @@ const stylesFactory = () => {
       color: ${colors.gray[300]};
       width: w-screen;
       flex-direction: row;
-      overflow: auto;
+      overflow-x: hidden;
+      overflow-y: hidden;
       height: 100%;
     `,
     dragHandle: (panelLocation: DevtoolsSettings['panelLocation']) => css`
@@ -267,116 +270,222 @@ const stylesFactory = () => {
     `,
     selectWrapper: css`
       width: 100%;
-      max-width: 250px;
+      max-width: 300px;
       display: flex;
       flex-direction: column;
-      gap: 0.25rem;
+      gap: 0.375rem;
+    `,
+    selectContainer: css`
+      width: 100%;
     `,
     selectLabel: css`
       font-size: 0.875rem;
       font-weight: 500;
-      color: #d1d5db; /* text-gray-300 */
+      color: ${colors.gray[100]};
+    `,
+    selectDescription: css`
+      font-size: 0.8rem;
+      color: ${colors.gray[400]};
+      margin: 0;
+      line-height: 1.3;
     `,
     select: css`
       appearance: none;
       width: 100%;
-      padding: 0.5rem 2.5rem 0.5rem 0.75rem;
+      padding: 0.75rem 3rem 0.75rem 0.75rem;
       border-radius: 0.5rem;
-      background-color: #1f2937; /* gray-800 */
-      color: #f3f4f6; /* gray-100 */
-      border: 1px solid #374151; /* gray-700 */
+      background-color: ${colors.darkGray[800]};
+      color: ${colors.gray[100]};
+      border: 1px solid ${colors.gray[700]};
       font-size: 0.875rem;
       transition: all 0.2s ease;
       cursor: pointer;
 
       /* Custom arrow */
-      background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+      background-image: url("data:image/svg+xml;utf8,<svg fill='%236b7280' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
       background-repeat: no-repeat;
       background-position: right 0.75rem center;
       background-size: 1.25rem;
 
       &:hover {
-        border-color: #4b5563; /* gray-600 */
+        border-color: ${colors.gray[600]};
       }
 
       &:focus {
         outline: none;
-        border-color: #60a5fa; /* blue-400 */
-        box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.5);
+        border-color: ${colors.purple[400]};
+        box-shadow: 0 0 0 3px ${colors.purple[400]}${alpha[20]};
       }
     `,
     inputWrapper: css`
       width: 100%;
-      max-width: 250px;
+      max-width: 300px;
       display: flex;
       flex-direction: column;
-      gap: 0.25rem;
+      gap: 0.375rem;
+    `,
+    inputContainer: css`
+      width: 100%;
     `,
     inputLabel: css`
       font-size: 0.875rem;
       font-weight: 500;
-      color: #d1d5db; /* text-gray-300 */
+      color: ${colors.gray[100]};
+    `,
+    inputDescription: css`
+      font-size: 0.8rem;
+      color: ${colors.gray[400]};
+      margin: 0;
+      line-height: 1.3;
     `,
     input: css`
       appearance: none;
       width: 100%;
-      padding: 0.5rem 0.75rem;
+      padding: 0.75rem;
       border-radius: 0.5rem;
-      background-color: #1f2937; /* gray-800 */
-      color: #f3f4f6; /* gray-100 */
-      border: 1px solid #374151; /* gray-700 */
+      background-color: ${colors.darkGray[800]};
+      color: ${colors.gray[100]};
+      border: 1px solid ${colors.gray[700]};
       font-size: 0.875rem;
+      font-family: ${fontFamily.mono};
       transition: all 0.2s ease;
 
+      &::placeholder {
+        color: ${colors.gray[500]};
+      }
+
       &:hover {
-        border-color: #4b5563; /* gray-600 */
+        border-color: ${colors.gray[600]};
       }
 
       &:focus {
         outline: none;
-        border-color: #60a5fa; /* blue-400 */
-        box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.5);
+        border-color: ${colors.purple[400]};
+        box-shadow: 0 0 0 3px ${colors.purple[400]}${alpha[20]};
       }
     `,
     checkboxWrapper: css`
       display: flex;
-      align-items: center;
-      gap: 0.5rem;
+      align-items: flex-start;
+      gap: 0.75rem;
       cursor: pointer;
       user-select: none;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background-color: ${colors.darkGray[800]};
+      }
+    `,
+    checkboxContainer: css`
+      width: 100%;
+    `,
+    checkboxLabelContainer: css`
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      flex: 1;
     `,
     checkbox: css`
       appearance: none;
-      width: 1.1rem;
-      height: 1.1rem;
-      border: 2px solid #374151; /* gray-700 */
-      border-radius: 0.25rem;
-      background-color: #1f2937; /* gray-800 */
+      width: 1.25rem;
+      height: 1.25rem;
+      border: 2px solid ${colors.gray[700]};
+      border-radius: 0.375rem;
+      background-color: ${colors.darkGray[800]};
       display: grid;
       place-items: center;
       transition: all 0.2s ease;
+      flex-shrink: 0;
+      margin-top: 0.125rem;
 
       &:hover {
-        border-color: #4b5563; /* gray-600 */
+        border-color: ${colors.purple[400]};
       }
 
       &:checked {
-        background-color: #3b82f6; /* blue-500 */
-        border-color: #3b82f6; /* blue-500 */
+        background-color: ${colors.purple[500]};
+        border-color: ${colors.purple[500]};
       }
 
       &:checked::after {
         content: '';
         width: 0.4rem;
-        height: 0.7rem;
+        height: 0.6rem;
         border: solid white;
         border-width: 0 2px 2px 0;
         transform: rotate(45deg);
+        margin-top: -3px;
       }
     `,
     checkboxLabel: css`
-      color: #d1d5db; /* gray-300 */
+      color: ${colors.gray[100]};
       font-size: 0.875rem;
+      font-weight: 500;
+      line-height: 1.4;
+    `,
+    checkboxDescription: css`
+      color: ${colors.gray[400]};
+      font-size: 0.8rem;
+      line-height: 1.3;
+    `,
+    settingsContainer: css`
+      padding: 1.5rem;
+      height: 100%;
+      overflow-y: auto;
+      background-color: ${colors.darkGray[700]};
+    `,
+    settingsSection: css`
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background-color: ${colors.darkGray[800]};
+      border: 1px solid ${colors.gray[700]};
+      border-radius: 0.75rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    `,
+    sectionTitle: css`
+      font-size: 1.125rem;
+      font-weight: 600;
+      color: ${colors.gray[100]};
+      margin: 0 0 1rem 0;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid ${colors.gray[700]};
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    `,
+    sectionIcon: css`
+      color: ${colors.purple[400]};
+    `,
+    sectionDescription: css`
+      color: ${colors.gray[400]};
+      font-size: 0.875rem;
+      margin: 0 0 1.5rem 0;
+      line-height: 1.5;
+    `,
+    settingsGroup: css`
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    `,
+    conditionalSetting: css`
+      margin-left: 1.5rem;
+      padding-left: 1rem;
+      border-left: 2px solid ${colors.purple[400]};
+      background-color: ${colors.darkGray[800]};
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-top: 0.5rem;
+    `,
+    settingRow: css`
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+
+      @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+      }
     `,
   }
 }

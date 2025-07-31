@@ -11,6 +11,7 @@ interface SelectProps<T extends string | number> {
   options: Array<SelectOption<T>>
   value?: T
   onChange?: (value: T) => void
+  description?: string
 }
 
 export function Select<T extends string | number>(props: SelectProps<T>) {
@@ -26,13 +27,24 @@ export function Select<T extends string | number>(props: SelectProps<T>) {
   }
 
   return (
-    <div class={styles().selectWrapper}>
-      {props.label && <label class={styles().selectLabel}>{props.label}</label>}
-      <select class={styles().select} value={selected()} onInput={handleChange}>
-        {props.options.map((opt) => (
-          <option value={opt.value}>{opt.label}</option>
-        ))}
-      </select>
+    <div class={styles().selectContainer}>
+      <div class={styles().selectWrapper}>
+        {props.label && (
+          <label class={styles().selectLabel}>{props.label}</label>
+        )}
+        {props.description && (
+          <p class={styles().selectDescription}>{props.description}</p>
+        )}
+        <select
+          class={styles().select}
+          value={selected()}
+          onInput={handleChange}
+        >
+          {props.options.map((opt) => (
+            <option value={opt.value}>{opt.label}</option>
+          ))}
+        </select>
+      </div>
     </div>
   )
 }
