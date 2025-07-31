@@ -2,6 +2,7 @@ import { For, createEffect } from 'solid-js'
 import clsx from 'clsx'
 import { usePlugins } from '../context/use-devtools-context'
 import { useStyles } from '../styles/use-styles'
+import { PLUGIN_CONTAINER_ID, PLUGIN_TITLE_CONTAINER_ID } from '../constants'
 
 export const PluginsTab = () => {
   const { plugins, activePlugin, setActivePlugin } = usePlugins()
@@ -36,13 +37,17 @@ export const PluginsTab = () => {
                   active: activePlugin() === plugin.id,
                 })}
               >
-                <h3 ref={pluginHeading} />
+                <h3 id={PLUGIN_TITLE_CONTAINER_ID} ref={pluginHeading} />
               </div>
             )
           }}
         </For>
       </div>
-      <div ref={activePluginRef} class={styles().pluginsTabContent}></div>
+      <div
+        id={PLUGIN_CONTAINER_ID}
+        ref={activePluginRef}
+        class={styles().pluginsTabContent}
+      ></div>
     </div>
   )
 }

@@ -1,10 +1,10 @@
-import { defineConfig, mergeConfig } from 'vitest/config'
+import { defineConfig, mergeConfig, Plugin } from 'vitest/config'
 import { tanstackViteConfig } from '@tanstack/config/vite'
 import react from '@vitejs/plugin-react'
 import packageJson from './package.json'
 
 const config = defineConfig({
-  plugins: [react()],
+  plugins: [react() as any satisfies Plugin],
   test: {
     name: packageJson.name,
     dir: './tests',
