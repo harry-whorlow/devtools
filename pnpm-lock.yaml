@@ -95,9 +95,6 @@ importers:
       react-dom:
         specifier: ^19.1.0
         version: 19.1.0(react@19.1.0)
-      react-solid-bridge:
-        specifier: ^1.0.1
-        version: 1.0.1
     devDependencies:
       '@types/react':
         specifier: ^19.1.2
@@ -2835,9 +2832,6 @@ packages:
   react-refresh@0.17.0:
     resolution: {integrity: sha512-z6F7K9bV85EfseRCp2bzrpyQ0Gkw1uLoCel9XBVWPg/TjRj94SkJzUTGfOa4bs7iJvBWtQG0Wq7wnI0syw3EBQ==}
     engines: {node: '>=0.10.0'}
-
-  react-solid-bridge@1.0.1:
-    resolution: {integrity: sha512-y0WWQlJOfAlwus7rZDHfJ2o7hYAiOwpggvLpu0nmcJRhzGZQEcAG07R1tG4IeVnt6AjC24WJRNJBQo8+i2fssw==}
 
   react@19.1.0:
     resolution: {integrity: sha512-FS+XFBNvn3GTAWq26joslQgWNoFu08F4kl0J4CgdNKADkdSGXQyTCnKteIAJy96Br6YbpEU1LSzV5dYtjMkMDg==}
@@ -6457,8 +6451,6 @@ snapshots:
   react-is@18.3.1: {}
 
   react-refresh@0.17.0: {}
-
-  react-solid-bridge@1.0.1: {}
 
   react@19.1.0: {}
 
