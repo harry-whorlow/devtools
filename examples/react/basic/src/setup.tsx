@@ -43,6 +43,7 @@ const indexRoute = createRoute({
 function About() {
   return <div className="p-2">Hello from About!</div>
 }
+
 const aboutRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/about',
@@ -58,22 +59,20 @@ const queryClient = new QueryClient()
 export default function DevtoolsExample() {
   return (
     <>
-      <Devtools
-        plugins={[
-          {
-            name: 'Tanstack Query',
-            render: (
-              <QueryClientProvider client={queryClient}>
-                <ReactQueryDevtoolsPanel />
-              </QueryClientProvider>
-            ),
-          },
-          {
-            name: 'Tanstack Router',
-            render: <TanStackRouterDevtoolsPanel router={router} />,
-          },
-        ]}
-      />
+      <QueryClientProvider client={queryClient}>
+        <Devtools
+          plugins={[
+            {
+              name: 'Tanstack Query',
+              render: <ReactQueryDevtoolsPanel />,
+            },
+            {
+              name: 'Tanstack Router',
+              render: <TanStackRouterDevtoolsPanel router={router} />,
+            },
+          ]}
+        />
+      </QueryClientProvider>
     </>
   )
 }
