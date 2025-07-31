@@ -2,7 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { Devtools } from '@tanstack/react-devtools'
-import { createRouter } from '@/router'
+import { StudioPlugin } from './prisma-plugin'
 
 const queryClient = new QueryClient()
 
@@ -18,7 +18,11 @@ export default function DevtoolsExample() {
             },
             {
               name: 'Tanstack Router',
-              render: <TanStackRouterDevtoolsPanel router={createRouter()} />,
+              render: <TanStackRouterDevtoolsPanel />,
+            },
+            {
+              name: 'Prisma Studio',
+              render: <StudioPlugin />,
             },
           ]}
         />

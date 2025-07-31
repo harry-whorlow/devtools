@@ -14,6 +14,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DemoStartServerFuncsRouteImport } from './routes/demo.start.server-funcs'
 import { Route as DemoStartApiRequestRouteImport } from './routes/demo.start.api-request'
+import { ServerRoute as StudioServerRouteImport } from './routes/studio'
 import { ServerRoute as ApiDemoNamesServerRouteImport } from './routes/api.demo-names'
 
 const rootServerRouteImport = createServerRootRoute()
@@ -32,6 +33,11 @@ const DemoStartApiRequestRoute = DemoStartApiRequestRouteImport.update({
   id: '/demo/start/api-request',
   path: '/demo/start/api-request',
   getParentRoute: () => rootRouteImport,
+} as any)
+const StudioServerRoute = StudioServerRouteImport.update({
+  id: '/studio',
+  path: '/studio',
+  getParentRoute: () => rootServerRouteImport,
 } as any)
 const ApiDemoNamesServerRoute = ApiDemoNamesServerRouteImport.update({
   id: '/api/demo-names',
@@ -69,24 +75,28 @@ export interface RootRouteChildren {
   DemoStartServerFuncsRoute: typeof DemoStartServerFuncsRoute
 }
 export interface FileServerRoutesByFullPath {
+  '/studio': typeof StudioServerRoute
   '/api/demo-names': typeof ApiDemoNamesServerRoute
 }
 export interface FileServerRoutesByTo {
+  '/studio': typeof StudioServerRoute
   '/api/demo-names': typeof ApiDemoNamesServerRoute
 }
 export interface FileServerRoutesById {
   __root__: typeof rootServerRouteImport
+  '/studio': typeof StudioServerRoute
   '/api/demo-names': typeof ApiDemoNamesServerRoute
 }
 export interface FileServerRouteTypes {
   fileServerRoutesByFullPath: FileServerRoutesByFullPath
-  fullPaths: '/api/demo-names'
+  fullPaths: '/studio' | '/api/demo-names'
   fileServerRoutesByTo: FileServerRoutesByTo
-  to: '/api/demo-names'
-  id: '__root__' | '/api/demo-names'
+  to: '/studio' | '/api/demo-names'
+  id: '__root__' | '/studio' | '/api/demo-names'
   fileServerRoutesById: FileServerRoutesById
 }
 export interface RootServerRouteChildren {
+  StudioServerRoute: typeof StudioServerRoute
   ApiDemoNamesServerRoute: typeof ApiDemoNamesServerRoute
 }
 
@@ -117,6 +127,13 @@ declare module '@tanstack/react-router' {
 }
 declare module '@tanstack/react-start/server' {
   interface ServerFileRoutesByPath {
+    '/studio': {
+      id: '/studio'
+      path: '/studio'
+      fullPath: '/studio'
+      preLoaderRoute: typeof StudioServerRouteImport
+      parentRoute: typeof rootServerRouteImport
+    }
     '/api/demo-names': {
       id: '/api/demo-names'
       path: '/api/demo-names'
@@ -136,6 +153,7 @@ export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
 const rootServerRouteChildren: RootServerRouteChildren = {
+  StudioServerRoute: StudioServerRoute,
   ApiDemoNamesServerRoute: ApiDemoNamesServerRoute,
 }
 export const serverRouteTree = rootServerRouteImport
