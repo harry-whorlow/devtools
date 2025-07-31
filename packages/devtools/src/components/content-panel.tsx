@@ -1,3 +1,4 @@
+import { useDevtoolsSettings } from '../context/use-devtools-context'
 import { useStyles } from '../styles/use-styles'
 import type { JSX } from 'solid-js/jsx-runtime'
 
@@ -7,11 +8,12 @@ export const ContentPanel = (props: {
   handleDragStart?: (e: any) => void
 }) => {
   const styles = useStyles()
+  const { settings } = useDevtoolsSettings()
   return (
     <div ref={props.ref} class={styles().devtoolsPanel}>
       {props.handleDragStart ? (
         <div
-          class={styles().dragHandle}
+          class={styles().dragHandle(settings().panelLocation)}
           onMouseDown={props.handleDragStart}
         ></div>
       ) : null}

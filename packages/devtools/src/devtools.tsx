@@ -1,4 +1,4 @@
-import { createEffect, createSignal } from 'solid-js'
+import { Show, createEffect, createSignal } from 'solid-js'
 import { createShortcut } from '@solid-primitives/keyboard'
 import {
   useDevtoolsSettings,
@@ -28,24 +28,27 @@ export default function DevTools() {
     setIsOpen(!open)
     setPersistOpen(!open)
   }
-
+  createEffect(() => {})
   // Used to resize the panel
   const handleDragStart = (
     panelElement: HTMLDivElement | undefined,
     startEvent: MouseEvent,
   ) => {
     if (startEvent.button !== 0) return // Only allow left click for drag
-
+    if (!panelElement) return
     setIsResizing(true)
 
     const dragInfo = {
-      originalHeight: panelElement?.getBoundingClientRect().height ?? 0,
+      originalHeight: panelElement.getBoundingClientRect().height,
       pageY: startEvent.pageY,
     }
 
     const run = (moveEvent: MouseEvent) => {
       const delta = dragInfo.pageY - moveEvent.pageY
-      const newHeight = dragInfo.originalHeight + delta
+      const newHeight =
+        settings().panelLocation === 'bottom'
+          ? dragInfo.originalHeight + delta
+          : dragInfo.originalHeight - delta
 
       setHeight(newHeight)
 
@@ -72,7 +75,8 @@ export default function DevTools() {
       const previousValue = rootEl()?.parentElement?.style.paddingBottom
 
       const run = () => {
-        const containerHeight = panelRef!.getBoundingClientRect().height
+        if (!panelRef) return
+        const containerHeight = panelRef.getBoundingClientRect().height
         if (rootEl()?.parentElement) {
           setRootEl((prev) => {
             if (prev?.parentElement) {
@@ -126,21 +130,33 @@ export default function DevTools() {
       el?.style.setProperty('--tsrd-font-size', fontSize)
     }
   })
-  createShortcut(settings().openHotkey, () => {
-    toggleOpen()
+  createEffect(() => {
+    createShortcut(settings().openHotkey, () => {
+      toggleOpen()
+    })
   })
+
+  createEffect(() => {})
   return (
     <div ref={setRootEl} data-testid={TANSTACK_DEVTOOLS}>
-      <Trigger isOpen={isOpen} setIsOpen={toggleOpen} />
-      <MainPanel isResizing={isResizing} isOpen={isOpen}>
-        <ContentPanel
-          ref={(ref) => (panelRef = ref)}
-          handleDragStart={(e) => handleDragStart(panelRef, e)}
-        >
-          <Tabs toggleOpen={toggleOpen} />
-          <TabContent />
-        </ContentPanel>
-      </MainPanel>
+      <Show
+        when={
+          settings().requireUrlFlag
+            ? window.location.search.includes(settings().urlFlag)
+            : true
+        }
+      >
+        <Trigger isOpen={isOpen} setIsOpen={toggleOpen} />
+        <MainPanel isResizing={isResizing} isOpen={isOpen}>
+          <ContentPanel
+            ref={(ref) => (panelRef = ref)}
+            handleDragStart={(e) => handleDragStart(panelRef, e)}
+          >
+            <Tabs toggleOpen={toggleOpen} />
+            <TabContent />
+          </ContentPanel>
+        </MainPanel>
+      </Show>
     </div>
   )
 }

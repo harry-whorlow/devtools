@@ -18,7 +18,7 @@ export const Trigger = ({
     return clsx(
       styles().mainCloseBtn,
       styles().mainCloseBtnPosition(settings().position),
-      styles().mainCloseBtnAnimation(isOpen()),
+      styles().mainCloseBtnAnimation(isOpen(), settings().hideUntilHover),
     )
   })
   return (
