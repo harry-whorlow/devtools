@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react'
 import {
-  TanStackRouterDevtoolsCore,
   PLUGIN_CONTAINER_ID,
   PLUGIN_TITLE_CONTAINER_ID,
+  TanStackRouterDevtoolsCore,
 } from '@tanstack/devtools'
+import { createPortal } from 'react-dom'
 import type { JSX } from 'react'
 import type { DevtoolsOptions, DevtoolsPlugin } from '@tanstack/devtools'
-import { createPortal } from 'react-dom'
 
 type Render = JSX.Element | (() => JSX.Element)
 type ReactPlugin = Omit<DevtoolsPlugin, 'render' | 'name'> & {

@@ -2,7 +2,7 @@ import { For, createEffect } from 'solid-js'
 import clsx from 'clsx'
 import { usePlugins } from '../context/use-devtools-context'
 import { useStyles } from '../styles/use-styles'
-import { PLUGIN_TITLE_CONTAINER_ID, PLUGIN_CONTAINER_ID } from '../constants'
+import { PLUGIN_CONTAINER_ID, PLUGIN_TITLE_CONTAINER_ID } from '../constants'
 
 export const PluginsTab = () => {
   const { plugins, activePlugin, setActivePlugin } = usePlugins()
