@@ -14,10 +14,9 @@ import type { JSX } from 'solid-js/jsx-runtime'
 
 export interface DevtoolsPlugin {
   name: string | ((el: HTMLHeadingElement) => void)
-  id: string
+  id?: string
   render: (el: HTMLDivElement) => void
 }
-
 export const DevtoolsContext = createContext<{
   store: DevtoolsStore
   setStore: Setter<DevtoolsStore>
@@ -37,6 +36,19 @@ const getSettings = () => {
   }
 }
 
+const generatePluginId = (plugin: DevtoolsPlugin, index: number) => {
+  // if set by user, return the plugin id
+  if (plugin.id) {
+    return plugin.id
+  }
+  if (typeof plugin.name === 'string') {
+    // if name is a string, use it to generate an id
+    return plugin.name.toLowerCase().replace(' ', '-')
+  }
+  // Name is JSX? return the index as a string
+  return index.toString()
+}
+
 const getExistingStateFromStorage = (
   config?: DevtoolsSettings,
   plugins?: Array<DevtoolsPlugin>,
@@ -46,7 +58,14 @@ const getExistingStateFromStorage = (
 
   const state: DevtoolsStore = {
     ...initialState,
-    plugins: plugins || [],
+    plugins:
+      plugins?.map((plugin, i) => {
+        const id = generatePluginId(plugin, i)
+        return {
+          ...plugin,
+          id,
+        }
+      }) || [],
     state: {
       ...initialState.state,
       ...(existingState ? JSON.parse(existingState) : {}),
