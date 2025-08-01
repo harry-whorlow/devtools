@@ -17,7 +17,10 @@ Defined in: [context/devtools-context.tsx:15](https://github.com/TanStack/devtoo
 optional id: string;
 ```
 
-Defined in: [context/devtools-context.tsx:17](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/context/devtools-context.tsx#L17)
+Defined in: [context/devtools-context.tsx:47](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/context/devtools-context.tsx#L47)
+
+Unique identifier for the plugin.
+If not provided, it will be generated based on the name.
 
 ***
 
@@ -27,7 +30,32 @@ Defined in: [context/devtools-context.tsx:17](https://github.com/TanStack/devtoo
 name: string | (el) => void;
 ```
 
-Defined in: [context/devtools-context.tsx:16](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/context/devtools-context.tsx#L16)
+Defined in: [context/devtools-context.tsx:42](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/context/devtools-context.tsx#L42)
+
+Name to be displayed in the devtools UI.
+If a string, it will be used as the plugin name.
+If a function, it will be called with the mount element.
+
+Example:
+```ts
+  {
+    // If a string, it will be used as the plugin name
+    name: "Your Plugin",
+    render: () => {}
+  }
+```
+or
+
+```ts
+  {
+    // If a function, it will be called with the mount element
+    name: (el) => {
+      el.innerText = "Your Plugin Name"
+      // Your name logic here
+    },
+    render: () => {}
+  }
+```
 
 ***
 
@@ -37,7 +65,10 @@ Defined in: [context/devtools-context.tsx:16](https://github.com/TanStack/devtoo
 render: (el) => void;
 ```
 
-Defined in: [context/devtools-context.tsx:18](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/context/devtools-context.tsx#L18)
+Defined in: [context/devtools-context.tsx:61](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/context/devtools-context.tsx#L61)
+
+Render the plugin UI by using the provided element. This function will be called
+when the plugin tab is clicked and expected to be mounted.
 
 #### Parameters
 
@@ -45,6 +76,17 @@ Defined in: [context/devtools-context.tsx:18](https://github.com/TanStack/devtoo
 
 `HTMLDivElement`
 
+The mount element for the plugin.
+
 #### Returns
 
 `void`
+
+void
+
+Example:
+```ts
+  render: (el) => {
+    el.innerHTML = "<h1>Your Plugin</h1>"
+  }
+```

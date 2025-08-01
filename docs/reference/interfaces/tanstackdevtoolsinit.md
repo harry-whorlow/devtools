@@ -25,7 +25,11 @@ optional config: Partial<{
 }>;
 ```
 
-Defined in: [core.tsx:11](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/core.tsx#L11)
+Defined in: [core.tsx:16](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/core.tsx#L16)
+
+Configuration for the devtools shell. These configuration options are used to set the
+initial state of the devtools when it is started for the first time. Afterwards,
+the settings are persisted in local storage and changed through the settings panel.
 
 ***
 
@@ -35,4 +39,22 @@ Defined in: [core.tsx:11](https://github.com/TanStack/devtools/blob/main/package
 optional plugins: TanStackDevtoolsPlugin[];
 ```
 
-Defined in: [core.tsx:12](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/core.tsx#L12)
+Defined in: [core.tsx:36](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/core.tsx#L36)
+
+Array of plugins to be used in the devtools.
+Each plugin has a `render` function that gives you the dom node to mount into
+
+Example:
+```ts
+ const devtools = new TanStackDevtoolsCore({
+   plugins: [
+     {
+       id: "your-plugin-id",
+       name: "Your Plugin",
+       render: (el) => {
+         // Your render logic here
+       },
+     },
+   ],
+ })
+```
