@@ -90,6 +90,7 @@ const stylesFactory = () => {
       width: 100%;
       height: 4px;
       cursor: row-resize;
+      user-select: none;
       z-index: 100000;
       &:hover {
         background-color: ${colors.purple[400]}${alpha[90]};
