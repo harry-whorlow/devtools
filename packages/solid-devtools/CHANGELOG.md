@@ -1,5 +1,14 @@
 # @tanstack/solid-devtools
 
+## 0.1.1
+
+### Patch Changes
+
+- Updated the JSdoc descriptions for easier usage ([#8](https://github.com/TanStack/devtools/pull/8))
+
+- Updated dependencies [[`d7dc082`](https://github.com/TanStack/devtools/commit/d7dc08211dcaba9d226ad1963e812430530e6d35)]:
+  - @tanstack/devtools@0.1.1
+
 ## 0.1.0
 
 ### Minor Changes
