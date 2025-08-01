@@ -40,18 +40,18 @@ import { TanstackDevtools } from '@tanstack/react-devtools'
 
 function App() {
   return (
-     <div> 
-        <h1>My App</h1>
-        <TanstackDevtools
-          plugins={[
-            {
-              id: "your-plugin-id",
-              name: "Your Plugin",
-              render: <CustomPluginComponent />,
-            }
-          ]}
-        /> 
-     </div>
+    <div>
+      <h1>My App</h1>
+      <TanstackDevtools
+        plugins={[
+          {
+            id: 'your-plugin-id',
+            name: 'Your Plugin',
+            render: <CustomPluginComponent />,
+          },
+        ]}
+      />
+    </div>
   )
 }
 ```

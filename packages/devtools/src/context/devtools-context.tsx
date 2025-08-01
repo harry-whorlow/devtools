@@ -9,8 +9,7 @@ import {
 } from '../utils/storage'
 import { initialState } from './devtools-store'
 import type { DevtoolsStore } from './devtools-store'
-import type { JSX, Setter  } from 'solid-js'
-
+import type { JSX, Setter } from 'solid-js'
 
 export interface TanStackDevtoolsPlugin {
   /**
