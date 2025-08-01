@@ -21,8 +21,43 @@ Defined in: [devtools.tsx:20](https://github.com/TanStack/devtools/blob/main/pac
 name: string | SolidPluginRender;
 ```
 
+Name to be displayed in the devtools UI.
+If a string, it will be used as the plugin name.
+If a function, it will be called with the mount element.
+
+Example:
+```ts
+  {
+    name: "Your Plugin",
+    render: () => <CustomPluginComponent />,
+  }
+```
+or
+```ts
+  {
+    name: <h1>Your Plugin title</h1>,
+    render: () => <CustomPluginComponent />,
+  }
+```
+
 ### render
 
 ```ts
 render: SolidPluginRender;
+```
+
+The render function can be a SolidJS element or a function that returns a SolidJS element.
+If it's a function, it will be called to render the plugin, otherwise it will be rendered directly.
+
+Example:
+```ts
+  {
+    render: () => <CustomPluginComponent />,
+  }
+```
+or
+```ts
+  {
+    render: <CustomPluginComponent />,
+  }
 ```

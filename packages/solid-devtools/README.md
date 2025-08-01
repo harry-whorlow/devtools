@@ -24,3 +24,28 @@ function App() {
   )
 }
 ```
+
+## Creating plugins
+
+In order to create a plugin for TanStack Devtools, you can use the `plugins` prop of the `TanstackDevtools` component. Here's an example of how to create a simple plugin:
+
+```tsx
+import { TanstackDevtools } from '@tanstack/solid-devtools'
+
+function App() {
+  return (
+    <div>
+      <h1>My App</h1>
+      <TanstackDevtools
+        plugins={[
+          {
+            id: 'your-plugin-id',
+            name: 'Your Plugin',
+            render: <CustomPluginComponent />,
+          },
+        ]}
+      />
+    </div>
+  )
+}
+```

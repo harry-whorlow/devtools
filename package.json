@@ -55,7 +55,7 @@
     "@faker-js/faker": "^9.7.0",
     "@size-limit/preset-small-lib": "^11.2.0",
     "@svitejs/changesets-changelog-github-compact": "^1.2.0",
-    "@tanstack/config": "0.18.0",
+    "@tanstack/config": "0.20.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@types/node": "^22.15.2",
     "eslint": "^9.25.1",
