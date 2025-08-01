@@ -3,29 +3,29 @@ import { Portal, render } from 'solid-js/web'
 import { DevtoolsProvider } from './context/devtools-context'
 import { initialState } from './context/devtools-store'
 import type {
-  DevtoolsPlugin,
-  DevtoolsSettings,
+  TanStackDevtoolsConfig,
+  TanStackDevtoolsPlugin,
 } from './context/devtools-context'
 
-export interface DevtoolsOptions {
-  options?: Partial<DevtoolsSettings>
-  plugins?: Array<DevtoolsPlugin>
+export interface TanStackDevtoolsInit {
+  config?: Partial<TanStackDevtoolsConfig>
+  plugins?: Array<TanStackDevtoolsPlugin>
 }
 
-class TanStackDevtoolsCore {
-  #options: DevtoolsSettings = {
+export class TanStackDevtoolsCore {
+  #config: TanStackDevtoolsConfig = {
     ...initialState.settings,
   }
-  #plugins: Array<DevtoolsPlugin> = []
+  #plugins: Array<TanStackDevtoolsPlugin> = []
   #isMounted = false
   #dispose?: () => void
   #Component: any
 
-  constructor(config: DevtoolsOptions) {
-    this.#plugins = config.plugins || []
-    this.#options = {
-      ...this.#options,
-      ...config.options,
+  constructor(init: TanStackDevtoolsInit) {
+    this.#plugins = init.plugins || []
+    this.#config = {
+      ...this.#config,
+      ...init.config,
     }
   }
 
@@ -40,7 +40,7 @@ class TanStackDevtoolsCore {
       const Devtools = this.#Component
 
       return (
-        <DevtoolsProvider plugins={this.#plugins} config={this.#options}>
+        <DevtoolsProvider plugins={this.#plugins} config={this.#config}>
           <Portal mount={mountTo}>
             <Devtools />
           </Portal>
@@ -60,12 +60,10 @@ class TanStackDevtoolsCore {
     this.#isMounted = false
   }
 
-  setOptions(options: Partial<DevtoolsOptions>) {
-    this.#options = {
-      ...this.#options,
-      ...options,
+  setConfig(config: Partial<TanStackDevtoolsInit>) {
+    this.#config = {
+      ...this.#config,
+      ...config,
     }
   }
 }
-
-export { TanStackDevtoolsCore as TanStackRouterDevtoolsCore }

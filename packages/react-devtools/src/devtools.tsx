@@ -2,30 +2,41 @@ import React, { useEffect, useRef, useState } from 'react'
 import {
   PLUGIN_CONTAINER_ID,
   PLUGIN_TITLE_CONTAINER_ID,
-  TanStackRouterDevtoolsCore,
+  TanStackDevtoolsCore,
 } from '@tanstack/devtools'
 import { createPortal } from 'react-dom'
 import type { JSX } from 'react'
-import type { DevtoolsOptions, DevtoolsPlugin } from '@tanstack/devtools'
+import type {
+  TanStackDevtoolsConfig,
+  TanStackDevtoolsPlugin,
+} from '@tanstack/devtools'
 
-type Render = JSX.Element | (() => JSX.Element)
-type ReactPlugin = Omit<DevtoolsPlugin, 'render' | 'name'> & {
-  render: Render
-  name: string | Render
+type PluginRender = JSX.Element | (() => JSX.Element)
+
+export type TanStackDevtoolsReactPlugin = Omit<
+  TanStackDevtoolsPlugin,
+  'render' | 'name'
+> & {
+  render: PluginRender
+  name: string | PluginRender
 }
-interface DevtoolsProps {
-  plugins?: Array<ReactPlugin>
-  options?: DevtoolsOptions['options']
+
+export interface TanStackDevtoolsReactInit {
+  plugins?: Array<TanStackDevtoolsReactPlugin>
+  config?: TanStackDevtoolsConfig
 }
 
 const convertRender = (
-  Component: Render,
+  Component: PluginRender,
   setComponent: React.Dispatch<React.SetStateAction<JSX.Element | null>>,
 ) => {
   setComponent(typeof Component === 'function' ? Component() : Component)
 }
 
-export const Devtools = ({ plugins, options }: DevtoolsProps) => {
+export const TanstackDevtools = ({
+  plugins,
+  config,
+}: TanStackDevtoolsReactInit) => {
   const devToolRef = useRef<HTMLDivElement>(null)
   const [pluginContainer, setPluginContainer] = useState<HTMLElement | null>(
     null,
@@ -37,8 +48,8 @@ export const Devtools = ({ plugins, options }: DevtoolsProps) => {
   const [TitleComponent, setTitleComponent] = useState<JSX.Element | null>(null)
   const [devtools] = useState(
     () =>
-      new TanStackRouterDevtoolsCore({
-        options,
+      new TanStackDevtoolsCore({
+        config,
         plugins: plugins?.map((plugin) => {
           return {
             ...plugin,
@@ -51,7 +62,10 @@ export const Devtools = ({ plugins, options }: DevtoolsProps) => {
                       document.getElementById(PLUGIN_TITLE_CONTAINER_ID) ||
                         null,
                     )
-                    convertRender(plugin.name as Render, setTitleComponent)
+                    convertRender(
+                      plugin.name as PluginRender,
+                      setTitleComponent,
+                    )
                   },
             render: () => {
               setPluginContainer(

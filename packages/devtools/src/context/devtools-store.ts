@@ -1,5 +1,5 @@
 import type { TabName } from '../tabs'
-import type { DevtoolsPlugin } from './devtools-context'
+import type { TanStackDevtoolsPlugin } from './devtools-context'
 
 type ModifierKey = 'Alt' | 'Control' | 'Meta' | 'Shift'
 type KeyboardKey = ModifierKey | (string & {})
@@ -57,7 +57,7 @@ export type DevtoolsStore = {
     activePlugin?: string | undefined
     persistOpen: boolean
   }
-  plugins?: Array<DevtoolsPlugin>
+  plugins?: Array<TanStackDevtoolsPlugin>
 }
 
 export const initialState: DevtoolsStore = {

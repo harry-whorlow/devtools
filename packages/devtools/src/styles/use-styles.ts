@@ -1,7 +1,7 @@
 import * as goober from 'goober'
 import { createSignal } from 'solid-js'
 import { tokens } from './tokens'
-import type { DevtoolsSettings } from '../context/devtools-context'
+import type { TanStackDevtoolsConfig } from '../context/devtools-context'
 import type { Accessor } from 'solid-js'
 
 const stylesFactory = () => {
@@ -11,7 +11,7 @@ const stylesFactory = () => {
 
   return {
     devtoolsPanelContainer: (
-      panelLocation: DevtoolsSettings['panelLocation'],
+      panelLocation: TanStackDevtoolsConfig['panelLocation'],
     ) => css`
       direction: ltr;
       position: fixed;
@@ -83,7 +83,7 @@ const stylesFactory = () => {
       overflow-y: hidden;
       height: 100%;
     `,
-    dragHandle: (panelLocation: DevtoolsSettings['panelLocation']) => css`
+    dragHandle: (panelLocation: TanStackDevtoolsConfig['panelLocation']) => css`
       position: absolute;
       left: 0;
       ${panelLocation === 'bottom' ? 'top' : 'bottom'}: 0;
@@ -126,7 +126,7 @@ const stylesFactory = () => {
         outline: 2px solid ${colors.blue[800]};
       }
     `,
-    mainCloseBtnPosition: (position: DevtoolsSettings['position']) => {
+    mainCloseBtnPosition: (position: TanStackDevtoolsConfig['position']) => {
       const base = css`
         ${position === 'top-left' ? `top: ${size[2]}; left: ${size[2]};` : ''}
         ${position === 'top-right' ? `top: ${size[2]}; right: ${size[2]};` : ''}
