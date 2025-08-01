@@ -6,7 +6,6 @@ This package is still under active development and might have breaking changes i
 
 ```tsx
 import { TanStackDevtoolsCore } from '@tanstack/devtools'
- 
 
 const devtools = new TanStackDevtoolsCore({
   options: {
@@ -18,7 +17,6 @@ const devtools = new TanStackDevtoolsCore({
 })
 
 devtools.mount(document.getElementById('your-devtools-container')!)
-
 ```
 
 ## Creating plugins
@@ -36,10 +34,8 @@ const devtools = new TanStackDevtoolsCore({
     {
       id: 'my-plugin',
       name: 'My Plugin',
-      render: (el) => el.innerHTML = '<div>My Plugin Content</div>',
-    }
-  ]
+      render: (el) => (el.innerHTML = '<div>My Plugin Content</div>'),
+    },
+  ],
 })
-
 ```
-
