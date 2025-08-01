@@ -7,6 +7,20 @@ title: "@tanstack/devtools"
 
 # @tanstack/devtools
 
+## Classes
+
+- [TanStackDevtoolsCore](classes/tanstackdevtoolscore.md)
+
+## Interfaces
+
+- [TanStackDevtoolsInit](interfaces/tanstackdevtoolsinit.md)
+- [TanStackDevtoolsPlugin](interfaces/tanstackdevtoolsplugin.md)
+
+## Type Aliases
+
+- [TanStackDevtoolsConfig](type-aliases/tanstackdevtoolsconfig.md)
+
 ## Variables
 
-- [devtools](variables/devtools.md)
+- [PLUGIN\_CONTAINER\_ID](variables/plugin_container_id.md)
+- [PLUGIN\_TITLE\_CONTAINER\_ID](variables/plugin_title_container_id.md)

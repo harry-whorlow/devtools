@@ -8,7 +8,7 @@ import {
   createRootRoute,
 } from '@tanstack/solid-router'
 import { TanStackRouterDevtools } from '@tanstack/solid-router-devtools'
-import { Devtools } from '@tanstack/solid-devtools'
+import { TanstackDevtools } from '@tanstack/solid-devtools'
 const rootRoute = createRootRoute({
   component: () => (
     <>
@@ -49,7 +49,7 @@ const queryClient = new QueryClient()
 export default function DevtoolsExample() {
   return (
     <>
-      <Devtools
+      <TanstackDevtools
         plugins={[
           {
             name: 'Tanstack Query',

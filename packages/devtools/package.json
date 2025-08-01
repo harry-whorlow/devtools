@@ -1,7 +1,7 @@
 {
   "name": "@tanstack/devtools",
   "version": "0.0.0",
-  "description": "Headless UI for creating advanced custom devtools, autocomplete, and dropdown components.",
+  "description": "TanStack Devtools is a set of tools for building advanced devtools for your application.",
   "author": "Tanner Linsley",
   "license": "MIT",
   "repository": {
@@ -15,12 +15,7 @@
     "url": "https://github.com/sponsors/tannerlinsley"
   },
   "keywords": [
-    "devtools",
-    "autocomplete",
-    "dropdown",
-    "menu",
-    "headless-ui",
-    "nested"
+    "devtools"
   ],
   "type": "module",
   "types": "dist/esm/index.d.ts",

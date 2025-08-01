@@ -12,7 +12,7 @@ import type { DevtoolsStore } from './devtools-store'
 import type { Setter } from 'solid-js'
 import type { JSX } from 'solid-js/jsx-runtime'
 
-export interface DevtoolsPlugin {
+export interface TanStackDevtoolsPlugin {
   name: string | ((el: HTMLHeadingElement) => void)
   id?: string
   render: (el: HTMLDivElement) => void
@@ -24,8 +24,8 @@ export const DevtoolsContext = createContext<{
 
 interface ContextProps {
   children: JSX.Element
-  plugins?: Array<DevtoolsPlugin>
-  config?: DevtoolsSettings
+  plugins?: Array<TanStackDevtoolsPlugin>
+  config?: TanStackDevtoolsConfig
 }
 
 const getSettings = () => {
@@ -36,7 +36,7 @@ const getSettings = () => {
   }
 }
 
-const generatePluginId = (plugin: DevtoolsPlugin, index: number) => {
+const generatePluginId = (plugin: TanStackDevtoolsPlugin, index: number) => {
   // if set by user, return the plugin id
   if (plugin.id) {
     return plugin.id
@@ -50,8 +50,8 @@ const generatePluginId = (plugin: DevtoolsPlugin, index: number) => {
 }
 
 const getExistingStateFromStorage = (
-  config?: DevtoolsSettings,
-  plugins?: Array<DevtoolsPlugin>,
+  config?: TanStackDevtoolsConfig,
+  plugins?: Array<TanStackDevtoolsPlugin>,
 ) => {
   const existingState = getStorageItem(TANSTACK_DEVTOOLS_STATE)
   const settings = getSettings()
@@ -79,7 +79,7 @@ const getExistingStateFromStorage = (
   return state
 }
 
-export type DevtoolsSettings = DevtoolsStore['settings']
+export type TanStackDevtoolsConfig = DevtoolsStore['settings']
 
 export const DevtoolsProvider = (props: ContextProps) => {
   const [store, setStore] = createStore(

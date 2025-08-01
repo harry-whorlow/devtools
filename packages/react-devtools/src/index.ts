@@ -4,4 +4,5 @@ export * from '@tanstack/devtools'
  * Export every hook individually - DON'T export from barrel files
  */
 
-export { Devtools } from './devtools'
+export * from './devtools'
+export type { TanStackDevtoolsReactPlugin } from './devtools'

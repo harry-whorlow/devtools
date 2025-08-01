@@ -65,7 +65,38 @@ Install one of the following packages based on your framework of choice:
 ```bash
 # Npm
 npm install @tanstack/react-devtools
+npm install @tanstack/solid-devtools
 npm install @tanstack/devtools # no framework, just vanilla js
+```
+
+## Usage
+
+### React
+
+```tsx
+import { TanstackDevtools } from '@tanstack/react-devtools'
+import { ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools'
+import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
+
+function App() {
+  return (
+    <div>
+      <h1>My App</h1>
+      <TanstackDevtools
+        plugins={[
+          {
+            name: 'Tanstack Query',
+            render: <ReactQueryDevtoolsPanel />,
+          },
+          {
+            name: 'Tanstack Router',
+            render: <TanStackRouterDevtoolsPanel router={router} />,
+          },
+        ]}
+      />
+    </div>
+  )
+}
 ```
 
 ## Development

@@ -1,46 +1,52 @@
-import { TanStackRouterDevtoolsCore } from '@tanstack/devtools'
+import { TanStackDevtoolsCore } from '@tanstack/devtools'
 import { createEffect, createSignal, onCleanup, onMount } from 'solid-js'
 import { Portal } from 'solid-js/web'
 import type { JSX } from 'solid-js'
-import type { DevtoolsOptions, DevtoolsPlugin } from '@tanstack/devtools'
+import type {
+  TanStackDevtoolsConfig,
+  TanStackDevtoolsPlugin,
+} from '@tanstack/devtools'
 
-type Render = JSX.Element | (() => JSX.Element)
+type SolidPluginRender = JSX.Element | (() => JSX.Element)
 const convertRender = (
   el: HTMLDivElement | HTMLHeadingElement,
-  Component: Render,
+  Component: SolidPluginRender,
 ) => (
   <Portal mount={el}>
     {typeof Component === 'function' ? <Component /> : Component}
   </Portal>
 )
 
-type SolidPlugin = Omit<DevtoolsPlugin, 'render' | 'name'> & {
-  render: Render
-  name: string | Render
+export type TanStackDevtoolsSolidPlugin = Omit<
+  TanStackDevtoolsPlugin,
+  'render' | 'name'
+> & {
+  render: SolidPluginRender
+  name: string | SolidPluginRender
 }
-interface DevtoolsProps {
-  plugins?: Array<SolidPlugin>
-  options?: DevtoolsOptions['options']
+interface TanstackDevtoolsInit {
+  plugins?: Array<TanStackDevtoolsSolidPlugin>
+  config?: TanStackDevtoolsConfig
 }
 
-export const Devtools = ({ options, plugins }: DevtoolsProps) => {
+export const TanstackDevtools = ({ config, plugins }: TanstackDevtoolsInit) => {
   const [devtools] = createSignal(
-    new TanStackRouterDevtoolsCore({
-      options,
+    new TanStackDevtoolsCore({
+      config,
       plugins: plugins?.map((plugin) => ({
         ...plugin,
         name:
           typeof plugin.name === 'string'
             ? plugin.name
             : // The check above confirms that `plugin.name` is of Render type
-              (el) => convertRender(el, plugin.name as Render),
+              (el) => convertRender(el, plugin.name as SolidPluginRender),
         render: (el: HTMLDivElement) => convertRender(el, plugin.render),
       })),
     }),
   )
   let devToolRef: HTMLDivElement | undefined
   createEffect(() => {
-    devtools().setOptions({ options })
+    devtools().setConfig({ config })
   })
   onMount(() => {
     if (devToolRef) {
