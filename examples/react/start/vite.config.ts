@@ -3,6 +3,7 @@ import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import viteReact from '@vitejs/plugin-react'
 import viteTsConfigPaths from 'vite-tsconfig-paths'
 import tailwindcss from '@tailwindcss/vite'
+import { devtoolsServer } from './src/server-setup'
 
 const config = defineConfig({
   plugins: [
@@ -10,6 +11,15 @@ const config = defineConfig({
     viteTsConfigPaths({
       projects: ['./tsconfig.json'],
     }),
+    {
+      name: 'custom-devtools',
+
+      configureServer() {
+        devtoolsServer.on('init', (payload) => {
+          console.log('Devtools server initialized:', payload)
+        })
+      },
+    },
     tailwindcss(),
     tanstackStart({
       customViteReactPlugin: true,

@@ -32,6 +32,26 @@
         "default": "./dist/cjs/index.cjs"
       }
     },
+    "./server": {
+      "import": {
+        "types": "./dist/esm/server/index.d.ts",
+        "default": "./dist/esm/server/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/server/index.d.cts",
+        "default": "./dist/cjs/server/index.cjs"
+      }
+    },
+    "./client": {
+      "import": {
+        "types": "./dist/esm/client/index.d.ts",
+        "default": "./dist/esm/client/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/client/index.d.cts",
+        "default": "./dist/cjs/client/index.cjs"
+      }
+    },
     "./package.json": "./package.json"
   },
   "sideEffects": false,
@@ -56,12 +76,16 @@
     "@solid-primitives/keyboard": "^1.2.8",
     "clsx": "^2.1.1",
     "goober": "^2.1.16",
-    "solid-js": "^1.9.7"
+    "solid-js": "^1.9.7",
+    "ws": "^8.18.3"
   },
   "peerDependencies": {
     "solid-js": ">=1.9.7"
   },
   "devDependencies": {
+    "@standard-schema/spec": "^1.0.0",
+    "@types/node": "^22.15.2",
+    "@types/ws": "^8.18.1",
     "vite-plugin-solid": "^2.11.6"
   }
 }
