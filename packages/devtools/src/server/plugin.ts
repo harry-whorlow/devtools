@@ -1,4 +1,5 @@
 import type { StandardSchemaV1 } from '@standard-schema/spec'
+
 interface DevtoolsEvent<TEventName extends string, TPayload = any> {
   type: TEventName
   payload: TPayload
@@ -11,9 +12,9 @@ export type EventMap<TEventPrefix extends string> = Record<
 >
 
 type AllDevtoolsEvents<TEventMap extends Record<string, any>> = {
-  [K in keyof TEventMap]: DevtoolsEvent<
-    K & string,
-    StandardSchemaV1.InferOutput<TEventMap[K]>
+  [Key in keyof TEventMap]: DevtoolsEvent<
+    Key & string,
+    StandardSchemaV1.InferOutput<TEventMap[Key]>
   >
 }[keyof TEventMap]
 
@@ -32,7 +33,7 @@ export class DevtoolsPlugin<
   #globalListeners: Set<(msg: DevtoolsEvent<string, any>) => void>
   #eventListeners: Map<string, Set<(msg: DevtoolsEvent<string, any>) => void>> =
     new Map()
-
+  #eventSource: EventSource | null
   constructor({
     port = 42069,
     pluginId,
@@ -42,12 +43,28 @@ export class DevtoolsPlugin<
     pluginId: TPluginId
     eventTarget?: EventTarget
   }) {
+    this.#eventSource = null
     this.#port = port
     this.#socket = null
     this.#globalListeners = new Set()
     this.#pluginId = pluginId
-    this.#eventTarget =
-      eventTarget || (globalThis as any).__EVENT_TARGET__ || new EventTarget()
+    this.#eventTarget = this.getGlobalTarget(eventTarget)
+  }
+
+  private connectSSE() {
+    this.#eventSource = new EventSource(
+      `http://localhost:${this.#port}/__devtools/sse`,
+    )
+    this.#eventSource.onmessage = (e) => this.handleEventReceived(e.data)
+  }
+  private getGlobalTarget(eventTarget?: EventTarget) {
+    if (typeof window !== 'undefined') {
+      return window
+    }
+    if (typeof globalThis !== 'undefined' && globalThis.__EVENT_TARGET__) {
+      return globalThis.__EVENT_TARGET__
+    }
+    return eventTarget || new EventTarget()
   }
 
   private connectWebSocket() {
@@ -63,10 +80,13 @@ export class DevtoolsPlugin<
   }
 
   connect() {
-    if (typeof window === 'undefined') return
     try {
       this.connectWebSocket()
-    } catch {}
+    } catch {
+      // Do not try to connect to SSE if we're on the server side
+      if (typeof window === 'undefined') return
+      this.connectSSE()
+    }
   }
 
   private emitToGlobalListeners(event: DevtoolsEvent<string, any>) {
@@ -94,35 +114,51 @@ export class DevtoolsPlugin<
 
   private emitEventToBus(event: DevtoolsEvent<string, any>) {
     const json = JSON.stringify(event)
+    // try to emit it to the event bus first
     if (this.#socket && this.#socket.readyState === WebSocket.OPEN) {
       this.#socket.send(json)
+      // try to emit to SSE if WebSocket is not available (this will only happen on the client side)
+    } else if (this.#eventSource) {
+      fetch(`http://localhost:${this.#port}/__devtools/send`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: json,
+      }).catch(() => {})
+      // otherwise, emit it to the event target
+    } else {
+      this.emitEventToEventTarget(event)
     }
   }
 
-  emit<K extends keyof TEventMap>(
+  private emitEventToEventTarget(event: DevtoolsEvent<string, any>) {
+    this.#eventTarget.dispatchEvent(
+      new CustomEvent(event.type, { detail: event }),
+    )
+  }
+
+  emit<TKey extends keyof TEventMap>(
     event: DevtoolsEvent<
-      K & string,
-      StandardSchemaV1.InferOutput<TEventMap[K]>
+      TKey & string,
+      StandardSchemaV1.InferOutput<TEventMap[TKey]>
     >,
   ) {
     this.emitEventToBus(event)
   }
 
-  on<K extends keyof TEventMap>(
-    eventName: K,
+  on<TKey extends keyof TEventMap>(
+    eventName: TKey,
     cb: (
       event: DevtoolsEvent<
-        K & string,
-        StandardSchemaV1.InferOutput<TEventMap[K]>
+        TKey & string,
+        StandardSchemaV1.InferOutput<TEventMap[TKey]>
       >,
     ) => void,
   ) {
     const handler = (e: Event) => cb((e as CustomEvent).detail)
     this.#eventTarget.addEventListener(eventName as string, handler)
-    this.#globalListeners.add(cb as any)
+
     return () => {
       this.#eventTarget.removeEventListener(eventName as string, handler)
-      this.#globalListeners.delete(cb as any)
     }
   }
 

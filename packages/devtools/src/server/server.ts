@@ -3,20 +3,18 @@ import { WebSocket, WebSocketServer } from 'ws'
 
 // Shared types
 
-export interface DevtoolsMessage {
-  pluginId: string
-  type: string
-  payload?: any
-}
-export interface DevtoolsEvent<TEventName extends string, TPayload = any> {
+interface DevtoolsEvent<TEventName extends string, TPayload = any> {
   type: TEventName
   payload: TPayload
   pluginId?: string // Optional pluginId to filter events by plugin
 }
 // Used so no new server starts up when HMR happens
 declare global {
+  // eslint-disable-next-line no-var
   var __DEVTOOLS_SERVER__: http.Server | null
+  // eslint-disable-next-line no-var
   var __DEVTOOLS_WSS_SERVER__: WebSocketServer | null
+  // eslint-disable-next-line no-var
   var __EVENT_TARGET__: EventTarget | null
 }
 
@@ -30,14 +28,15 @@ export class DevtoolsServer {
   #globalListeners = new Set<(msg: DevtoolsEvent<string>) => void>()
   constructor({ port = 42069, eventTarget = new EventTarget() } = {}) {
     this.#port = port
-    this.#eventTarget = eventTarget
-    globalThis.__EVENT_TARGET__ = eventTarget
+    this.#eventTarget = globalThis.__EVENT_TARGET__ ?? eventTarget
+    if (!globalThis.__EVENT_TARGET__) {
+      globalThis.__EVENT_TARGET__ = eventTarget
+    }
     this.#server = globalThis.__DEVTOOLS_SERVER__ ?? null
     this.#wssServer = globalThis.__DEVTOOLS_WSS_SERVER__ ?? null
   }
 
   private emitToServer(event: DevtoolsEvent<string>) {
-    console.log(this.#globalListeners.entries())
     this.#globalListeners.forEach((l) => l(event))
     this.#eventTarget.dispatchEvent(
       new CustomEvent(event.type, { detail: event }),

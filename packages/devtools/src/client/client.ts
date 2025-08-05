@@ -12,12 +12,13 @@ export class DevtoolsClient {
     new Map()
   #eventTarget: EventTarget
 
-  constructor({ port = 42069, eventTarget = new EventTarget() } = {}) {
+  constructor({ port = 42069 } = {}) {
     this.#port = port
     this.#socket = null
     this.#eventSource = null
     this.#globalListeners = new Set()
-    this.#eventTarget = eventTarget
+    this.#eventTarget =
+      typeof window !== 'undefined' ? window : new EventTarget()
   }
 
   private connectSSE() {
@@ -134,10 +135,8 @@ export class DevtoolsClient {
   on(eventName: string, cb: (event: DevtoolsEvent<string>) => void) {
     const handler = (e: Event) => cb((e as CustomEvent).detail)
     this.#eventTarget.addEventListener(eventName, handler)
-    this.#globalListeners.add(cb)
     return () => {
       this.#eventTarget.removeEventListener(eventName, handler)
-      this.#globalListeners.delete(cb)
     }
   }
   /**
