@@ -259,9 +259,6 @@ importers:
       solid-js:
         specifier: ^1.9.7
         version: 1.9.7
-      ws:
-        specifier: ^8.18.3
-        version: 8.18.3
     devDependencies:
       vite-plugin-solid:
         specifier: ^2.11.6
