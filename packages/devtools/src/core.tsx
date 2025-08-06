@@ -1,5 +1,6 @@
 import { lazy } from 'solid-js'
 import { Portal, render } from 'solid-js/web'
+import { TanstackDevtoolsClientEventBus } from '@tanstack/devtools-event-bus/client'
 import { DevtoolsProvider } from './context/devtools-context'
 import { initialState } from './context/devtools-store'
 import type {
@@ -34,6 +35,11 @@ export interface TanStackDevtoolsInit {
    * ```
    */
   plugins?: Array<TanStackDevtoolsPlugin>
+  /**
+   * Optional flag to indicate if the devtools server is available.
+   * This is used to determine if the devtools can connect to the server for real-time event streams.
+   */
+  hasDevtoolsServer?: boolean
 }
 
 export class TanStackDevtoolsCore {
@@ -44,9 +50,12 @@ export class TanStackDevtoolsCore {
   #isMounted = false
   #dispose?: () => void
   #Component: any
+  #eventBus: TanstackDevtoolsClientEventBus | undefined
+  #hasDevtoolsServer = false
 
   constructor(init: TanStackDevtoolsInit) {
     this.#plugins = init.plugins || []
+    this.#hasDevtoolsServer = init.hasDevtoolsServer ?? false
     this.#config = {
       ...this.#config,
       ...init.config,
@@ -62,7 +71,8 @@ export class TanStackDevtoolsCore {
       this.#Component = lazy(() => import('./devtools'))
 
       const Devtools = this.#Component
-
+      this.#eventBus = new TanstackDevtoolsClientEventBus()
+      this.#eventBus.start(this.#hasDevtoolsServer)
       return (
         <DevtoolsProvider plugins={this.#plugins} config={this.#config}>
           <Portal mount={mountTo}>
@@ -80,6 +90,7 @@ export class TanStackDevtoolsCore {
     if (!this.#isMounted) {
       throw new Error('Devtools is not mounted')
     }
+    this.#eventBus?.stop()
     this.#dispose?.()
     this.#isMounted = false
   }

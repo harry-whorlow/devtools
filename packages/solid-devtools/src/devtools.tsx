@@ -86,12 +86,22 @@ interface TanstackDevtoolsInit {
    * the settings are persisted in local storage and changed through the settings panel.
    */
   config?: TanStackDevtoolsConfig
+  /**
+   * Optional flag to indicate if the devtools server is available.
+   * This is used to determine if the devtools can connect to the server for real-time event streams.
+   */
+  hasDevtoolsServer?: boolean
 }
 
-export const TanstackDevtools = ({ config, plugins }: TanstackDevtoolsInit) => {
+export const TanstackDevtools = ({
+  config,
+  plugins,
+  hasDevtoolsServer,
+}: TanstackDevtoolsInit) => {
   const [devtools] = createSignal(
     new TanStackDevtoolsCore({
       config,
+      hasDevtoolsServer,
       plugins: plugins?.map((plugin) => ({
         ...plugin,
         name:

@@ -2,8 +2,10 @@ import http from 'node:http'
 import { WebSocket, WebSocketServer } from 'ws'
 
 // Shared types
-
-interface DevtoolsEvent<TEventName extends string, TPayload = any> {
+export interface TanstackDevtoolsEvent<
+  TEventName extends string,
+  TPayload = any,
+> {
   type: TEventName
   payload: TPayload
   pluginId?: string // Optional pluginId to filter events by plugin
@@ -11,49 +13,42 @@ interface DevtoolsEvent<TEventName extends string, TPayload = any> {
 // Used so no new server starts up when HMR happens
 declare global {
   // eslint-disable-next-line no-var
-  var __DEVTOOLS_SERVER__: http.Server | null
+  var __TANSTACK_DEVTOOLS_SERVER__: http.Server | null
   // eslint-disable-next-line no-var
-  var __DEVTOOLS_WSS_SERVER__: WebSocketServer | null
+  var __TANSTACK_DEVTOOLS_WSS_SERVER__: WebSocketServer | null
   // eslint-disable-next-line no-var
   var __EVENT_TARGET__: EventTarget | null
 }
 
-export class DevtoolsServer {
+export class TanstackDevtoolsServerEventBus {
   #eventTarget: EventTarget
   #clients = new Set<WebSocket>()
   #sseClients = new Set<http.ServerResponse>()
   #server: http.Server | null = null
   #wssServer: WebSocketServer | null = null
   #port: number
-  #globalListeners = new Set<(msg: DevtoolsEvent<string>) => void>()
-  constructor({ port = 42069, eventTarget = new EventTarget() } = {}) {
+
+  constructor({ port = 42069 } = {}) {
     this.#port = port
-    this.#eventTarget = globalThis.__EVENT_TARGET__ ?? eventTarget
+    this.#eventTarget = globalThis.__EVENT_TARGET__ ?? new EventTarget()
+    // we want to set the global event target only once so that we can emit/listen to events on the server
     if (!globalThis.__EVENT_TARGET__) {
-      globalThis.__EVENT_TARGET__ = eventTarget
+      globalThis.__EVENT_TARGET__ = this.#eventTarget
     }
-    this.#server = globalThis.__DEVTOOLS_SERVER__ ?? null
-    this.#wssServer = globalThis.__DEVTOOLS_WSS_SERVER__ ?? null
+    this.#server = globalThis.__TANSTACK_DEVTOOLS_SERVER__ ?? null
+    this.#wssServer = globalThis.__TANSTACK_DEVTOOLS_WSS_SERVER__ ?? null
   }
 
-  private emitToServer(event: DevtoolsEvent<string>) {
-    this.#globalListeners.forEach((l) => l(event))
+  private emitToServer(event: TanstackDevtoolsEvent<string>) {
     this.#eventTarget.dispatchEvent(
       new CustomEvent(event.type, { detail: event }),
     )
+    this.#eventTarget.dispatchEvent(
+      new CustomEvent('tanstack-devtools-global', { detail: event }),
+    )
   }
 
-  onAll(listener: (msg: DevtoolsEvent<string>) => void) {
-    this.#globalListeners.add(listener)
-    return () => this.#globalListeners.delete(listener)
-  }
-  on<T>(event: string, listener: (payload: DevtoolsEvent<string, T>) => void) {
-    const handler = (e: Event) => listener((e as CustomEvent).detail)
-    this.#eventTarget.addEventListener(event, handler)
-    return () => this.#eventTarget.removeEventListener(event, handler)
-  }
-
-  private emitEventToClients(event: DevtoolsEvent<string>) {
+  private emitEventToClients(event: TanstackDevtoolsEvent<string>) {
     const json = JSON.stringify(event)
 
     for (const client of this.#clients) {
@@ -65,7 +60,8 @@ export class DevtoolsServer {
       res.write(`data: ${json}\n\n`)
     }
   }
-  emit(event: DevtoolsEvent<string>) {
+
+  private emit(event: TanstackDevtoolsEvent<string>) {
     this.emitEventToClients(event)
     this.emitToServer(event)
   }
@@ -90,6 +86,11 @@ export class DevtoolsServer {
       return this.#server
     }
     const server = http.createServer((req, res) => {
+      if (req.url === '/__devtools/ping') {
+        res.writeHead(200, { 'Content-Type': 'text/plain' })
+        res.end('pong')
+        return
+      }
       if (req.url === '/__devtools/sse') {
         res.writeHead(200, {
           'Content-Type': 'text/event-stream',
@@ -120,7 +121,7 @@ export class DevtoolsServer {
       res.statusCode = 404
       res.end()
     })
-    globalThis.__DEVTOOLS_SERVER__ = server
+    globalThis.__TANSTACK_DEVTOOLS_SERVER__ = server
     this.#server = server
     return server
   }
@@ -132,7 +133,7 @@ export class DevtoolsServer {
 
     const wss = new WebSocketServer({ noServer: true })
     this.#wssServer = wss
-    globalThis.__DEVTOOLS_WSS_SERVER__ = wss
+    globalThis.__TANSTACK_DEVTOOLS_WSS_SERVER__ = wss
     return wss
   }
 
@@ -142,7 +143,6 @@ export class DevtoolsServer {
       ws.on('close', () => this.#clients.delete(ws))
       ws.on('message', (msg) => {
         const data = JSON.parse(msg.toString())
-        console.log('Received message from WebSocket:', data)
         this.emit(data)
       })
     })
@@ -151,7 +151,7 @@ export class DevtoolsServer {
   start() {
     if (process.env.NODE_ENV !== 'development') return
     if (this.#server || this.#wssServer) {
-      console.warn('🌴 [tanstack-devtools] Server is already running')
+      // console.warn('🌴 [tanstack-devtools] Server is already running')
       return
     }
 

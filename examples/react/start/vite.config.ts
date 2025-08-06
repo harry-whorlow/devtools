@@ -11,15 +11,7 @@ const config = defineConfig({
     viteTsConfigPaths({
       projects: ['./tsconfig.json'],
     }),
-    {
-      name: 'custom-devtools',
 
-      configureServer() {
-        devtoolsServer.on('init', (payload) => {
-          console.log('Devtools server initialized:', payload)
-        })
-      },
-    },
     tailwindcss(),
     tanstackStart({
       customViteReactPlugin: true,
