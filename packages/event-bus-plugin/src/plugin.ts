@@ -32,15 +32,29 @@ export class TanstackDevtoolsEventSubscription<
 > {
   #pluginId: TPluginId
   #eventTarget: () => EventTarget
-
-  constructor({ pluginId }: { pluginId: TPluginId }) {
+  #debug: boolean
+  constructor({
+    pluginId,
+    debug = false,
+  }: {
+    pluginId: TPluginId
+    debug?: boolean
+  }) {
     this.#pluginId = pluginId
     this.#eventTarget = this.getGlobalTarget
+    this.#debug = debug
+    this.debugLog(' Initializing event subscription for plugin', this.#pluginId)
   }
 
+  private debugLog(...args: Array<any>) {
+    if (this.#debug) {
+      console.log(`🌴 [tanstack-devtools:${this.#pluginId}-plugin]`, ...args)
+    }
+  }
   private getGlobalTarget() {
     // CLient event target is the window object
     if (typeof window !== 'undefined') {
+      this.debugLog('Using window as event target')
       return window
     }
     // server one is the global event target
@@ -48,9 +62,11 @@ export class TanstackDevtoolsEventSubscription<
       typeof globalThis !== 'undefined' &&
       globalThis.__TANSTACK_EVENT_TARGET__
     ) {
+      this.debugLog('Using global event target')
       return globalThis.__TANSTACK_EVENT_TARGET__
     }
 
+    this.debugLog('Using new EventTarget as fallback')
     return new EventTarget()
   }
 
@@ -59,7 +75,7 @@ export class TanstackDevtoolsEventSubscription<
   }
 
   private emitEventToBus(event: TanStackDevtoolsEvent<string, any>) {
-    console.log('🌴 [tanstack-devtools] Emitting event to client bus', event)
+    this.debugLog('Emitting event to client bus', event)
     this.#eventTarget().dispatchEvent(
       new CustomEvent('tanstack-dispatch-event', { detail: event }),
     )
@@ -84,14 +100,11 @@ export class TanstackDevtoolsEventSubscription<
     ) => void,
   ) {
     const handler = (e: Event) => {
-      console.log(
-        '🌴 [tanstack-devtools] Received event from bus',
-        (e as CustomEvent).detail,
-      )
+      this.debugLog('Received event from bus', (e as CustomEvent).detail)
       cb((e as CustomEvent).detail)
     }
     this.#eventTarget().addEventListener(eventName as string, handler)
-    console.log('🌴 [tanstack-devtools] Registered event to bus', eventName)
+    this.debugLog('Registered event to bus', eventName)
     return () => {
       this.#eventTarget().removeEventListener(eventName as string, handler)
     }

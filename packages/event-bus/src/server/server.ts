@@ -27,8 +27,14 @@ export class TanstackDevtoolsServerEventBus {
   #server: http.Server | null = null
   #wssServer: WebSocketServer | null = null
   #port: number
+  #debug: boolean
+  #dispatcher = (e: Event) => {
+    const event = (e as CustomEvent).detail
+    this.debugLog('Dispatching event from dispatcher, forwarding', event)
+    this.emit(event)
+  }
 
-  constructor({ port = 42069 } = {}) {
+  constructor({ port = 42069, debug = false } = {}) {
     this.#port = port
     this.#eventTarget = globalThis.__EVENT_TARGET__ ?? new EventTarget()
     // we want to set the global event target only once so that we can emit/listen to events on the server
@@ -37,18 +43,29 @@ export class TanstackDevtoolsServerEventBus {
     }
     this.#server = globalThis.__TANSTACK_DEVTOOLS_SERVER__ ?? null
     this.#wssServer = globalThis.__TANSTACK_DEVTOOLS_WSS_SERVER__ ?? null
+    this.#debug = debug
+    this.debugLog('Initializing server event bus')
+  }
+
+  private debugLog(...args: Array<any>) {
+    if (this.#debug) {
+      console.log('🌴 [tanstack-devtools:server-bus] ', ...args)
+    }
   }
 
   private emitToServer(event: TanstackDevtoolsEvent<string>) {
+    this.debugLog('Emitting event to specific server listeners', event)
     this.#eventTarget.dispatchEvent(
       new CustomEvent(event.type, { detail: event }),
     )
+    this.debugLog('Emitting event to global server listeners', event)
     this.#eventTarget.dispatchEvent(
       new CustomEvent('tanstack-devtools-global', { detail: event }),
     )
   }
 
   private emitEventToClients(event: TanstackDevtoolsEvent<string>) {
+    this.debugLog('Emitting event to clients', event)
     const json = JSON.stringify(event)
 
     for (const client of this.#clients) {
@@ -66,31 +83,11 @@ export class TanstackDevtoolsServerEventBus {
     this.emitToServer(event)
   }
 
-  stop() {
-    this.#server?.close(() => {
-      console.log('🌴 [tanstack-devtools] Server stopped')
-    })
-    this.#wssServer?.close(() => {
-      console.log('🌴 [tanstack-devtools] WebSocket server stopped')
-    })
-    this.#clients.clear()
-    this.#sseClients.forEach((res) => res.end())
-    this.#sseClients.clear()
-    this.#server = null
-    this.#wssServer = null
-    console.log('[tanstack-devtools] All connections cleared')
-  }
-
   private createSSEServer() {
     if (this.#server) {
       return this.#server
     }
     const server = http.createServer((req, res) => {
-      if (req.url === '/__devtools/ping') {
-        res.writeHead(200, { 'Content-Type': 'text/plain' })
-        res.end('pong')
-        return
-      }
       if (req.url === '/__devtools/sse') {
         res.writeHead(200, {
           'Content-Type': 'text/event-stream',
@@ -99,6 +96,7 @@ export class TanstackDevtoolsServerEventBus {
           'Access-Control-Allow-Origin': '*',
         })
         res.write('\n')
+        this.debugLog('New SSE client connected')
         this.#sseClients.add(res)
         req.on('close', () => this.#sseClients.delete(res))
         return
@@ -110,8 +108,8 @@ export class TanstackDevtoolsServerEventBus {
         req.on('end', () => {
           try {
             const msg = JSON.parse(body)
-            console.log('Received message from SSE:', msg)
-            this.emit(msg)
+            this.debugLog('Received event from client', msg)
+            this.emitToServer(msg)
           } catch {}
         })
         res.writeHead(200).end()
@@ -139,11 +137,16 @@ export class TanstackDevtoolsServerEventBus {
 
   private handleNewConnection(wss: WebSocketServer) {
     wss.on('connection', (ws: WebSocket) => {
+      this.debugLog('New WebSocket client connected')
       this.#clients.add(ws)
-      ws.on('close', () => this.#clients.delete(ws))
+      ws.on('close', () => {
+        this.debugLog('WebSocket client disconnected')
+        this.#clients.delete(ws)
+      })
       ws.on('message', (msg) => {
+        this.debugLog('Received message from WebSocket client', msg.toString())
         const data = JSON.parse(msg.toString())
-        this.emit(data)
+        this.emitToServer(data)
       })
     })
   }
@@ -151,28 +154,52 @@ export class TanstackDevtoolsServerEventBus {
   start() {
     if (process.env.NODE_ENV !== 'development') return
     if (this.#server || this.#wssServer) {
-      // console.warn('🌴 [tanstack-devtools] Server is already running')
+      // console.warn('Server is already running')
       return
     }
-
+    this.debugLog('Starting server event bus')
     const server = this.createSSEServer()
     const wss = this.createWebSocketServer()
 
+    this.#eventTarget.addEventListener(
+      'tanstack-dispatch-event',
+      this.#dispatcher,
+    )
     this.handleNewConnection(wss)
 
     // Handle connection upgrade for WebSocket
     server.on('upgrade', (req, socket, head) => {
       if (req.url === '/__devtools/ws') {
         wss.handleUpgrade(req, socket, head, (ws) => {
+          this.debugLog('WebSocket connection established')
           wss.emit('connection', ws, req)
         })
       }
     })
 
     server.listen(this.#port, () => {
-      console.log(
-        `🌴 [tanstack-devtools] Listening on http://localhost:${this.#port}`,
-      )
+      this.debugLog(`Listening on http://localhost:${this.#port}`)
     })
+  }
+
+  stop() {
+    this.#server?.close(() => {
+      this.debugLog('Server stopped')
+    })
+    this.#wssServer?.close(() => {
+      this.debugLog('WebSocket server stopped')
+    })
+    this.debugLog('Clearing all connections')
+    this.#clients.clear()
+    this.#sseClients.forEach((res) => res.end())
+    this.#sseClients.clear()
+    this.debugLog('Cleared all WS/SSE connections')
+    this.#server = null
+    this.#wssServer = null
+    this.#eventTarget.removeEventListener(
+      'tanstack-dispatch-event',
+      this.#dispatcher,
+    )
+    this.debugLog('[tanstack-devtools] All connections cleared')
   }
 }

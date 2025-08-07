@@ -12,7 +12,7 @@ export default function DevtoolsExample() {
     <>
       <QueryClientProvider client={queryClient}>
         <TanstackDevtools
-          hasDevtoolsServer={true}
+          hasDevtoolsServer={false}
           plugins={[
             {
               name: 'Tanstack Query',

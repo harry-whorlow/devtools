@@ -7,6 +7,7 @@ import {
 import { createPortal } from 'react-dom'
 import type { JSX } from 'react'
 import type {
+  EventBusConfig,
   TanStackDevtoolsConfig,
   TanStackDevtoolsPlugin,
 } from '@tanstack/devtools'
@@ -84,10 +85,9 @@ export interface TanStackDevtoolsReactInit {
    */
   config?: TanStackDevtoolsConfig
   /**
-   * Optional flag to indicate if the devtools server is available.
-   * This is used to determine if the devtools can connect to the server for real-time event streams.
+   * Configuration for the TanStack Devtools client event bus.
    */
-  hasDevtoolsServer?: boolean
+  eventBusConfig?: EventBusConfig
 }
 
 const convertRender = (
@@ -100,7 +100,7 @@ const convertRender = (
 export const TanstackDevtools = ({
   plugins,
   config,
-  hasDevtoolsServer = false,
+  eventBusConfig,
 }: TanStackDevtoolsReactInit) => {
   const devToolRef = useRef<HTMLDivElement>(null)
   const [pluginContainer, setPluginContainer] = useState<HTMLElement | null>(
@@ -115,7 +115,7 @@ export const TanstackDevtools = ({
     () =>
       new TanStackDevtoolsCore({
         config,
-        hasDevtoolsServer,
+        eventBusConfig,
         plugins: plugins?.map((plugin) => {
           return {
             ...plugin,
@@ -148,9 +148,7 @@ export const TanstackDevtools = ({
       devtools.mount(devToolRef.current)
     }
 
-    return () => {
-      devtools.unmount()
-    }
+    return () => devtools.unmount()
   }, [devtools])
 
   return (

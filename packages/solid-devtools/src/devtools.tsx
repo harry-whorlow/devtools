@@ -3,6 +3,7 @@ import { createEffect, createSignal, onCleanup, onMount } from 'solid-js'
 import { Portal } from 'solid-js/web'
 import type { JSX } from 'solid-js'
 import type {
+  EventBusConfig,
   TanStackDevtoolsConfig,
   TanStackDevtoolsPlugin,
 } from '@tanstack/devtools'
@@ -87,21 +88,20 @@ interface TanstackDevtoolsInit {
    */
   config?: TanStackDevtoolsConfig
   /**
-   * Optional flag to indicate if the devtools server is available.
-   * This is used to determine if the devtools can connect to the server for real-time event streams.
+   * Configuration for the TanStack Devtools client event bus.
    */
-  hasDevtoolsServer?: boolean
+  eventBusConfig?: EventBusConfig
 }
 
 export const TanstackDevtools = ({
   config,
   plugins,
-  hasDevtoolsServer,
+  eventBusConfig,
 }: TanstackDevtoolsInit) => {
   const [devtools] = createSignal(
     new TanStackDevtoolsCore({
       config,
-      hasDevtoolsServer,
+      eventBusConfig,
       plugins: plugins?.map((plugin) => ({
         ...plugin,
         name:

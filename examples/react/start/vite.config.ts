@@ -3,7 +3,7 @@ import { tanstackStart } from '@tanstack/react-start/plugin/vite'
 import viteReact from '@vitejs/plugin-react'
 import viteTsConfigPaths from 'vite-tsconfig-paths'
 import tailwindcss from '@tailwindcss/vite'
-import { devtoolsServer } from './src/server-setup'
+//import { devtoolsServer } from './src/server-setup'
 
 const config = defineConfig({
   plugins: [

@@ -9,38 +9,43 @@ export class TanstackDevtoolsClientEventBus {
   #socket: WebSocket | null
   #eventSource: EventSource | null
   #eventTarget: EventTarget
+  #debug: boolean
   #dispatcher = (e: Event) => {
-    const event = (e as CustomEvent).detail as TanStackDevtoolsEvent<
-      string,
-      any
-    >
+    const event = (e as CustomEvent).detail
     this.emitToServer(event)
     this.emitToClients(event)
   }
-  constructor({ port = 42069 } = {}) {
+  constructor({ port = 42069, debug = false } = {}) {
+    this.#debug = debug
     this.#eventSource = null
     this.#port = port
     this.#socket = null
     this.#eventTarget = this.getGlobalTarget()
+    this.debugLog('Initializing client event bus')
   }
 
   private emitToClients(event: TanStackDevtoolsEvent<string>) {
-    console.log('🌴 [tanstack-devtools] Emitting event from client bus', event)
-    this.#eventTarget.dispatchEvent(
-      new CustomEvent(event.type, { detail: event }),
-    )
-    this.#eventTarget.dispatchEvent(
-      new CustomEvent('tanstack-devtools-global', { detail: event }),
-    )
+    this.debugLog('Emitting event from client bus', event)
+    const specificEvent = new CustomEvent(event.type, { detail: event })
+    this.debugLog('Emitting event to specific client listeners', specificEvent)
+    this.#eventTarget.dispatchEvent(specificEvent)
+    const globalEvent = new CustomEvent('tanstack-devtools-global', {
+      detail: event,
+    })
+    this.debugLog('Emitting event to global client listeners', globalEvent)
+    this.#eventTarget.dispatchEvent(globalEvent)
   }
 
   private emitToServer(event: TanStackDevtoolsEvent<string, any>) {
     const json = JSON.stringify(event)
     // try to emit it to the event bus first
     if (this.#socket && this.#socket.readyState === WebSocket.OPEN) {
+      this.debugLog('Emitting event to server via WS', event)
       this.#socket.send(json)
       // try to emit to SSE if WebSocket is not available (this will only happen on the client side)
     } else if (this.#eventSource) {
+      this.debugLog('Emitting event to server via SSE', event)
+
       fetch(`http://localhost:${this.#port}/__devtools/send`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -49,7 +54,7 @@ export class TanstackDevtoolsClientEventBus {
     }
   }
   start(hasServer?: boolean) {
-    console.log('🌴 [tanstack-devtools] Starting client event bus')
+    this.debugLog('Starting client event bus')
     if (typeof window === 'undefined') {
       return
     }
@@ -63,6 +68,7 @@ export class TanstackDevtoolsClientEventBus {
     )
   }
   stop() {
+    this.debugLog('Stopping client event bus')
     if (typeof window === 'undefined') {
       return
     }
@@ -82,21 +88,36 @@ export class TanstackDevtoolsClientEventBus {
 
     return new EventTarget()
   }
+  private debugLog(...messages: Array<any>) {
+    if (this.#debug) {
+      console.log('🌴 [tanstack-devtools:client-bus]', ...messages)
+    }
+  }
   private connectSSE() {
+    this.debugLog('Connecting to SSE server')
     this.#eventSource = new EventSource(
       `http://localhost:${this.#port}/__devtools/sse`,
     )
-    this.#eventSource.onmessage = (e) => this.handleEventReceived(e.data)
+    this.#eventSource.onmessage = (e) => {
+      this.debugLog('Received message from SSE server', e.data)
+      this.handleEventReceived(e.data)
+    }
   }
 
   private connectWebSocket() {
+    this.debugLog('Connecting to WebSocket server')
+
     this.#socket = new WebSocket(`ws://localhost:${this.#port}/__devtools/ws`)
-    this.#socket.onmessage = (e) => this.handleEventReceived(e.data)
+    this.#socket.onmessage = (e) => {
+      this.debugLog('Received message from server', e.data)
+      this.handleEventReceived(e.data)
+    }
     this.#socket.onclose = () => {
+      this.debugLog('WebSocket connection closed')
       this.#socket = null
     }
     this.#socket.onerror = () => {
-      // Prevent default error logging
+      this.debugLog('WebSocket connection error')
     }
   }
 
