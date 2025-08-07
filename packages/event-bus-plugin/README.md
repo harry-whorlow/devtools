@@ -5,37 +5,40 @@ This package is still under active development and might have breaking changes i
 ## General Usage
 
 ```tsx
-import { TanStackDevtoolsCore } from '@tanstack/devtools'
+import { z } from 'zod'
+import { TanstackDevtoolsEventSubscription } from '@tanstack/devtools-event-bus-plugin'
 
-const devtools = new TanStackDevtoolsCore({
-  options: {
-    // your options here
-  },
-  plugins: [
-    // your plugins here
-  ],
-})
+const eventMap = {
+  'query-devtools:test': z.object({
+    title: z.string(),
+    description: z.string(),
+  }),
+  'query-devtools:init': z.object({
+    title: z.string(),
+    description: z.string(),
+  }),
+  'query-devtools:query': z.object({
+    title: z.string(),
+    description: z.string(),
+  }),
+}
 
-devtools.mount(document.getElementById('your-devtools-container')!)
+class QueryDevtoolsPlugin extends TanstackDevtoolsEventSubscription<
+  typeof eventMap
+> {
+  constructor() {
+    super({
+      pluginId: 'query-devtools',
+    })
+  }
+}
+
+export const queryPlugin = new QueryDevtoolsPlugin()
+
 ```
+ 
+## Understanding the implementation
 
-## Creating plugins
+The `TanstackDevtoolsEventSubscription` class is a base class for creating plugins that can subscribe to events in the Tanstack Devtools event bus. It allows you to define a set of events and their corresponding data schemas using a standard-schema based schemas.
 
-In order to create a plugin for TanStack Devtools, you can use the `plugins` arg of the `TanStackDevtoolsCore` class. Here's an example of how to create a simple plugin:
-
-```ts
-import { TanStackDevtoolsCore } from '@tanstack/devtools'
-
-const devtools = new TanStackDevtoolsCore({
-  options: {
-    // your options here
-  },
-  plugins: [
-    {
-      id: 'my-plugin',
-      name: 'My Plugin',
-      render: (el) => (el.innerHTML = '<div>My Plugin Content</div>'),
-    },
-  ],
-})
-```
+It will work on both the client/server side and all you have to worry about is emitting/listening to events.

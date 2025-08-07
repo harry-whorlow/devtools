@@ -1,41 +1,34 @@
-# @tanstack/devtools
+# @tanstack/devtools-event-bus
 
 This package is still under active development and might have breaking changes in the future. Please use it with caution.
 
 ## General Usage
 
+### Server Event Bus
+
 ```tsx
-import { TanStackDevtoolsCore } from '@tanstack/devtools'
+import { TanstackDevtoolsServerEventBus } from '@tanstack/devtools-event-bus/server'
+// Start the server event bus
+const devtoolsServer = new TanstackDevtoolsServerEventBus()
 
-const devtools = new TanStackDevtoolsCore({
-  options: {
-    // your options here
-  },
-  plugins: [
-    // your plugins here
-  ],
-})
+devtoolsServer.start()
 
-devtools.mount(document.getElementById('your-devtools-container')!)
+export { devtoolsServer }
+
 ```
 
-## Creating plugins
-
-In order to create a plugin for TanStack Devtools, you can use the `plugins` arg of the `TanStackDevtoolsCore` class. Here's an example of how to create a simple plugin:
+### Client Event Bus
 
 ```ts
-import { TanStackDevtoolsCore } from '@tanstack/devtools'
+import { TanstackDevtoolsClientEventBus } from '@tanstack/devtools-event-bus/client'
+// Start the client event bus
+const devtoolsClient = new TanstackDevtoolsClientEventBus()
 
-const devtools = new TanStackDevtoolsCore({
-  options: {
-    // your options here
-  },
-  plugins: [
-    {
-      id: 'my-plugin',
-      name: 'My Plugin',
-      render: (el) => (el.innerHTML = '<div>My Plugin Content</div>'),
-    },
-  ],
-})
+devtoolsClient.start()
+
+export { devtoolsClient }
 ```
+ 
+## Plugins
+
+Check out @tanstack/devtools-event-bus-plugin for more information on how to create plugins for the event bus.
