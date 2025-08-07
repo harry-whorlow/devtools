@@ -4,13 +4,13 @@ This package is still under active development and might have breaking changes i
 
 ## General Usage
 
-```tsx 
+```tsx
 import { TanstackDevtoolsEventSubscription } from '@tanstack/devtools-event-bus-plugin'
 
 interface EventMap {
   'query-devtools:a': { foo: string }
   'query-devtools:b': { foo: number }
-} 
+}
 
 class QueryDevtoolsPlugin extends TanstackDevtoolsEventSubscription<EventMap> {
   constructor() {
@@ -23,8 +23,8 @@ class QueryDevtoolsPlugin extends TanstackDevtoolsEventSubscription<EventMap> {
 export const queryPlugin = new QueryDevtoolsPlugin()
 
 // I'm fully typed here
-plugin.emit("a", {
-  foo: "bar"
+plugin.emit('a', {
+  foo: 'bar',
 })
 plugin.on('b', (e) => {
   // I'm fully typed here
