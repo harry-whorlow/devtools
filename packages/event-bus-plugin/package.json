@@ -51,6 +51,5 @@
     "test:types": "tsc",
     "test:build": "publint --strict",
     "build": "vite build"
-  },
-  "devDependencies": {}
+  }
 }

@@ -22,8 +22,8 @@ export class TanstackDevtoolsEventSubscription<
 > {
   #pluginId: TPluginId
   #eventTarget: () => EventTarget
-  #debug: boolean
 
+  #debug: boolean
   constructor({
     pluginId,
     debug = false,
@@ -72,18 +72,31 @@ export class TanstackDevtoolsEventSubscription<
     )
   }
 
-  emit<TSuffix extends string>(
+  emit<
+    TSuffix extends Extract<
+      keyof TEventMap,
+      `${TPluginId & string}:${string}`
+    > extends `${TPluginId & string}:${infer S}`
+      ? S
+      : never,
+  >(
     eventSuffix: TSuffix,
     payload: TEventMap[`${TPluginId & string}:${TSuffix}`],
   ) {
     this.emitEventToBus({
       type: `${this.#pluginId}:${eventSuffix}`,
       payload,
-      pluginId: this.#pluginId,
     })
   }
 
-  on<TSuffix extends string>(
+  on<
+    TSuffix extends Extract<
+      keyof TEventMap,
+      `${TPluginId & string}:${string}`
+    > extends `${TPluginId & string}:${infer S}`
+      ? S
+      : never,
+  >(
     eventSuffix: TSuffix,
     cb: (
       event: TanStackDevtoolsEvent<

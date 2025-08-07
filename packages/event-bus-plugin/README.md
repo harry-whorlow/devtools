@@ -6,16 +6,13 @@ This package is still under active development and might have breaking changes i
 
 ```tsx 
 import { TanstackDevtoolsEventSubscription } from '@tanstack/devtools-event-bus-plugin'
- interface EventMap {
+
+interface EventMap {
   'query-devtools:a': { foo: string }
   'query-devtools:b': { foo: number }
-}
- 
- 
+} 
 
-class QueryDevtoolsPlugin extends TanstackDevtoolsEventSubscription<
-  EventMap
-> {
+class QueryDevtoolsPlugin extends TanstackDevtoolsEventSubscription<EventMap> {
   constructor() {
     super({
       pluginId: 'query-devtools',

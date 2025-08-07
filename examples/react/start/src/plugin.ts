@@ -1,24 +1,21 @@
-import { z } from 'zod'
 import { TanstackDevtoolsEventSubscription } from '@tanstack/devtools-event-bus-plugin'
 
-const eventMap = {
-  'query-devtools:test': z.object({
-    title: z.string(),
-    description: z.string(),
-  }),
-  'query-devtools:init': z.object({
-    title: z.string(),
-    description: z.string(),
-  }),
-  'query-devtools:query': z.object({
-    title: z.string(),
-    description: z.string(),
-  }),
+interface EventMap {
+  'query-devtools:test': {
+    title: string
+    description: string
+  }
+  'query-devtools:init': {
+    title: string
+    description: string
+  }
+  'query-devtools:query': {
+    title: string
+    description: string
+  }
 }
 
-class QueryDevtoolsPlugin extends TanstackDevtoolsEventSubscription<
-  typeof eventMap
-> {
+class QueryDevtoolsPlugin extends TanstackDevtoolsEventSubscription<EventMap> {
   constructor() {
     super({
       pluginId: 'query-devtools',

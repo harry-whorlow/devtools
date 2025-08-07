@@ -6,9 +6,9 @@ export default function ClientPlugin() {
     Array<{ type: string; payload: { title: string; description: string } }>
   >([])
   useEffect(() => {
-    const cleanup = queryPlugin.on('query-devtools:test', (event) => {
+    const cleanup = queryPlugin.on('test', (event) => {
       console.log('Received message in here:', event)
-      setEvents((prev) => [...prev, event])
+      setEvents((prev) => [...prev, event as any])
     })
 
     return cleanup
@@ -21,13 +21,10 @@ export default function ClientPlugin() {
         className="bg-blue-500 text-white px-4 py-2 rounded"
         onClick={() => {
           console.log('Button clicked, emitting event')
-          queryPlugin.emit({
-            type: 'query-devtools:test',
-            payload: {
-              title: 'Button Clicked',
-              description:
-                'This is a custom event triggered by the client plugin.',
-            },
+          queryPlugin.emit('test', {
+            title: 'Button Clicked',
+            description:
+              'This is a custom event triggered by the client plugin.',
           })
         }}
       >

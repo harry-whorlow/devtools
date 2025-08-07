@@ -277,11 +277,7 @@ importers:
         specifier: ^8.18.1
         version: 8.18.1
 
-  packages/event-bus-plugin:
-    devDependencies:
-      '@standard-schema/spec':
-        specifier: ^1.0.0
-        version: 1.0.0
+  packages/event-bus-plugin: {}
 
   packages/react-devtools:
     dependencies:
