@@ -14,7 +14,6 @@ const devtoolsServer = new TanstackDevtoolsServerEventBus()
 devtoolsServer.start()
 
 export { devtoolsServer }
-
 ```
 
 ### Client Event Bus
@@ -28,7 +27,7 @@ devtoolsClient.start()
 
 export { devtoolsClient }
 ```
- 
+
 ## Plugins
 
 Check out @tanstack/devtools-event-bus-plugin for more information on how to create plugins for the event bus.
