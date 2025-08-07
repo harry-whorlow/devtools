@@ -1,5 +1,3 @@
-import type { StandardSchemaV1 } from '@standard-schema/spec'
-
 interface TanStackDevtoolsEvent<TEventName extends string, TPayload = any> {
   type: TEventName
   payload: TPayload
@@ -10,16 +8,8 @@ declare global {
   var __TANSTACK_EVENT_TARGET__: EventTarget | null
 }
 
-export type EventMap<TEventPrefix extends string> = Record<
-  `${TEventPrefix}:${string}`,
-  StandardSchemaV1.InferInput<any>
->
-
 type AllDevtoolsEvents<TEventMap extends Record<string, any>> = {
-  [Key in keyof TEventMap]: TanStackDevtoolsEvent<
-    Key & string,
-    StandardSchemaV1.InferOutput<TEventMap[Key]>
-  >
+  [Key in keyof TEventMap]: TanStackDevtoolsEvent<Key & string, TEventMap[Key]>
 }[keyof TEventMap]
 
 export class TanstackDevtoolsEventSubscription<
@@ -33,6 +23,7 @@ export class TanstackDevtoolsEventSubscription<
   #pluginId: TPluginId
   #eventTarget: () => EventTarget
   #debug: boolean
+
   constructor({
     pluginId,
     debug = false,
@@ -81,32 +72,35 @@ export class TanstackDevtoolsEventSubscription<
     )
   }
 
-  emit<TKey extends keyof TEventMap>(
-    event: TanStackDevtoolsEvent<
-      TKey & string,
-      StandardSchemaV1.InferOutput<TEventMap[TKey]>
-    >,
+  emit<TSuffix extends string>(
+    eventSuffix: TSuffix,
+    payload: TEventMap[`${TPluginId & string}:${TSuffix}`],
   ) {
-    this.emitEventToBus(event)
+    this.emitEventToBus({
+      type: `${this.#pluginId}:${eventSuffix}`,
+      payload,
+      pluginId: this.#pluginId,
+    })
   }
 
-  on<TKey extends keyof TEventMap>(
-    eventName: TKey,
+  on<TSuffix extends string>(
+    eventSuffix: TSuffix,
     cb: (
       event: TanStackDevtoolsEvent<
-        TKey & string,
-        StandardSchemaV1.InferOutput<TEventMap[TKey]>
+        `${TPluginId & string}:${TSuffix}`,
+        TEventMap[`${TPluginId & string}:${TSuffix}`]
       >,
     ) => void,
   ) {
+    const eventName = `${this.#pluginId}:${eventSuffix}` as const
     const handler = (e: Event) => {
       this.debugLog('Received event from bus', (e as CustomEvent).detail)
       cb((e as CustomEvent).detail)
     }
-    this.#eventTarget().addEventListener(eventName as string, handler)
+    this.#eventTarget().addEventListener(eventName, handler)
     this.debugLog('Registered event to bus', eventName)
     return () => {
-      this.#eventTarget().removeEventListener(eventName as string, handler)
+      this.#eventTarget().removeEventListener(eventName, handler)
     }
   }
 

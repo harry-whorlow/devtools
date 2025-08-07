@@ -4,27 +4,17 @@ This package is still under active development and might have breaking changes i
 
 ## General Usage
 
-```tsx
-import { z } from 'zod'
+```tsx 
 import { TanstackDevtoolsEventSubscription } from '@tanstack/devtools-event-bus-plugin'
-
-const eventMap = {
-  'query-devtools:test': z.object({
-    title: z.string(),
-    description: z.string(),
-  }),
-  'query-devtools:init': z.object({
-    title: z.string(),
-    description: z.string(),
-  }),
-  'query-devtools:query': z.object({
-    title: z.string(),
-    description: z.string(),
-  }),
+ interface EventMap {
+  'query-devtools:a': { foo: string }
+  'query-devtools:b': { foo: number }
 }
+ 
+ 
 
 class QueryDevtoolsPlugin extends TanstackDevtoolsEventSubscription<
-  typeof eventMap
+  EventMap
 > {
   constructor() {
     super({
@@ -34,6 +24,15 @@ class QueryDevtoolsPlugin extends TanstackDevtoolsEventSubscription<
 }
 
 export const queryPlugin = new QueryDevtoolsPlugin()
+
+// I'm fully typed here
+plugin.emit("a", {
+  foo: "bar"
+})
+plugin.on('b', (e) => {
+  // I'm fully typed here
+  e.payload.foo
+})
 ```
 
 ## Understanding the implementation

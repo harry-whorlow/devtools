@@ -52,7 +52,5 @@
     "test:build": "publint --strict",
     "build": "vite build"
   },
-  "devDependencies": {
-    "@standard-schema/spec": "^1.0.0"
-  }
+  "devDependencies": {}
 }
