@@ -12,7 +12,7 @@ type AllDevtoolsEvents<TEventMap extends Record<string, any>> = {
   [Key in keyof TEventMap]: TanStackDevtoolsEvent<Key & string, TEventMap[Key]>
 }[keyof TEventMap]
 
-export class TanstackDevtoolsEventSubscription<
+export class EventClient<
   TEventMap extends Record<string, any>,
   TPluginId extends string = TEventMap extends Record<infer P, any>
     ? P extends `${infer Id}:${string}`

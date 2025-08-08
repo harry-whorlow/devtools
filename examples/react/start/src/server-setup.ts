@@ -1,6 +1,6 @@
-import { TanstackDevtoolsServerEventBus } from '@tanstack/devtools-event-bus/server'
+import { ServerEventBus } from '@tanstack/devtools-event-bus/server'
 
-const devtoolsServer = new TanstackDevtoolsServerEventBus()
+const devtoolsServer = new ServerEventBus()
 
 devtoolsServer.start()
 

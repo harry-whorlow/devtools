@@ -20,7 +20,7 @@ declare global {
   var __EVENT_TARGET__: EventTarget | null
 }
 
-export class TanstackDevtoolsServerEventBus {
+export class ServerEventBus {
   #eventTarget: EventTarget
   #clients = new Set<WebSocket>()
   #sseClients = new Set<http.ServerResponse>()

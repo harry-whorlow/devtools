@@ -1,6 +1,6 @@
 import { lazy } from 'solid-js'
 import { Portal, render } from 'solid-js/web'
-import { TanstackDevtoolsClientEventBus } from '@tanstack/devtools-event-bus/client'
+import { ClientEventBus } from '@tanstack/devtools-event-bus/client'
 import { DevtoolsProvider } from './context/devtools-context'
 import { initialState } from './context/devtools-store'
 import type {
@@ -64,7 +64,7 @@ export class TanStackDevtoolsCore {
   #isMounted = false
   #dispose?: () => void
   #Component: any
-  #eventBus: TanstackDevtoolsClientEventBus | undefined
+  #eventBus: ClientEventBus | undefined
   #eventBusConfig: EventBusConfig | undefined
 
   constructor(init: TanStackDevtoolsInit) {
@@ -85,7 +85,7 @@ export class TanStackDevtoolsCore {
       this.#Component = lazy(() => import('./devtools'))
       const { hasServer, ...rest } = this.#eventBusConfig || {}
       const Devtools = this.#Component
-      this.#eventBus = new TanstackDevtoolsClientEventBus(rest)
+      this.#eventBus = new ClientEventBus(rest)
       this.#eventBus.start(hasServer)
       return (
         <DevtoolsProvider plugins={this.#plugins} config={this.#config}>

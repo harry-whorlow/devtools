@@ -1,4 +1,4 @@
-import { TanstackDevtoolsEventSubscription } from '@tanstack/devtools-event-bus-plugin'
+import { EventClient } from '@tanstack/devtools-event-client'
 
 interface EventMap {
   'query-devtools:test': {
@@ -15,7 +15,7 @@ interface EventMap {
   }
 }
 
-class QueryDevtoolsPlugin extends TanstackDevtoolsEventSubscription<EventMap> {
+class QueryDevtoolsClient extends EventClient<EventMap> {
   constructor() {
     super({
       pluginId: 'query-devtools',
@@ -23,4 +23,4 @@ class QueryDevtoolsPlugin extends TanstackDevtoolsEventSubscription<EventMap> {
   }
 }
 
-export const queryPlugin = new QueryDevtoolsPlugin()
+export const queryPlugin = new QueryDevtoolsClient()

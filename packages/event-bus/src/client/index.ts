@@ -1,1 +1,1 @@
-export { TanstackDevtoolsClientEventBus } from './client'
+export { ClientEventBus } from './client'

@@ -74,9 +74,9 @@ importers:
 
   examples/react/basic:
     dependencies:
-      '@tanstack/devtools-event-bus-plugin':
+      '@tanstack/devtools-event-client':
         specifier: workspace:^
-        version: link:../../../packages/event-bus-plugin
+        version: link:../../../packages/event-bus-client
       '@tanstack/react-devtools':
         specifier: ^0.1.1
         version: link:../../../packages/react-devtools
@@ -132,9 +132,9 @@ importers:
       '@tanstack/devtools-event-bus':
         specifier: workspace:^
         version: link:../../../packages/event-bus
-      '@tanstack/devtools-event-bus-plugin':
+      '@tanstack/devtools-event-client':
         specifier: workspace:^
-        version: link:../../../packages/event-bus-plugin
+        version: link:../../../packages/event-bus-client
       '@tanstack/react-devtools':
         specifier: ^0.1.1
         version: link:../../../packages/react-devtools
@@ -277,7 +277,7 @@ importers:
         specifier: ^8.18.1
         version: 8.18.1
 
-  packages/event-bus-plugin: {}
+  packages/event-bus-client: {}
 
   packages/react-devtools:
     dependencies:

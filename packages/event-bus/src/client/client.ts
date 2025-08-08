@@ -4,7 +4,7 @@ interface TanStackDevtoolsEvent<TEventName extends string, TPayload = any> {
   pluginId?: string // Optional pluginId to filter events by plugin
 }
 
-export class TanstackDevtoolsClientEventBus {
+export class ClientEventBus {
   #port: number
   #socket: WebSocket | null
   #eventSource: EventSource | null

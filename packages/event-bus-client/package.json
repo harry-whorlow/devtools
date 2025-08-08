@@ -1,7 +1,7 @@
 {
-  "name": "@tanstack/devtools-event-bus-plugin",
+  "name": "@tanstack/devtools-event-client",
   "version": "0.1.1",
-  "description": "TanStack Event Bus plugin is a lightweight event bus plugin for TanStack Devtools event bus.",
+  "description": "TanStack Event Client is a lightweight event client for TanStack Devtools event bus.",
   "author": "Tanner Linsley",
   "license": "MIT",
   "repository": {

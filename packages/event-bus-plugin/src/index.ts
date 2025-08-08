@@ -1,1 +1,0 @@
-export { TanstackDevtoolsEventSubscription } from './plugin'
