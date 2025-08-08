@@ -3,7 +3,7 @@ import { createEffect, createSignal, onCleanup, onMount } from 'solid-js'
 import { Portal } from 'solid-js/web'
 import type { JSX } from 'solid-js'
 import type {
-  EventBusConfig,
+  ClientEventBusConfig,
   TanStackDevtoolsConfig,
   TanStackDevtoolsPlugin,
 } from '@tanstack/devtools'
@@ -90,7 +90,7 @@ interface TanstackDevtoolsInit {
   /**
    * Configuration for the TanStack Devtools client event bus.
    */
-  eventBusConfig?: EventBusConfig
+  eventBusConfig?: ClientEventBusConfig
 }
 
 export const TanstackDevtools = ({

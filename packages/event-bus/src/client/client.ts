@@ -4,22 +4,47 @@ interface TanStackDevtoolsEvent<TEventName extends string, TPayload = any> {
   pluginId?: string // Optional pluginId to filter events by plugin
 }
 
+export interface ClientEventBusConfig {
+  /**
+   * Optional flag to indicate if the devtools server event bus is available to connect to.
+   * This is used to determine if the devtools can connect to the server for real-time event streams.
+   */
+  connectToServerBus?: boolean
+
+  /**
+   * Optional flag to enable debug mode for the event bus.
+   */
+  debug?: boolean
+
+  /**
+   * Optional port to connect to the devtools server event bus.
+   * Defaults to 42069.
+   */
+  port?: number
+}
+
 export class ClientEventBus {
   #port: number
   #socket: WebSocket | null
   #eventSource: EventSource | null
   #eventTarget: EventTarget
   #debug: boolean
+  #connectToServerBus: boolean
   #dispatcher = (e: Event) => {
     const event = (e as CustomEvent).detail
     this.emitToServer(event)
     this.emitToClients(event)
   }
-  constructor({ port = 42069, debug = false } = {}) {
+  constructor({
+    port = 42069,
+    debug = false,
+    connectToServerBus = false,
+  }: ClientEventBusConfig = {}) {
     this.#debug = debug
     this.#eventSource = null
     this.#port = port
     this.#socket = null
+    this.#connectToServerBus = connectToServerBus
     this.#eventTarget = this.getGlobalTarget()
     this.debugLog('Initializing client event bus')
   }
@@ -53,12 +78,12 @@ export class ClientEventBus {
       }).catch(() => {})
     }
   }
-  start(hasServer?: boolean) {
+  start() {
     this.debugLog('Starting client event bus')
     if (typeof window === 'undefined') {
       return
     }
-    if (hasServer) {
+    if (this.#connectToServerBus) {
       this.connect()
     }
     this.#eventTarget = window

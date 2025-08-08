@@ -3,29 +3,12 @@ import { Portal, render } from 'solid-js/web'
 import { ClientEventBus } from '@tanstack/devtools-event-bus/client'
 import { DevtoolsProvider } from './context/devtools-context'
 import { initialState } from './context/devtools-store'
+import type { ClientEventBusConfig } from '@tanstack/devtools-event-bus/client'
 import type {
   TanStackDevtoolsConfig,
   TanStackDevtoolsPlugin,
 } from './context/devtools-context'
 
-export interface EventBusConfig {
-  /**
-   * Optional flag to indicate if the devtools server event bus is available to connect to.
-   * This is used to determine if the devtools can connect to the server for real-time event streams.
-   */
-  hasServer?: boolean
-
-  /**
-   * Optional flag to enable debug mode for the event bus.
-   */
-  debug?: boolean
-
-  /**
-   * Optional port to connect to the devtools server event bus.
-   * Defaults to 42069.
-   */
-  port?: number
-}
 export interface TanStackDevtoolsInit {
   /**
    * Configuration for the devtools shell. These configuration options are used to set the
@@ -53,7 +36,7 @@ export interface TanStackDevtoolsInit {
    * ```
    */
   plugins?: Array<TanStackDevtoolsPlugin>
-  eventBusConfig?: EventBusConfig
+  eventBusConfig?: ClientEventBusConfig
 }
 
 export class TanStackDevtoolsCore {
@@ -65,7 +48,7 @@ export class TanStackDevtoolsCore {
   #dispose?: () => void
   #Component: any
   #eventBus: ClientEventBus | undefined
-  #eventBusConfig: EventBusConfig | undefined
+  #eventBusConfig: ClientEventBusConfig | undefined
 
   constructor(init: TanStackDevtoolsInit) {
     this.#plugins = init.plugins || []
@@ -83,10 +66,9 @@ export class TanStackDevtoolsCore {
     const mountTo = el
     const dispose = render(() => {
       this.#Component = lazy(() => import('./devtools'))
-      const { hasServer, ...rest } = this.#eventBusConfig || {}
       const Devtools = this.#Component
-      this.#eventBus = new ClientEventBus(rest)
-      this.#eventBus.start(hasServer)
+      this.#eventBus = new ClientEventBus(this.#eventBusConfig)
+      this.#eventBus.start()
       return (
         <DevtoolsProvider plugins={this.#plugins} config={this.#config}>
           <Portal mount={mountTo}>
@@ -116,3 +98,5 @@ export class TanStackDevtoolsCore {
     }
   }
 }
+
+export type { ClientEventBusConfig }

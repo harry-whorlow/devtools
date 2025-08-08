@@ -7,7 +7,7 @@ import {
 import { createPortal } from 'react-dom'
 import type { JSX } from 'react'
 import type {
-  EventBusConfig,
+  ClientEventBusConfig,
   TanStackDevtoolsConfig,
   TanStackDevtoolsPlugin,
 } from '@tanstack/devtools'
@@ -87,7 +87,7 @@ export interface TanStackDevtoolsReactInit {
   /**
    * Configuration for the TanStack Devtools client event bus.
    */
-  eventBusConfig?: EventBusConfig
+  eventBusConfig?: ClientEventBusConfig
 }
 
 const convertRender = (
