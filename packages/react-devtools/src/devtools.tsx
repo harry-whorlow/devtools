@@ -83,7 +83,7 @@ export interface TanStackDevtoolsReactInit {
    * initial state of the devtools when it is started for the first time. Afterwards,
    * the settings are persisted in local storage and changed through the settings panel.
    */
-  config?: TanStackDevtoolsConfig
+  config?: Partial<TanStackDevtoolsConfig>
   /**
    * Configuration for the TanStack Devtools client event bus.
    */
