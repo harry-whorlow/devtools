@@ -52,12 +52,12 @@ export class ClientEventBus {
   private emitToClients(event: TanStackDevtoolsEvent<string>) {
     this.debugLog('Emitting event from client bus', event)
     const specificEvent = new CustomEvent(event.type, { detail: event })
-    this.debugLog('Emitting event to specific client listeners', specificEvent)
+    this.debugLog('Emitting event to specific client listeners', event)
     this.#eventTarget.dispatchEvent(specificEvent)
     const globalEvent = new CustomEvent('tanstack-devtools-global', {
       detail: event,
     })
-    this.debugLog('Emitting event to global client listeners', globalEvent)
+    this.debugLog('Emitting event to global client listeners', event)
     this.#eventTarget.dispatchEvent(globalEvent)
   }
 

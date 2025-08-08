@@ -12,6 +12,9 @@ export default function DevtoolsExample() {
     <>
       <QueryClientProvider client={queryClient}>
         <TanstackDevtools
+          eventBusConfig={{
+            debug: true,
+          }}
           plugins={[
             {
               name: 'Tanstack Query',
