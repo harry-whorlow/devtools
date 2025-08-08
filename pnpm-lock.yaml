@@ -277,7 +277,11 @@ importers:
         specifier: ^8.18.1
         version: 8.18.1
 
-  packages/event-bus-client: {}
+  packages/event-bus-client:
+    devDependencies:
+      '@tanstack/devtools-event-bus':
+        specifier: workspace:*
+        version: link:../event-bus
 
   packages/react-devtools:
     dependencies:

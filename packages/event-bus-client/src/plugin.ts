@@ -22,8 +22,8 @@ export class EventClient<
 > {
   #pluginId: TPluginId
   #eventTarget: () => EventTarget
-
   #debug: boolean
+
   constructor({
     pluginId,
     debug = false,
@@ -43,11 +43,6 @@ export class EventClient<
     }
   }
   private getGlobalTarget() {
-    // CLient event target is the window object
-    if (typeof window !== 'undefined') {
-      this.debugLog('Using window as event target')
-      return window
-    }
     // server one is the global event target
     if (
       typeof globalThis !== 'undefined' &&
@@ -55,6 +50,12 @@ export class EventClient<
     ) {
       this.debugLog('Using global event target')
       return globalThis.__TANSTACK_EVENT_TARGET__
+    }
+    // CLient event target is the window object
+    if (typeof window !== 'undefined') {
+      this.debugLog('Using window as event target')
+
+      return window
     }
 
     this.debugLog('Using new EventTarget as fallback')
@@ -86,6 +87,7 @@ export class EventClient<
     this.emitEventToBus({
       type: `${this.#pluginId}:${eventSuffix}`,
       payload,
+      pluginId: this.#pluginId,
     })
   }
 
