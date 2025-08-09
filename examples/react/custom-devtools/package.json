@@ -1,19 +1,16 @@
 {
-  "name": "@tanstack/devtools-example-react-basic",
+  "name": "@tanstack/devtools-custom-devtools",
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite --port=3005",
+    "dev": "vite --port=3001",
     "build": "vite build",
     "preview": "vite preview",
     "test:types": "tsc"
   },
   "dependencies": {
-    "@tanstack/react-devtools": "^0.1.1",
-    "@tanstack/react-query": "^5.83.0",
-    "@tanstack/react-query-devtools": "^5.83.0",
-    "@tanstack/react-router": "^1.130.2",
-    "@tanstack/react-router-devtools": "^1.130.2",
+    "@tanstack/devtools-event-client": "https://pkg.pr.new/TanStack/devtools/@tanstack/devtools-event-client@11",
+    "@tanstack/react-devtools": "https://pkg.pr.new/TanStack/devtools/@tanstack/react-devtools@0a0219b",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
