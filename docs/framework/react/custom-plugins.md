@@ -76,39 +76,33 @@ counter.ts
 import { DevtoolsEventClient } from './eventClient.ts'
 
 export function createCounter() {
-  let count = 0;
-  const history = [];
+  let count = 0
+  const history: Array<number> = []
 
   return {
     getCount: () => count,
     increment: () => {
-      const newCount = count++
-      history.push(count);
+      history.push(count)
 
       // The emit eventSuffix must match that of the EventMap defined in eventClient.ts
       DevtoolsEventClient.emit('counter-state', {
-        count: newCount
-        history: history
+        count: count++,
+        history: history,
       })
-
-      count = newCount
     },
     decrement: () => {
-      const newCount = count--
-      history.push(count);
+      history.push(count)
 
       DevtoolsEventClient.emit('counter-state', {
-        count: newCount
-        history: history
+        count: count--,
+        history: history,
       })
-
-      count = newCount
     },
-  };
+  }
 }
 ```
 
-> **Important** `EventClient` is framework agnostic so this process will be the same regardless of framework or even vanilla in JavaScript.
+> **Important** `EventClient` is framework agnostic so this process will be the same regardless of framework or even in vanilla JavaScript.
 
 ## Consuming The Event Client
 
@@ -153,6 +147,7 @@ createRoot(document.getElementById('root')!).render(
     <TanstackDevtools
       plugins={[
         {
+          // Call it what you like, this is how it will appear in the Menu
           name: 'Custom devtools',
           render: <DevtoolPanel />,
         },
@@ -164,3 +159,40 @@ createRoot(document.getElementById('root')!).render(
 ```
 
 ## Debugging
+
+Both the TansTack `TanstackDevtools` component and the TanStack `EventClient` come with built in debug mode which will log to the console the emitted event as well as the EventClient status.
+
+TanstackDevtool's debugging mode can be activated like so:
+```tsx
+<TanstackDevtools
+  eventBusConfig={{ debug: true }}
+  plugins={[
+    {
+      // call it what you like, this is how it will appear in the Menu
+      name: 'Custom devtools',
+      render: <DevtoolPanel />,
+    },
+  ]}
+/>
+```
+
+Where as the EventClient's debug mode can be activated by:
+```tsx
+class CustomEventClient extends EventClient<EventMap> {
+  constructor() {
+    super({
+      pluginId: 'custom-devtools',
+      debug: true,
+    })
+  }
+}
+```
+
+Activating the debug mode will log to the console the current events that emitter has emitted or listened to. The EventClient will have appended `[tanstack-devtools:${pluginId}]` and the client will have appended `[tanstack-devtools:client-bus]`.
+
+Heres an example of both:
+```
+🌴 [tanstack-devtools:client-bus] Initializing client event bus
+
+🌴 [tanstack-devtools:custom-devtools-plugin] Registered event to bus custom-devtools:counter-state
+```

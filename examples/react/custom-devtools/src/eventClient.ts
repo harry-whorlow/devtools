@@ -11,6 +11,7 @@ class CustomEventClient extends EventClient<EventMap> {
     super({
       // The pluginId must match that of the event map key
       pluginId: 'custom-devtools',
+      debug: true,
     })
   }
 }

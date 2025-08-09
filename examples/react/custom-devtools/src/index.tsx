@@ -10,6 +10,7 @@ createRoot(document.getElementById('root')!).render(
     <App />
 
     <TanstackDevtools
+      eventBusConfig={{ debug: true }}
       plugins={[
         {
           name: 'Custom devtools',

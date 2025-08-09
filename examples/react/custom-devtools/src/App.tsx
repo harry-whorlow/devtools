@@ -19,9 +19,12 @@ export default function App() {
 
   return (
     <div>
+      <h1>Custom plugins</h1>
       <h2>Count: {count}</h2>
-      <button onClick={increment}>+</button>
-      <button onClick={decrement}>−</button>
+      <div style={{ display: 'grid', gap: '4px' }}>
+        <button onClick={increment}>+ increase</button>
+        <button onClick={decrement}>− decrease</button>
+      </div>
     </div>
   )
 }
