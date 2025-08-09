@@ -5,14 +5,14 @@ This package is still under active development and might have breaking changes i
 ## General Usage
 
 ```tsx
-import { TanstackDevtoolsEventSubscription } from '@tanstack/devtools-event-bus-plugin'
+import { EventClient } from '@tanstack/devtools-event-client'
 
 interface EventMap {
   'query-devtools:a': { foo: string }
   'query-devtools:b': { foo: number }
 }
 
-class QueryDevtoolsPlugin extends TanstackDevtoolsEventSubscription<EventMap> {
+class QueryDevtoolsPlugin extends EventClient<EventMap> {
   constructor() {
     super({
       pluginId: 'query-devtools',
@@ -34,6 +34,6 @@ plugin.on('b', (e) => {
 
 ## Understanding the implementation
 
-The `TanstackDevtoolsEventSubscription` class is a base class for creating plugins that can subscribe to events in the Tanstack Devtools event bus. It allows you to define a set of events and their corresponding data schemas using a standard-schema based schemas.
+The `EventClient` class is a base class for creating plugins that can subscribe to events in the Tanstack Devtools event bus. It allows you to define a set of events and their corresponding data schemas using a standard-schema based schemas.
 
 It will work on both the client/server side and all you have to worry about is emitting/listening to events.

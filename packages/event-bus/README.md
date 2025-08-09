@@ -7,9 +7,9 @@ This package is still under active development and might have breaking changes i
 ### Server Event Bus
 
 ```tsx
-import { TanstackDevtoolsServerEventBus } from '@tanstack/devtools-event-bus/server'
+import { ServerEventBus } from '@tanstack/devtools-event-bus/server'
 // Start the server event bus
-const devtoolsServer = new TanstackDevtoolsServerEventBus()
+const devtoolsServer = new ServerEventBus()
 
 devtoolsServer.start()
 
@@ -19,9 +19,9 @@ export { devtoolsServer }
 ### Client Event Bus
 
 ```ts
-import { TanstackDevtoolsClientEventBus } from '@tanstack/devtools-event-bus/client'
+import { ClientEventBus } from '@tanstack/devtools-event-bus/client'
 // Start the client event bus
-const devtoolsClient = new TanstackDevtoolsClientEventBus()
+const devtoolsClient = new ClientEventBus()
 
 devtoolsClient.start()
 
@@ -30,4 +30,4 @@ export { devtoolsClient }
 
 ## Plugins
 
-Check out @tanstack/devtools-event-bus-plugin for more information on how to create plugins for the event bus.
+Check out @tanstack/devtools-event-client for more information on how to create plugins for the event bus.
