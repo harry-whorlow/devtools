@@ -16,8 +16,8 @@ export default function CustomDevtoolPanel() {
 
   return (
     <div>
-      <div>{state?.count}</div>
-      <div>{JSON.stringify(state?.history)}</div>
+      <div>counter state: {state?.count}</div>
+      <div>counter history: {JSON.stringify(state?.history)}</div>
     </div>
   )
 }

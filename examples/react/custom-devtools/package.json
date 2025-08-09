@@ -9,14 +9,14 @@
     "test:types": "tsc"
   },
   "dependencies": {
-    "@tanstack/react-devtools": "https://pkg.pr.new/TanStack/devtools/@tanstack/react-devtools@0a0219b",
     "@tanstack/devtools-event-client": "https://pkg.pr.new/TanStack/devtools/@tanstack/devtools-event-client@11",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "@tanstack/react-devtools": "https://pkg.pr.new/TanStack/devtools/@tanstack/react-devtools@0a0219b",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
-    "@types/react": "^19.0.7",
-    "@types/react-dom": "^19.0.3",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react": "^4.5.2",
     "vite": "^7.0.6"
   },
