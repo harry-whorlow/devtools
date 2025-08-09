@@ -6,9 +6,5 @@
     "vite.config.ts",
     "tests",
     "src/server"
-  ],
-  "compilerOptions": {
-    "jsxImportSource": "solid-js",
-    "jsx": "preserve"
-  }
+  ]
 }

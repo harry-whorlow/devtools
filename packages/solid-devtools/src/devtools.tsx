@@ -3,6 +3,7 @@ import { createEffect, createSignal, onCleanup, onMount } from 'solid-js'
 import { Portal } from 'solid-js/web'
 import type { JSX } from 'solid-js'
 import type {
+  ClientEventBusConfig,
   TanStackDevtoolsConfig,
   TanStackDevtoolsPlugin,
 } from '@tanstack/devtools'
@@ -85,13 +86,22 @@ interface TanstackDevtoolsInit {
    * initial state of the devtools when it is started for the first time. Afterwards,
    * the settings are persisted in local storage and changed through the settings panel.
    */
-  config?: TanStackDevtoolsConfig
+  config?: Partial<TanStackDevtoolsConfig>
+  /**
+   * Configuration for the TanStack Devtools client event bus.
+   */
+  eventBusConfig?: ClientEventBusConfig
 }
 
-export const TanstackDevtools = ({ config, plugins }: TanstackDevtoolsInit) => {
+export const TanstackDevtools = ({
+  config,
+  plugins,
+  eventBusConfig,
+}: TanstackDevtoolsInit) => {
   const [devtools] = createSignal(
     new TanStackDevtoolsCore({
       config,
+      eventBusConfig,
       plugins: plugins?.map((plugin) => ({
         ...plugin,
         name:

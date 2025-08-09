@@ -27,8 +27,8 @@ In order to create a plugin for TanStack Devtools, you can use the `plugins` arg
 import { TanStackDevtoolsCore } from '@tanstack/devtools'
 
 const devtools = new TanStackDevtoolsCore({
-  options: {
-    // your options here
+  config: {
+    // your config here
   },
   plugins: [
     {
