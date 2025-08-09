@@ -147,7 +147,7 @@ createRoot(document.getElementById('root')!).render(
     <TanstackDevtools
       plugins={[
         {
-          // Call it what you like, this is how it will appear in the Menu
+          // Name it what you like, this is how it will appear in the Menu
           name: 'Custom devtools',
           render: <DevtoolPanel />,
         },
