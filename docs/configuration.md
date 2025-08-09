@@ -63,9 +63,9 @@ type KeyboardKey = ModifierKey | (string & {});
 {urlFlag: string}
 ```
 
-The `eventBusConfig` is configuration for the back bone of the devtools, the `EventBuss`, and accepts the following properties:
+The `eventBusConfig` is configuration for the back bone of the devtools, the ``, and accepts the following properties:
 
-- `debug` - Enables debug mode for the EventBuss
+- `debug` - Enables debug mode for the EventBus
 
 ```ts
 {debug: boolean}
