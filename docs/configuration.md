@@ -77,7 +77,7 @@ The `eventBusConfig` is configuration for the back bone of the devtools, the `Ev
 {connectToServerBus: boolean}
 ```
 
-- `port` - The port at which the client connect to rhe devtools server event bus
+- `port` - The port at which the client connects to the devtools server event bus
 
 ```ts
 {port: number}
@@ -117,7 +117,7 @@ createRoot(document.getElementById('root')!).render(
 
 Configuration for the `EventClient` is as follows
 
-- `pluginId` (required) - The plugin identifier uses by the event bus to direct events to listeners
+- `pluginId` (required) - The plugin identifier used by the event bus to direct events to listeners
 
 ```ts
 {pluginId: string}
