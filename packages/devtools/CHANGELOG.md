@@ -1,5 +1,12 @@
 # @tanstack/devtools
 
+## 0.2.1
+
+### Patch Changes
+
+- Updated dependencies [[`f62bdf9`](https://github.com/TanStack/devtools/commit/f62bdf903591fad15cccab93290a95c194c99b51)]:
+  - @tanstack/devtools-event-bus@0.2.1
+
 ## 0.2.0
 
 ### Minor Changes

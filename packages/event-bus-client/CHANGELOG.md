@@ -1,5 +1,11 @@
 # @tanstack/devtools-event-client
 
+## 0.2.1
+
+### Patch Changes
+
+- add queued events to event bus ([#18](https://github.com/TanStack/devtools/pull/18))
+
 ## 0.2.0
 
 ### Minor Changes
