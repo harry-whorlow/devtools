@@ -15,10 +15,10 @@ type AllDevtoolsEvents<TEventMap extends Record<string, any>> = {
 export class EventClient<
   TEventMap extends Record<string, any>,
   TPluginId extends string = TEventMap extends Record<infer P, any>
-    ? P extends `${infer Id}:${string}`
-      ? Id
-      : never
-    : never,
+  ? P extends `${infer Id}:${string}`
+  ? Id
+  : never
+  : never,
 > {
   #pluginId: TPluginId
   #eventTarget: () => EventTarget
@@ -29,7 +29,18 @@ export class EventClient<
   #connectEveryMs: number
   #retryCount = 0
   #maxRetries = 5
-
+  #onConnected = () => {
+    this.debugLog('Connected to event bus')
+    this.#connected = true
+    this.debugLog('Emitting queued events', this.#queuedEvents)
+    this.#queuedEvents.forEach((event) => this.emitEventToBus(event))
+    this.#queuedEvents = []
+    this.stopConnectLoop()
+    this.#eventTarget().removeEventListener(
+      'tanstack-connect-success',
+      this.#onConnected,
+    )
+  }
   #connectFunction = () => {
     if (this.#retryCount < this.#maxRetries) {
       this.#retryCount++
@@ -41,8 +52,9 @@ export class EventClient<
       this.#connectFunction,
     )
     this.debugLog('Max retries reached, giving up on connection')
-    clearInterval(this.#connectIntervalId!)
+    this.stopConnectLoop()
   }
+
   constructor({
     pluginId,
     debug = false,
@@ -58,28 +70,22 @@ export class EventClient<
     this.#connected = false
     this.#connectIntervalId = null
     this.#connectEveryMs = 600
+
+    this.#eventTarget().addEventListener(
+      'tanstack-connect-success',
+      this.#onConnected,
+    )
+    this.#connectFunction()
     this.startConnectLoop()
   }
 
+  onConnected(cb: () => void) {
+    this.#eventTarget().addEventListener('tanstack-connect-success', cb)
+  }
+
   private startConnectLoop() {
-    if (this.#connectIntervalId !== null) return
+    if (this.#connectIntervalId !== null || this.#connected) return
     this.debugLog(`Starting connect loop (every ${this.#connectEveryMs}ms)`)
-    const onConnected = () => {
-      this.debugLog('Connected to event bus')
-      this.#connected = true
-      this.debugLog('Emitting queued events', this.#queuedEvents)
-      this.#queuedEvents.forEach((event) => this.emitEventToBus(event))
-      this.#queuedEvents = []
-      this.stopConnectLoop()
-      this.#eventTarget().removeEventListener(
-        'tanstack-connect-success',
-        onConnected,
-      )
-    }
-    this.#eventTarget().addEventListener(
-      'tanstack-connect-success',
-      onConnected,
-    )
 
     this.#connectIntervalId = setInterval(
       this.#connectFunction,
@@ -107,7 +113,7 @@ export class EventClient<
       typeof globalThis !== 'undefined' &&
       globalThis.__TANSTACK_EVENT_TARGET__
     ) {
-      this.debugLog('Using global event target')
+      this.debugLog('Using global event target',)
       return globalThis.__TANSTACK_EVENT_TARGET__
     }
     // CLient event target is the window object
@@ -137,8 +143,8 @@ export class EventClient<
       keyof TEventMap,
       `${TPluginId & string}:${string}`
     > extends `${TPluginId & string}:${infer S}`
-      ? S
-      : never,
+    ? S
+    : never,
   >(
     eventSuffix: TSuffix,
     payload: TEventMap[`${TPluginId & string}:${TSuffix}`],
@@ -165,8 +171,8 @@ export class EventClient<
       keyof TEventMap,
       `${TPluginId & string}:${string}`
     > extends `${TPluginId & string}:${infer S}`
-      ? S
-      : never,
+    ? S
+    : never,
   >(
     eventSuffix: TSuffix,
     cb: (

@@ -1,15 +1,14 @@
-import { describe, expect, it, vi } from 'vitest'
-import { EventClient } from '../src'
+import { describe, expect, it, vi, } from 'vitest'
 import { ClientEventBus } from '@tanstack/devtools-event-bus/client'
+import { EventClient } from '../src'
 
 // start the client bus for testing
 new ClientEventBus().start()
 // client bus uses window to dispatch events
 const clientBusEmitTarget = window
-
 describe('EventClient', () => {
   describe('debug config', () => {
-    it('should emit logs when debug set to true and have the correct plugin name', () => {
+    it('should emit logs when debug set to true and have the correct plugin name', async () => {
       const consoleSpy = vi.spyOn(console, 'log')
       new EventClient({
         debug: true,
@@ -35,7 +34,17 @@ describe('EventClient', () => {
   describe('getGlobalTarget', () => {
     it('if the global target is set it should re-use it for emitting/listening/removing of events', () => {
       const target = new EventTarget()
-      globalThis.__TANSTACK_EVENT_TARGET__ = target
+      const handleSuccessConnection = vi.fn()
+      target.addEventListener("tanstack-connect", () => {
+        target.dispatchEvent(
+          new CustomEvent("tanstack-connect-success")
+        )
+      })
+      globalThis.__TANSTACK_EVENT_TARGET__ = null
+
+      vi.spyOn(globalThis, '__TANSTACK_EVENT_TARGET__', 'get').mockImplementation(() => {
+        return target
+      })
       const client = new EventClient({
         debug: false,
         pluginId: 'test',
@@ -43,7 +52,7 @@ describe('EventClient', () => {
       const targetEmitSpy = vi.spyOn(target, 'dispatchEvent')
       const targetListenSpy = vi.spyOn(target, 'addEventListener')
       const targetRemoveSpy = vi.spyOn(target, 'removeEventListener')
-      const cleanup = client.on('test:event', () => {})
+      const cleanup = client.on('test:event', () => { })
       cleanup()
       client.emit('test:event', { foo: 'bar' })
       expect(targetEmitSpy).toHaveBeenCalledWith(expect.any(Event))
@@ -55,9 +64,9 @@ describe('EventClient', () => {
         expect.any(String),
         expect.any(Function),
       )
-      globalThis.__TANSTACK_EVENT_TARGET__ = null
+      vi.resetAllMocks()
+      target.removeEventListener("tanstack-connect", handleSuccessConnection)
     })
-
     it('should use the window object if the globalTarget is not set for emitting/listening/removing of events', () => {
       const target = window
       const client = new EventClient({
@@ -67,7 +76,7 @@ describe('EventClient', () => {
       const targetEmitSpy = vi.spyOn(target, 'dispatchEvent')
       const targetListenSpy = vi.spyOn(target, 'addEventListener')
       const targetRemoveSpy = vi.spyOn(target, 'removeEventListener')
-      const cleanup = client.on('test:event', () => {})
+      const cleanup = client.on('test:event', () => { })
       cleanup()
       client.emit('test:event', { foo: 'bar' })
       expect(targetEmitSpy).toHaveBeenCalledWith(expect.any(Event))
@@ -80,6 +89,7 @@ describe('EventClient', () => {
         expect.any(Function),
       )
     })
+
   })
 
   describe('on', () => {
@@ -90,7 +100,7 @@ describe('EventClient', () => {
       })
 
       const eventBusSpy = vi.spyOn(clientBusEmitTarget, 'addEventListener')
-      client.on('event', () => {})
+      client.on('event', () => { })
       expect(eventBusSpy).toHaveBeenCalledWith(
         'test:event',
         expect.any(Function),
