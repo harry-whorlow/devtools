@@ -1,7 +1,7 @@
 {
-  "name": "@tanstack/devtools",
+  "name": "@tanstack/devtools-ui",
   "version": "0.2.1",
-  "description": "TanStack Devtools is a set of tools for building advanced devtools for your application.",
+  "description": "TanStack Devtools UI is a set of UI components for building devtool panels for your application.",
   "author": "Tanner Linsley",
   "license": "MIT",
   "repository": {
@@ -53,10 +53,6 @@
     "build": "vite build"
   },
   "dependencies": {
-    "@solid-primitives/keyboard": "^1.2.8",
-    "@tanstack/devtools-event-bus": "workspace:*",
-    "@tanstack/devtools-ui": "workspace:*",
-    "clsx": "^2.1.1",
     "goober": "^2.1.16",
     "solid-js": "^1.9.7"
   },

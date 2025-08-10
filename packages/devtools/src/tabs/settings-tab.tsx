@@ -1,9 +1,7 @@
 import { Show } from 'solid-js'
-import { Input } from '../components/input'
-import { Select } from '../components/select'
+import { Checkbox, Input, Select } from '@tanstack/devtools-ui'
 import { useDevtoolsSettings } from '../context/use-devtools-context'
 import { uppercaseFirstLetter } from '../utils/sanitize'
-import { Checkbox } from '../components/checkbox'
 import { useStyles } from '../styles/use-styles'
 
 export const SettingsTab = () => {

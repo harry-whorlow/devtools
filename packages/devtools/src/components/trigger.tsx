@@ -1,8 +1,8 @@
 import { createMemo } from 'solid-js'
 import clsx from 'clsx'
+import { TanStackLogo } from '@tanstack/devtools-ui'
 import { useDevtoolsSettings } from '../context/use-devtools-context'
 import { useStyles } from '../styles/use-styles'
-import { TanStackLogo } from './logo'
 import type { Accessor } from 'solid-js'
 
 export const Trigger = ({
