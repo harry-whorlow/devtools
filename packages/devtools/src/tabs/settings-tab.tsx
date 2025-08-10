@@ -1,15 +1,13 @@
-import { Show } from 'solid-js'
-import { Input } from '../components/input'
-import { Select } from '../components/select'
+import { Show } from 'solid-js' 
+import { Checkbox, Input, Select } from '@tanstack/devtools-ui'
 import { useDevtoolsSettings } from '../context/use-devtools-context'
 import { uppercaseFirstLetter } from '../utils/sanitize'
-import { Checkbox } from '../components/checkbox'
 import { useStyles } from '../styles/use-styles'
 
 export const SettingsTab = () => {
   const { setSettings, settings } = useDevtoolsSettings()
   const styles = useStyles()
-
+ 
   return (
     <div class={styles().settingsContainer}>
       {/* General Settings */}
