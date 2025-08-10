@@ -5,39 +5,39 @@ id: configuration
 
 Both TanStack `DevTools` and `EventClient` can be configured.
 
-> **important** all configuration is optional unless marked (required)
+> [!IMPORTANT] all configuration is optional unless marked (required)
 
 ## Devtools Configuration
 
-With the `Devtools` there are two configuration objects, regardless of Frameworks these are the same and are provided to the Devtools through props.
+The `Devtools` component has two configuration props, regardless of Frameworks these are the same.
 
-- `config` configuration for the devtool panel and interaction with it
-- `eventBusConfig` configuration for the event bus
+- `config` - Configuration for the devtool panel and interaction with it.
+- `eventBusConfig` - Configuration for the event bus.
 
 The `config` object is mainly focused around user interaction with the devtools panel and accepts the following properties:
 
 - `defaultOpen` - If the devtools are open by default
 
 ```ts
-{defaultOpen: boolean}
+{ defaultOpen: boolean }
 ```
 
 - `hideUntilHover` - Hides the TanStack devtools trigger until hovered
 
 ```ts
-{hideUntilHover: boolean}
+{ hideUntilHover: boolean }
 ```
 
 - `position` - The position of the TanStack devtools trigger
 
 ```ts
-{position: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'middle-left' | 'middle-right'}
+{ position: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right' | 'middle-left' | 'middle-right' }
 ```
 
 - `panelLocation` - The location of the devtools panel
 
 ```ts
-{panelLocation: 'top' | 'bottom'}
+{ panelLocation: 'top' | 'bottom' }
 
 ```
 
@@ -47,20 +47,20 @@ The `config` object is mainly focused around user interaction with the devtools 
 type ModifierKey = 'Alt' | 'Control' | 'Meta' | 'Shift';
 type KeyboardKey = ModifierKey | (string & {});
 
-{openHotkey: Array<KeyboardKey>}
+{ openHotkey: Array<KeyboardKey> }
 ```
 
 - `requireUrlFlag` - Requires a flag present in the url to enable devtools
 
 ```ts
-{requireUrlFlag: boolean}
+{ requireUrlFlag: boolean }
 
 ```
 
 - `urlFlag` - The required flag that must be present in the url to enable devtools.
 
 ```ts
-{urlFlag: string}
+{ urlFlag: string }
 ```
 
 The `eventBusConfig` is configuration for the back bone of the devtools, the ``, and accepts the following properties:
@@ -68,19 +68,19 @@ The `eventBusConfig` is configuration for the back bone of the devtools, the ``,
 - `debug` - Enables debug mode for the EventBus
 
 ```ts
-{debug: boolean}
+{ debug: boolean }
 ```
 
 - `connectToServerBus` - Optional flag to indicate if the devtools server event bus is available to connect to
 
 ```ts
-{connectToServerBus: boolean}
+{ connectToServerBus: boolean }
 ```
 
 - `port` - The port at which the client connects to the devtools server event bus
 
 ```ts
-{port: number}
+{ port: number }
 ```
 
 Put together here is an example in react:
@@ -148,4 +148,4 @@ class customEventClient extends EventClient<EventMap> {
 }
 ```
 
-More information about EventClient configuration can be found in our [custom-plugins example](https://tanstack.com/devtools/latest/docs/framework/react/examples/basic)
+More information about EventClient configuration can be found in our [custom-plugins example](https://tanstack.com/devtools/latest/docs/framework/react/examples/custom-devtools)
