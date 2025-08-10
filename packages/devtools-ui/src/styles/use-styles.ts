@@ -3,12 +3,11 @@ import { createSignal } from 'solid-js'
 import { tokens } from './tokens'
 
 const stylesFactory = () => {
-  const { colors, font, size, alpha, } = tokens
-  const { fontFamily, } = font
+  const { colors, font, size, alpha } = tokens
+  const { fontFamily } = font
   const css = goober.css
 
   return {
-
     logo: css`
       cursor: pointer;
       display: flex;
@@ -24,9 +23,6 @@ const stylesFactory = () => {
         opacity: 0.7;
       }
     `,
-
-
-
 
     selectWrapper: css`
       width: 100%;
@@ -190,7 +186,6 @@ const stylesFactory = () => {
       font-size: 0.8rem;
       line-height: 1.3;
     `,
-
   }
 }
 

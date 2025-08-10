@@ -254,7 +254,6 @@ const stylesFactory = () => {
       overflow-y: auto;
     `,
 
-
     settingsContainer: css`
       padding: 1.5rem;
       height: 100%;
