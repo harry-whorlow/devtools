@@ -11,7 +11,7 @@ title: TanstackDevtools
 function TanstackDevtools(__namedParameters): Element
 ```
 
-Defined in: [devtools.tsx:91](https://github.com/TanStack/devtools/blob/main/packages/solid-devtools/src/devtools.tsx#L91)
+Defined in: [devtools.tsx:96](https://github.com/TanStack/devtools/blob/main/packages/solid-devtools/src/devtools.tsx#L96)
 
 ## Parameters
 

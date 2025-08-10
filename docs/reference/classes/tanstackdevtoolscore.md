@@ -7,7 +7,7 @@ title: TanStackDevtoolsCore
 
 # Class: TanStackDevtoolsCore
 
-Defined in: [core.tsx:39](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/core.tsx#L39)
+Defined in: [devtools/src/core.tsx:42](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/core.tsx#L42)
 
 ## Constructors
 
@@ -17,7 +17,7 @@ Defined in: [core.tsx:39](https://github.com/TanStack/devtools/blob/main/package
 new TanStackDevtoolsCore(init): TanStackDevtoolsCore
 ```
 
-Defined in: [core.tsx:48](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/core.tsx#L48)
+Defined in: [devtools/src/core.tsx:53](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/core.tsx#L53)
 
 #### Parameters
 
@@ -37,7 +37,7 @@ Defined in: [core.tsx:48](https://github.com/TanStack/devtools/blob/main/package
 mount<T>(el): void
 ```
 
-Defined in: [core.tsx:56](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/core.tsx#L56)
+Defined in: [devtools/src/core.tsx:62](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/core.tsx#L62)
 
 #### Type Parameters
 
@@ -61,7 +61,7 @@ Defined in: [core.tsx:56](https://github.com/TanStack/devtools/blob/main/package
 setConfig(config): void
 ```
 
-Defined in: [core.tsx:87](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/core.tsx#L87)
+Defined in: [devtools/src/core.tsx:94](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/core.tsx#L94)
 
 #### Parameters
 
@@ -81,7 +81,7 @@ Defined in: [core.tsx:87](https://github.com/TanStack/devtools/blob/main/package
 unmount(): void
 ```
 
-Defined in: [core.tsx:79](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/core.tsx#L79)
+Defined in: [devtools/src/core.tsx:85](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/core.tsx#L85)
 
 #### Returns
 

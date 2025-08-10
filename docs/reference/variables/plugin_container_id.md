@@ -11,4 +11,4 @@ title: PLUGIN_CONTAINER_ID
 const PLUGIN_CONTAINER_ID: "plugin-container" = 'plugin-container';
 ```
 
-Defined in: [constants.ts:1](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/constants.ts#L1)
+Defined in: [devtools/src/constants.ts:1](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/constants.ts#L1)

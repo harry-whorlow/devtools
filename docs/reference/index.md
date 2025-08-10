@@ -13,6 +13,7 @@ title: "@tanstack/devtools"
 
 ## Interfaces
 
+- [ClientEventBusConfig](interfaces/clienteventbusconfig.md)
 - [TanStackDevtoolsInit](interfaces/tanstackdevtoolsinit.md)
 - [TanStackDevtoolsPlugin](interfaces/tanstackdevtoolsplugin.md)
 

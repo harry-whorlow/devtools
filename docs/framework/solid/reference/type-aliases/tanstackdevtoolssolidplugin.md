@@ -11,7 +11,7 @@ title: TanStackDevtoolsSolidPlugin
 type TanStackDevtoolsSolidPlugin = Omit<TanStackDevtoolsPlugin, "render" | "name"> & object;
 ```
 
-Defined in: [devtools.tsx:20](https://github.com/TanStack/devtools/blob/main/packages/solid-devtools/src/devtools.tsx#L20)
+Defined in: [devtools.tsx:21](https://github.com/TanStack/devtools/blob/main/packages/solid-devtools/src/devtools.tsx#L21)
 
 ## Type declaration
 
