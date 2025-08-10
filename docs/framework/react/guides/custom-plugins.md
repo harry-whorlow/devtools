@@ -67,7 +67,7 @@ export const DevtoolsEventClient = new FormEventClient()
 
 ## Event Client Integration
 
-Now we need to hook our `EventClient` into our application code. This can be done in many way's, a useEffect that emits the current state, or a subscription to an observer, all that matters is that when you want to emit the current state you do the following.
+Now we need to hook our `EventClient` into the application code. This can be done in many way's, a useEffect that emits the current state, or a subscription to an observer, all that matters is that when you want to emit the current state you do the following.
 
 Our new library code will looks as follows:
 
@@ -102,7 +102,7 @@ export function createCounter() {
 }
 ```
 
-> **Important** `EventClient` is framework agnostic so this process will be the same regardless of framework or even in vanilla JavaScript.
+> [!IMPORTANT] `EventClient` is framework agnostic so this process will be the same regardless of framework or even in vanilla JavaScript.
 
 ## Consuming The Event Client
 

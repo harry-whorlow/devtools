@@ -7,7 +7,7 @@ Both TanStack `DevTools` and `EventClient` can be configured.
 
 > [!IMPORTANT] all configuration is optional unless marked (required)
 
-## Devtools Configuration
+## Devtools Component Configuration
 
 The `Devtools` component has two configuration props, regardless of Frameworks these are the same.
 
