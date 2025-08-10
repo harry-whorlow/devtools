@@ -79,10 +79,6 @@ export class EventClient<
     this.startConnectLoop()
   }
 
-  onConnected(cb: () => void) {
-    this.#eventTarget().addEventListener('tanstack-connect-success', cb)
-  }
-
   private startConnectLoop() {
     if (this.#connectIntervalId !== null || this.#connected) return
     this.debugLog(`Starting connect loop (every ${this.#connectEveryMs}ms)`)
