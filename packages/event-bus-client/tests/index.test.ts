@@ -54,7 +54,7 @@ describe('EventClient', () => {
       const targetEmitSpy = vi.spyOn(target, 'dispatchEvent')
       const targetListenSpy = vi.spyOn(target, 'addEventListener')
       const targetRemoveSpy = vi.spyOn(target, 'removeEventListener')
-      const cleanup = client.on('test:event', () => { })
+      const cleanup = client.on('test:event', () => {})
       cleanup()
       client.emit('test:event', { foo: 'bar' })
       expect(targetEmitSpy).toHaveBeenCalledWith(expect.any(Event))
@@ -78,7 +78,7 @@ describe('EventClient', () => {
       const targetEmitSpy = vi.spyOn(target, 'dispatchEvent')
       const targetListenSpy = vi.spyOn(target, 'addEventListener')
       const targetRemoveSpy = vi.spyOn(target, 'removeEventListener')
-      const cleanup = client.on('test:event', () => { })
+      const cleanup = client.on('test:event', () => {})
       cleanup()
       client.emit('test:event', { foo: 'bar' })
       expect(targetEmitSpy).toHaveBeenCalledWith(expect.any(Event))
@@ -101,7 +101,7 @@ describe('EventClient', () => {
       })
 
       const eventBusSpy = vi.spyOn(clientBusEmitTarget, 'addEventListener')
-      client.on('event', () => { })
+      client.on('event', () => {})
       expect(eventBusSpy).toHaveBeenCalledWith(
         'test:event',
         expect.any(Function),
