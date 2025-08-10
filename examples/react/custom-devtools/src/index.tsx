@@ -10,7 +10,8 @@ createRoot(document.getElementById('root')!).render(
     <App />
 
     <TanstackDevtools
-      eventBusConfig={{ debug: true }}
+      config={{ hideUntilHover: true }}
+      // eventBusConfig={{ debug: true }}
       plugins={[
         {
           name: 'Custom devtools',

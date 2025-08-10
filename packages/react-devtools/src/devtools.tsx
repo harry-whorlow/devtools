@@ -143,13 +143,15 @@ export const TanstackDevtools = ({
         }),
       }),
   )
+
   useEffect(() => {
     if (devToolRef.current) {
+      devtools.setConfig({ config })
       devtools.mount(devToolRef.current)
     }
 
     return () => devtools.unmount()
-  }, [devtools])
+  }, [devtools, config])
 
   return (
     <>

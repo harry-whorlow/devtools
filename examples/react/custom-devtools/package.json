@@ -9,8 +9,8 @@
     "test:types": "tsc"
   },
   "dependencies": {
-    "@tanstack/devtools-event-client": "https://pkg.pr.new/TanStack/devtools/@tanstack/devtools-event-client@11",
-    "@tanstack/react-devtools": "https://pkg.pr.new/TanStack/devtools/@tanstack/react-devtools@0a0219b",
+    "@tanstack/devtools-event-client": "workspace:^",
+    "@tanstack/react-devtools": "workspace:^",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   },
