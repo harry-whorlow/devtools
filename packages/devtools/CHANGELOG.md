@@ -1,5 +1,16 @@
 # @tanstack/devtools
 
+## 0.3.0
+
+### Minor Changes
+
+- extracted common UI components into a separate package ([#23](https://github.com/TanStack/devtools/pull/23))
+
+### Patch Changes
+
+- Updated dependencies [[`f9b97df`](https://github.com/TanStack/devtools/commit/f9b97dfbfdb3b6eccf51cba2655b8bd542f21bfa)]:
+  - @tanstack/devtools-ui@0.2.2
+
 ## 0.2.1
 
 ### Patch Changes
