@@ -1,12 +1,12 @@
 import { describe, expect, it, vi } from 'vitest'
-import { EventClient } from '../src'
 import { ClientEventBus } from '@tanstack/devtools-event-bus/client'
+import { EventClient } from '../src'
 
 // start the client bus for testing
-new ClientEventBus().start()
+const bus = new ClientEventBus()
+bus.start()
 // client bus uses window to dispatch events
 const clientBusEmitTarget = window
-
 describe('EventClient', () => {
   describe('debug config', () => {
     it('should emit logs when debug set to true and have the correct plugin name', () => {
@@ -35,7 +35,19 @@ describe('EventClient', () => {
   describe('getGlobalTarget', () => {
     it('if the global target is set it should re-use it for emitting/listening/removing of events', () => {
       const target = new EventTarget()
-      globalThis.__TANSTACK_EVENT_TARGET__ = target
+      const handleSuccessConnection = vi.fn()
+      target.addEventListener('tanstack-connect', () => {
+        target.dispatchEvent(new CustomEvent('tanstack-connect-success'))
+      })
+      globalThis.__TANSTACK_EVENT_TARGET__ = null
+
+      vi.spyOn(
+        globalThis,
+        '__TANSTACK_EVENT_TARGET__',
+        'get',
+      ).mockImplementation(() => {
+        return target
+      })
       const client = new EventClient({
         debug: false,
         pluginId: 'test',
@@ -55,9 +67,9 @@ describe('EventClient', () => {
         expect.any(String),
         expect.any(Function),
       )
-      globalThis.__TANSTACK_EVENT_TARGET__ = null
+      vi.resetAllMocks()
+      target.removeEventListener('tanstack-connect', handleSuccessConnection)
     })
-
     it('should use the window object if the globalTarget is not set for emitting/listening/removing of events', () => {
       const target = window
       const client = new EventClient({
@@ -183,6 +195,27 @@ describe('EventClient', () => {
     })
   })
 
+  describe('queued events', () => {
+    it('emits queued events when connected to the event bus', async () => {
+      bus.stop()
+      const client = new EventClient({
+        debug: false,
+        pluginId: 'test',
+      })
+      const eventHandler = vi.fn()
+      client.on('event', eventHandler)
+      client.emit('event', { foo: 'bar' })
+
+      bus.start()
+      // wait to connect to the bus
+      await new Promise((resolve) => setTimeout(resolve, 500))
+      expect(eventHandler).toHaveBeenCalledWith({
+        type: 'test:event',
+        payload: { foo: 'bar' },
+        pluginId: 'test',
+      })
+    })
+  })
   describe('onAllPluginEvents', () => {
     it('should listen to all events that come from the plugin', () => {
       const client = new EventClient({
