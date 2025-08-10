@@ -78,7 +78,7 @@ importers:
         specifier: workspace:^
         version: link:../../../packages/event-bus-client
       '@tanstack/react-devtools':
-        specifier: ^0.2.1
+        specifier: ^0.2.2
         version: link:../../../packages/react-devtools
       '@tanstack/react-query':
         specifier: ^5.83.0
@@ -164,7 +164,7 @@ importers:
         specifier: workspace:^
         version: link:../../../packages/event-bus-client
       '@tanstack/react-devtools':
-        specifier: ^0.2.1
+        specifier: ^0.2.2
         version: link:../../../packages/react-devtools
       '@tanstack/react-query':
         specifier: ^5.83.0
@@ -240,12 +240,10 @@ importers:
         specifier: ^4.2.4
         version: 4.2.4
 
-  examples/react/start/generated/prisma: {}
-
   examples/solid/basic:
     dependencies:
       '@tanstack/solid-devtools':
-        specifier: ^0.2.1
+        specifier: ^0.2.2
         version: link:../../../packages/solid-devtools
       '@tanstack/solid-query':
         specifier: ^5.83.0
