@@ -55,7 +55,7 @@ describe('EventClient', () => {
       const targetEmitSpy = vi.spyOn(target, 'dispatchEvent')
       const targetListenSpy = vi.spyOn(target, 'addEventListener')
       const targetRemoveSpy = vi.spyOn(target, 'removeEventListener')
-      const cleanup = client.on('test:event', () => { })
+      const cleanup = client.on('test:event', () => {})
       cleanup()
       client.emit('test:event', { foo: 'bar' })
       expect(targetEmitSpy).toHaveBeenCalledWith(expect.any(Event))
@@ -79,7 +79,7 @@ describe('EventClient', () => {
       const targetEmitSpy = vi.spyOn(target, 'dispatchEvent')
       const targetListenSpy = vi.spyOn(target, 'addEventListener')
       const targetRemoveSpy = vi.spyOn(target, 'removeEventListener')
-      const cleanup = client.on('test:event', () => { })
+      const cleanup = client.on('test:event', () => {})
       cleanup()
       client.emit('test:event', { foo: 'bar' })
       expect(targetEmitSpy).toHaveBeenCalledWith(expect.any(Event))
@@ -102,7 +102,7 @@ describe('EventClient', () => {
       })
 
       const eventBusSpy = vi.spyOn(clientBusEmitTarget, 'addEventListener')
-      client.on('event', () => { })
+      client.on('event', () => {})
       expect(eventBusSpy).toHaveBeenCalledWith(
         'test:event',
         expect.any(Function),
@@ -195,8 +195,8 @@ describe('EventClient', () => {
     })
   })
 
-  describe("queued events", () => {
-    it("emits queued events when connected to the event bus", async () => {
+  describe('queued events', () => {
+    it('emits queued events when connected to the event bus', async () => {
       bus.stop()
       const client = new EventClient({
         debug: false,
@@ -208,7 +208,7 @@ describe('EventClient', () => {
 
       bus.start()
       // wait to connect to the bus
-      await new Promise(resolve => setTimeout(resolve, 500))
+      await new Promise((resolve) => setTimeout(resolve, 500))
       expect(eventHandler).toHaveBeenCalledWith({
         type: 'test:event',
         payload: { foo: 'bar' },
