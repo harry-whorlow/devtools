@@ -1,4 +1,4 @@
-import ReactDOM from 'react-dom/client'
+import { createRoot } from 'react-dom/client'
 import Devtools from './setup'
 import { queryPlugin } from './plugin'
 setTimeout(() => {
@@ -21,5 +21,5 @@ function App() {
   )
 }
 
-const root = ReactDOM.createRoot(document.getElementById('root')!)
+const root = createRoot(document.getElementById('root')!)
 root.render(<App />)
