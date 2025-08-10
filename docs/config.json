@@ -38,7 +38,7 @@
           "label": "react",
           "children": [
             {
-              "label": "React Query Guide",
+              "label": "Implementing a custom client",
               "to": "framework/react/guides/custom-plugins"
             }
           ]
