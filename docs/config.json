@@ -8,27 +8,14 @@
   "sections": [
     {
       "label": "Getting Started",
-      "children": [
-        {
-          "label": "Overview",
-          "to": "overview"
-        },
-        {
-          "label": "Quick Start",
-          "to": "quick-start"
-        },
-        {
-          "label": "Installation",
-          "to": "installation"
-        }
-      ],
+      "children": [],
       "frameworks": [
         {
           "label": "react",
           "children": [
             {
               "label": "React Adapter",
-              "to": "framework/react/adapter"
+              "to": "framework/react/basic-setup"
             }
           ]
         },
@@ -37,7 +24,7 @@
           "children": [
             {
               "label": "Solid Adapter",
-              "to": "framework/solid/adapter"
+              "to": "framework/solid/basic-setup"
             }
           ]
         }
@@ -45,8 +32,21 @@
     },
     {
       "label": "Guides",
-      "children": [
-        
+      "children": [],
+      "frameworks": [
+        {
+          "label": "react",
+          "children": [
+            {
+              "label": "React Query Guide",
+              "to": "framework/react/guides/custom-plugins"
+            }
+          ]
+        },
+        {
+          "label": "solid",
+          "children": []
+        }
       ]
     },
     {

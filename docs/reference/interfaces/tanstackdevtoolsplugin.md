@@ -7,7 +7,7 @@ title: TanStackDevtoolsPlugin
 
 # Interface: TanStackDevtoolsPlugin
 
-Defined in: [context/devtools-context.tsx:15](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/context/devtools-context.tsx#L15)
+Defined in: [devtools/src/context/devtools-context.tsx:14](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/context/devtools-context.tsx#L14)
 
 ## Properties
 
@@ -17,7 +17,7 @@ Defined in: [context/devtools-context.tsx:15](https://github.com/TanStack/devtoo
 optional id: string;
 ```
 
-Defined in: [context/devtools-context.tsx:47](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/context/devtools-context.tsx#L47)
+Defined in: [devtools/src/context/devtools-context.tsx:46](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/context/devtools-context.tsx#L46)
 
 Unique identifier for the plugin.
 If not provided, it will be generated based on the name.
@@ -30,7 +30,7 @@ If not provided, it will be generated based on the name.
 name: string | (el) => void;
 ```
 
-Defined in: [context/devtools-context.tsx:42](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/context/devtools-context.tsx#L42)
+Defined in: [devtools/src/context/devtools-context.tsx:41](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/context/devtools-context.tsx#L41)
 
 Name to be displayed in the devtools UI.
 If a string, it will be used as the plugin name.
@@ -65,7 +65,7 @@ or
 render: (el) => void;
 ```
 
-Defined in: [context/devtools-context.tsx:61](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/context/devtools-context.tsx#L61)
+Defined in: [devtools/src/context/devtools-context.tsx:60](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/context/devtools-context.tsx#L60)
 
 Render the plugin UI by using the provided element. This function will be called
 when the plugin tab is clicked and expected to be mounted.

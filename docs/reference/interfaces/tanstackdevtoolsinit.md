@@ -7,7 +7,7 @@ title: TanStackDevtoolsInit
 
 # Interface: TanStackDevtoolsInit
 
-Defined in: [core.tsx:10](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/core.tsx#L10)
+Defined in: [devtools/src/core.tsx:12](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/core.tsx#L12)
 
 ## Properties
 
@@ -25,11 +25,21 @@ optional config: Partial<{
 }>;
 ```
 
-Defined in: [core.tsx:16](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/core.tsx#L16)
+Defined in: [devtools/src/core.tsx:18](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/core.tsx#L18)
 
 Configuration for the devtools shell. These configuration options are used to set the
 initial state of the devtools when it is started for the first time. Afterwards,
 the settings are persisted in local storage and changed through the settings panel.
+
+***
+
+### eventBusConfig?
+
+```ts
+optional eventBusConfig: ClientEventBusConfig;
+```
+
+Defined in: [devtools/src/core.tsx:39](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/core.tsx#L39)
 
 ***
 
@@ -39,7 +49,7 @@ the settings are persisted in local storage and changed through the settings pan
 optional plugins: TanStackDevtoolsPlugin[];
 ```
 
-Defined in: [core.tsx:36](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/core.tsx#L36)
+Defined in: [devtools/src/core.tsx:38](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/core.tsx#L38)
 
 Array of plugins to be used in the devtools.
 Each plugin has a `render` function that gives you the dom node to mount into

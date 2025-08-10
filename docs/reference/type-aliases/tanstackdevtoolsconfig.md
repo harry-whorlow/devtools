@@ -11,4 +11,4 @@ title: TanStackDevtoolsConfig
 type TanStackDevtoolsConfig = DevtoolsStore["settings"];
 ```
 
-Defined in: [context/devtools-context.tsx:125](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/context/devtools-context.tsx#L125)
+Defined in: [devtools/src/context/devtools-context.tsx:124](https://github.com/TanStack/devtools/blob/main/packages/devtools/src/context/devtools-context.tsx#L124)
