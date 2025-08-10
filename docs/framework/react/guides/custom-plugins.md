@@ -33,7 +33,7 @@ export function createCounter() {
 
 ## Event Client Setup
 
-Install the [TanStack Devtools Event Client](https://tanstack.com/devtools/) utils.
+Install the [TanStack Devtools Event Client](https://www.npmjs.com/package/@tanstack/devtools-event-client) utils.
 
 ```bash
 npm i @tanstack/devtools-event-client
@@ -67,7 +67,7 @@ export const DevtoolsEventClient = new FormEventClient()
 
 ## Event Client Integration
 
-Now we need to hook our `EventClient` into out application code. This can be done in many way's, a UseEffect that emits the current state, or a subscription to an observer, all that matters is that when you want to emit the current state you do the following.
+Now we need to hook our `EventClient` into the application code. This can be done in many way's, a useEffect that emits the current state, or a subscription to an observer, all that matters is that when you want to emit the current state you do the following.
 
 Our new library code will looks as follows:
 
@@ -102,13 +102,13 @@ export function createCounter() {
 }
 ```
 
-> **Important** `EventClient` is framework agnostic so this process will be the same regardless of framework or even in vanilla JavaScript.
+> [!IMPORTANT] `EventClient` is framework agnostic so this process will be the same regardless of framework or even in vanilla JavaScript.
 
 ## Consuming The Event Client
 
 Now we need to create our devtools panel, for a simple approach write the devtools in the framework that the adapter is, be aware that this will make the plugin framework specific.
 
-> Because TanStack is framework agnostic we have taken a more complicated approach that will be explained in coming docs (if framework agnosticism is not a concern to you you can ignore this).
+> Because TanStack is framework agnostic we have taken a more complicated approach that will be explained in coming docs (if framework agnosticism is not a concern to you, you can ignore this).
 
 DevtoolsPanel.ts
 ```tsx
@@ -134,7 +134,7 @@ export function DevtoolPanel() {
 
 ## Application Integration
 
-This step follows what's shown in [../basic-setup] for a more documented guide go check it out. As well as the complete [custom-plugin example](https://tanstack.com/devtools/latest/docs/framework/react/examples/custom-plugin) in our examples section.
+This step follows what's shown in [basic-setup](../basic-setup.md)  for a more documented guide go check it out. As well as the complete [custom-devtools example](https://tanstack.com/devtools/latest/docs/framework/react/examples/custom-devtools) in our examples section.
 
 Main.tsx
 ```tsx

@@ -26,13 +26,18 @@
           "to": "installation"
         }
       ],
+
       "frameworks": [
         {
           "label": "react",
           "children": [
             {
-              "label": "React Adapter",
+              "label": "Basic setup",
               "to": "framework/react/basic-setup"
+            },
+            {
+              "label": "React adapter",
+              "to": "framework/react/adapter"
             }
           ]
         },
@@ -40,13 +45,18 @@
           "label": "solid",
           "children": [
             {
-              "label": "Solid Adapter",
+              "label": "Basic setup",
               "to": "framework/solid/basic-setup"
+            },
+            {
+              "label": "Solid Adapter",
+              "to": "framework/solid/adapter"
             }
           ]
         }
       ]
     },
+
     {
       "label": "Guides",
       "children": [],
@@ -55,7 +65,7 @@
           "label": "react",
           "children": [
             {
-              "label": "Implementing a custom client",
+              "label": "Custom plugins",
               "to": "framework/react/guides/custom-plugins"
             }
           ]
@@ -66,6 +76,7 @@
         }
       ]
     },
+
     {
       "label": "API Reference",
       "children": [
@@ -95,6 +106,7 @@
         }
       ]
     },
+
     {
       "label": "Examples",
       "children": [],
@@ -105,6 +117,14 @@
             {
               "label": "Basic",
               "to": "framework/react/examples/basic"
+            },
+            {
+              "label": "TanStack Start",
+              "to": "framework/react/examples/start"
+            },
+            {
+              "label": "Custom devtools",
+              "to": "framework/react/examples/custom-devtools"
             }
           ]
         },
