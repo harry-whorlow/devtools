@@ -8,7 +8,24 @@
   "sections": [
     {
       "label": "Getting Started",
-      "children": [],
+      "children": [
+        {
+          "label": "Overview",
+          "to": "overview"
+        },
+        {
+          "label": "Quick Start",
+          "to": "quick-start"
+        },
+        {
+          "label": "Configuration",
+          "to": "configuration"
+        },
+        {
+          "label": "Installation",
+          "to": "installation"
+        }
+      ],
       "frameworks": [
         {
           "label": "react",
