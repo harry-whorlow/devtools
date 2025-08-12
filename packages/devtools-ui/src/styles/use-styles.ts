@@ -109,7 +109,7 @@ const stylesFactory = () => {
       font-size: 0.875rem;
       font-family: ${fontFamily.mono};
       transition: all 0.2s ease;
-      
+
       &::placeholder {
         color: ${colors.gray[500]};
       }
