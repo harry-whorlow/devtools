@@ -5,7 +5,7 @@ import {
   TanStackDevtoolsCore,
 } from '@tanstack/devtools'
 import { createPortal } from 'react-dom'
-import type { JSX } from 'react'
+import type { JSX, ReactElement } from 'react'
 import type {
   ClientEventBusConfig,
   TanStackDevtoolsConfig,
@@ -101,7 +101,7 @@ export const TanStackDevtools = ({
   plugins,
   config,
   eventBusConfig,
-}: TanStackDevtoolsReactInit) => {
+}: TanStackDevtoolsReactInit): ReactElement | null => {
   const devToolRef = useRef<HTMLDivElement>(null)
   const [pluginContainer, setPluginContainer] = useState<HTMLElement | null>(
     null,
