@@ -12,6 +12,8 @@ import { MainPanel } from './components/main-panel'
 import { ContentPanel } from './components/content-panel'
 import { Tabs } from './components/tabs'
 import { TabContent } from './components/tab-content'
+import { keyboardModifiers } from './context/devtools-store'
+import { getAllPermutations } from './utils/sanitize'
 
 export default function DevTools() {
   const { settings } = useDevtoolsSettings()
@@ -131,12 +133,24 @@ export default function DevTools() {
     }
   })
   createEffect(() => {
-    createShortcut(settings().openHotkey, () => {
-      toggleOpen()
-    })
+    // we create all combinations of modifiers
+    const modifiers = settings().openHotkey.filter((key) =>
+      keyboardModifiers.includes(key as any),
+    )
+    const nonModifiers = settings().openHotkey.filter(
+      (key) => !keyboardModifiers.includes(key as any),
+    )
+
+    const allModifierCombinations = getAllPermutations(modifiers)
+
+    for (const combination of allModifierCombinations) {
+      const permutation = [...combination, ...nonModifiers]
+      createShortcut(permutation, () => {
+        toggleOpen()
+      })
+    }
   })
 
-  createEffect(() => {})
   return (
     <div ref={setRootEl} data-testid={TANSTACK_DEVTOOLS}>
       <Show
