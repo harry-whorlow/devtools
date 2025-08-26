@@ -231,12 +231,25 @@ const stylesFactory = () => {
       height: 100%;
       overflow: hidden;
     `,
+    pluginsTabDraw: css`
+      width: 0px;
+      height: 100%;
+      background-color: ${colors.darkGray[800]};
+      box-shadow: 0 1px 0 ${colors.gray[700]};
+      transition: width 0.3s ease;
+    `,
+    pluginsTabDrawExpanded: css`
+      width: ${size[48]};
+      border-right: 1px solid ${colors.gray[700]};
+    `,
     pluginsTabSidebar: css`
       width: ${size[48]};
-      background-color: ${colors.darkGray[800]};
-      border-right: 1px solid ${colors.gray[700]};
-      box-shadow: 0 1px 0 ${colors.gray[700]};
       overflow-y: auto;
+      transition: transform 0.3s ease;
+      transform: translateX(-100%);
+    `,
+    pluginsTabSidebarExpanded: css`
+      transform: translateX(0);
     `,
     pluginName: css`
       font-size: ${fontSize.xs};
