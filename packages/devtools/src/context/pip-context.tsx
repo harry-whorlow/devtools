@@ -6,7 +6,7 @@ import {
   onCleanup,
   useContext,
 } from 'solid-js'
-import { clearDelegatedEvents, delegateEvents } from 'solid-js/web'
+import { delegateEvents } from 'solid-js/web'
 import type { Accessor, JSX } from 'solid-js'
 
 interface PiPProviderProps {
@@ -69,8 +69,6 @@ export const PiPProvider = (props: PiPProviderProps) => {
     pip.document.head.innerHTML = ''
     // Remove existing body
     pip.document.body.innerHTML = ''
-    // Clear Delegated Events
-    clearDelegatedEvents(pip.document)
 
     pip.document.title = 'TanStack Devtools'
     pip.document.body.style.margin = '0'
