@@ -1,5 +1,6 @@
 import { Show, createEffect, createSignal, onCleanup } from 'solid-js'
 import { createShortcut } from '@solid-primitives/keyboard'
+import { Portal } from 'solid-js/web'
 import {
   useDevtoolsSettings,
   useHeight,
@@ -14,6 +15,7 @@ import { Tabs } from './components/tabs'
 import { TabContent } from './components/tab-content'
 import { keyboardModifiers } from './context/devtools-store'
 import { getAllPermutations } from './utils/sanitize'
+import { usePiPWindow } from './context/pip-context'
 
 export default function DevTools() {
   const { settings } = useDevtoolsSettings()
@@ -23,14 +25,17 @@ export default function DevTools() {
   const [isOpen, setIsOpen] = createSignal(
     settings().defaultOpen || persistOpen(),
   )
+  const pip = usePiPWindow()
   let panelRef: HTMLDivElement | undefined = undefined
   const [isResizing, setIsResizing] = createSignal(false)
   const toggleOpen = () => {
+    if (pip().pipWindow) {
+      return
+    }
     const open = isOpen()
     setIsOpen(!open)
     setPersistOpen(!open)
   }
-  createEffect(() => {})
   // Used to resize the panel
   const handleDragStart = (
     panelElement: HTMLDivElement | undefined,
@@ -78,11 +83,11 @@ export default function DevTools() {
 
       const run = () => {
         if (!panelRef) return
-        const containerHeight = panelRef.getBoundingClientRect().height
+        // const containerHeight = panelRef.getBoundingClientRect().height
         if (rootEl()?.parentElement) {
           setRootEl((prev) => {
             if (prev?.parentElement) {
-              prev.parentElement.style.paddingBottom = `${containerHeight}px`
+              // prev.parentElement.style.paddingBottom = `${containerHeight}px`
             }
             return prev
           })
@@ -92,13 +97,13 @@ export default function DevTools() {
       run()
 
       if (typeof window !== 'undefined') {
-        window.addEventListener('resize', run)
+        ;(pip().pipWindow ?? window).addEventListener('resize', run)
 
         return () => {
-          window.removeEventListener('resize', run)
+          ;(pip().pipWindow ?? window).removeEventListener('resize', run)
           if (rootEl()?.parentElement && typeof previousValue === 'string') {
             setRootEl((prev) => {
-              prev!.parentElement!.style.paddingBottom = previousValue
+              // prev!.parentElement!.style.paddingBottom = previousValue
               return prev
             })
           }
@@ -117,6 +122,7 @@ export default function DevTools() {
     }
     return
   })
+
   createEffect(() => {
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && isOpen()) {
@@ -178,25 +184,29 @@ export default function DevTools() {
   })
 
   return (
-    <div ref={setRootEl} data-testid={TANSTACK_DEVTOOLS}>
-      <Show
-        when={
-          settings().requireUrlFlag
-            ? window.location.search.includes(settings().urlFlag)
-            : true
-        }
-      >
-        <Trigger isOpen={isOpen} setIsOpen={toggleOpen} />
-        <MainPanel isResizing={isResizing} isOpen={isOpen}>
-          <ContentPanel
-            ref={(ref) => (panelRef = ref)}
-            handleDragStart={(e) => handleDragStart(panelRef, e)}
-          >
-            <Tabs toggleOpen={toggleOpen} />
-            <TabContent />
-          </ContentPanel>
-        </MainPanel>
-      </Show>
-    </div>
+    <Portal mount={(pip().pipWindow ?? window).document.body}>
+      <div ref={setRootEl} data-testid={TANSTACK_DEVTOOLS}>
+        <Show
+          when={
+            pip().pipWindow !== null
+              ? true
+              : settings().requireUrlFlag
+                ? window.location.search.includes(settings().urlFlag)
+                : true
+          }
+        >
+          <Trigger isOpen={isOpen} setIsOpen={toggleOpen} />
+          <MainPanel isResizing={isResizing} isOpen={isOpen}>
+            <ContentPanel
+              ref={(ref) => (panelRef = ref)}
+              handleDragStart={(e) => handleDragStart(panelRef, e)}
+            >
+              <Tabs toggleOpen={toggleOpen} />
+              <TabContent />
+            </ContentPanel>
+          </MainPanel>
+        </Show>
+      </div>
+    </Portal>
   )
 }
