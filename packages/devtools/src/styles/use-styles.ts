@@ -234,32 +234,37 @@ const stylesFactory = () => {
       height: 100%;
       overflow: hidden;
     `,
-    pluginsTabDraw: (animationMs: number) => {
-      const base = css`
-        width: 0px;
-        height: 100%;
-        background-color: ${colors.darkGray[800]};
-        box-shadow: 0 1px 0 ${colors.gray[700]};
-        transition: width ${mSecondsToCssSeconds(animationMs)} ease;
-      `
-      return base
-    },
+
+    pluginsTabDraw: css`
+      width: 0px;
+      height: 100%;
+      background-color: ${colors.darkGray[800]};
+      box-shadow: 0 1px 0 ${colors.gray[700]};
+    `,
     pluginsTabDrawExpanded: css`
       width: ${size[48]};
       border-right: 1px solid ${colors.gray[700]};
     `,
-    pluginsTabSidebar: (animationMs: number) => {
-      const base = css`
-        width: ${size[48]};
-        overflow-y: auto;
-        transition: transform ${mSecondsToCssSeconds(animationMs)} ease;
-        transform: translateX(-100%);
+    pluginsTabDrawTransition: (mSeconds: number) => {
+      return css`
+        transition: width ${mSecondsToCssSeconds(mSeconds)} ease;
       `
-      return base
     },
+
+    pluginsTabSidebar: css`
+      width: ${size[48]};
+      overflow-y: auto;
+      transform: translateX(-100%);
+    `,
     pluginsTabSidebarExpanded: css`
       transform: translateX(0);
     `,
+    pluginsTabSidebarTransition: (mSeconds: number) => {
+      return css`
+        transition: transform ${mSecondsToCssSeconds(mSeconds)} ease;
+      `
+    },
+
     pluginName: css`
       font-size: ${fontSize.xs};
       font-family: ${fontFamily.sans};

@@ -23,9 +23,13 @@ export const PluginsTab = () => {
   return (
     <div class={styles().pluginsTabPanel}>
       <div
-        class={clsx(styles().pluginsTabDraw(animationMs), {
-          [styles().pluginsTabDrawExpanded]: expanded(),
-        })}
+        class={clsx(
+          styles().pluginsTabDraw,
+          {
+            [styles().pluginsTabDrawExpanded]: expanded(),
+          },
+          styles().pluginsTabDrawTransition(animationMs),
+        )}
         onMouseEnter={() => {
           hoverUtils.enter()
         }}
@@ -34,9 +38,13 @@ export const PluginsTab = () => {
         }}
       >
         <div
-          class={clsx(styles().pluginsTabSidebar(animationMs), {
-            [styles().pluginsTabSidebarExpanded]: expanded(),
-          })}
+          class={clsx(
+            styles().pluginsTabSidebar,
+            {
+              [styles().pluginsTabSidebarExpanded]: expanded(),
+            },
+            styles().pluginsTabSidebarTransition(animationMs),
+          )}
         >
           <For each={plugins()}>
             {(plugin) => {
