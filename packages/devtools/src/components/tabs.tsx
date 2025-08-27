@@ -2,6 +2,7 @@ import clsx from 'clsx'
 import { For } from 'solid-js'
 import { useStyles } from '../styles/use-styles'
 import { useDevtoolsState } from '../context/use-devtools-context'
+import { useDrawContext } from '../context/draw-context'
 import { tabs } from '../tabs'
 import { usePiPWindow } from '../context/pip-context'
 
@@ -18,6 +19,8 @@ export const Tabs = (props: TabsProps) => {
       `width=${window.innerWidth},height=${state().height},top=${window.screen.height},left=${window.screenLeft}}`,
     )
   }
+  const { hoverUtils } = useDrawContext()
+
   return (
     <div class={styles().tabContainer}>
       <For each={tabs}>
@@ -26,6 +29,12 @@ export const Tabs = (props: TabsProps) => {
             type="button"
             onClick={() => setState({ activeTab: tab.id })}
             class={clsx(styles().tab, { active: state().activeTab === tab.id })}
+            onMouseEnter={() => {
+              if (tab.id === 'plugins') hoverUtils.enter()
+            }}
+            onMouseLeave={() => {
+              if (tab.id === 'plugins') hoverUtils.leave()
+            }}
           >
             {tab.icon}
           </button>

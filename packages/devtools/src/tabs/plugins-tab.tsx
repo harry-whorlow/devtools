@@ -1,11 +1,13 @@
 import { For, createEffect } from 'solid-js'
 import clsx from 'clsx'
+import { useDrawContext } from '../context/draw-context'
 import { usePlugins } from '../context/use-devtools-context'
 import { useStyles } from '../styles/use-styles'
 import { PLUGIN_CONTAINER_ID, PLUGIN_TITLE_CONTAINER_ID } from '../constants'
 
 export const PluginsTab = () => {
   const { plugins, activePlugin, setActivePlugin } = usePlugins()
+  const { activeMenuHover, hoverUtils } = useDrawContext()
   let activePluginRef: HTMLDivElement | undefined
 
   createEffect(() => {
@@ -17,32 +19,50 @@ export const PluginsTab = () => {
     }
   })
   const styles = useStyles()
+
   return (
     <div class={styles().pluginsTabPanel}>
-      <div class={styles().pluginsTabSidebar}>
-        <For each={plugins()}>
-          {(plugin) => {
-            let pluginHeading: HTMLHeadingElement | undefined
-            createEffect(() => {
-              if (pluginHeading) {
-                typeof plugin.name === 'string'
-                  ? (pluginHeading.textContent = plugin.name)
-                  : plugin.name(pluginHeading)
-              }
-            })
-            return (
-              <div
-                onClick={() => setActivePlugin(plugin.id!)}
-                class={clsx(styles().pluginName, {
-                  active: activePlugin() === plugin.id,
-                })}
-              >
-                <h3 id={PLUGIN_TITLE_CONTAINER_ID} ref={pluginHeading} />
-              </div>
-            )
-          }}
-        </For>
+      <div
+        class={clsx(styles().pluginsTabDraw, {
+          [styles().pluginsTabDrawExpanded]: activeMenuHover(),
+        })}
+        onMouseEnter={() => {
+          hoverUtils.enter()
+        }}
+        onMouseLeave={() => {
+          hoverUtils.leave()
+        }}
+      >
+        <div
+          class={clsx(styles().pluginsTabSidebar, {
+            [styles().pluginsTabSidebarExpanded]: activeMenuHover(),
+          })}
+        >
+          <For each={plugins()}>
+            {(plugin) => {
+              let pluginHeading: HTMLHeadingElement | undefined
+              createEffect(() => {
+                if (pluginHeading) {
+                  typeof plugin.name === 'string'
+                    ? (pluginHeading.textContent = plugin.name)
+                    : plugin.name(pluginHeading)
+                }
+              })
+              return (
+                <div
+                  onClick={() => setActivePlugin(plugin.id!)}
+                  class={clsx(styles().pluginName, {
+                    active: activePlugin() === plugin.id,
+                  })}
+                >
+                  <h3 id={PLUGIN_TITLE_CONTAINER_ID} ref={pluginHeading} />
+                </div>
+              )
+            }}
+          </For>
+        </div>
       </div>
+
       <div
         id={PLUGIN_CONTAINER_ID}
         ref={activePluginRef}

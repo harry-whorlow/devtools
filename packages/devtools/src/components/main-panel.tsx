@@ -1,8 +1,10 @@
 import clsx from 'clsx'
+import { DrawClientProvider } from '../context/draw-context'
 import { useDevtoolsSettings, useHeight } from '../context/use-devtools-context'
 import { useStyles } from '../styles/use-styles'
 import { TANSTACK_DEVTOOLS } from '../utils/storage'
 import { usePiPWindow } from '../context/pip-context'
+
 import type { Accessor, JSX } from 'solid-js'
 
 export const MainPanel = (props: {
@@ -30,7 +32,7 @@ export const MainPanel = (props: {
         styles().devtoolsPanelContainerResizing(props.isResizing),
       )}
     >
-      {props.children}
+      <DrawClientProvider>{props.children}</DrawClientProvider>
     </div>
   )
 }
