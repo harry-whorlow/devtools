@@ -1,6 +1,6 @@
 import {
   createContext,
-  createEffect,
+  createMemo,
   createSignal,
   onCleanup,
   useContext,
@@ -11,15 +11,7 @@ const useDraw = (props: { animationMs: number }) => {
   const [activeHover, setActiveHover] = createSignal<boolean>(false)
   const [forceExpand, setForceExpand] = createSignal<boolean>(false)
 
-  const [expanded, setExpanded] = createSignal<boolean>(false)
-
-  createEffect(() => {
-    if (activeHover() || forceExpand()) {
-      setExpanded(true)
-    } else {
-      setExpanded(false)
-    }
-  })
+  const expanded = createMemo(() => activeHover() || forceExpand())
 
   let hoverTimeout: ReturnType<typeof setTimeout> | null = null
   onCleanup(() => {
