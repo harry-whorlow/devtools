@@ -1,9 +1,30 @@
-import { createContext, createSignal, useContext } from 'solid-js'
+import {
+  createContext,
+  createEffect,
+  createSignal,
+  onCleanup,
+  useContext,
+} from 'solid-js'
 import type { ParentComponent } from 'solid-js'
 
-const useDraw = () => {
-  const [activeMenuHover, setActiveMenuHover] = createSignal<boolean>(false)
+const useDraw = (props: { animationMs: number }) => {
+  const [activeHover, setActiveHover] = createSignal<boolean>(false)
+  const [forceExpand, setForceExpand] = createSignal<boolean>(false)
+
+  const [expanded, setExpanded] = createSignal<boolean>(false)
+
+  createEffect(() => {
+    if (activeHover() || forceExpand()) {
+      setExpanded(true)
+    } else {
+      setExpanded(false)
+    }
+  })
+
   let hoverTimeout: ReturnType<typeof setTimeout> | null = null
+  onCleanup(() => {
+    if (hoverTimeout) clearTimeout(hoverTimeout)
+  })
 
   const hoverUtils = {
     enter: () => {
@@ -11,25 +32,32 @@ const useDraw = () => {
         clearTimeout(hoverTimeout)
         hoverTimeout = null
       }
-      setActiveMenuHover(true)
+      setActiveHover(true)
     },
 
     leave: () => {
       hoverTimeout = setTimeout(() => {
-        setActiveMenuHover(false)
-      }, 400)
+        setActiveHover(false)
+      }, props.animationMs)
     },
   }
 
-  return { activeMenuHover, hoverUtils }
+  return {
+    expanded,
+    setForceExpand,
+    hoverUtils,
+    animationMs: props.animationMs,
+  }
 }
 
 type ContextType = ReturnType<typeof useDraw>
 
 const DrawContext = createContext<ContextType | undefined>(undefined)
 
-export const DrawClientProvider: ParentComponent = (props) => {
-  const value = useDraw()
+export const DrawClientProvider: ParentComponent<{
+  animationMs: number
+}> = (props) => {
+  const value = useDraw({ animationMs: props.animationMs })
 
   return (
     <DrawContext.Provider value={value}>{props.children}</DrawContext.Provider>

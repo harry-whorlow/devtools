@@ -4,6 +4,9 @@ import { tokens } from './tokens'
 import type { TanStackDevtoolsConfig } from '../context/devtools-context'
 import type { Accessor } from 'solid-js'
 
+const mSecondsToCssSeconds = (mSeconds: number) =>
+  `${(mSeconds / 1000).toFixed(2)}s`
+
 const stylesFactory = () => {
   const { colors, font, size, alpha, border } = tokens
   const { fontFamily, size: fontSize } = font
@@ -231,23 +234,29 @@ const stylesFactory = () => {
       height: 100%;
       overflow: hidden;
     `,
-    pluginsTabDraw: css`
-      width: 0px;
-      height: 100%;
-      background-color: ${colors.darkGray[800]};
-      box-shadow: 0 1px 0 ${colors.gray[700]};
-      transition: width 0.3s ease;
-    `,
+    pluginsTabDraw: (animationMs: number) => {
+      const base = css`
+        width: 0px;
+        height: 100%;
+        background-color: ${colors.darkGray[800]};
+        box-shadow: 0 1px 0 ${colors.gray[700]};
+        transition: width ${mSecondsToCssSeconds(animationMs)} ease;
+      `
+      return base
+    },
     pluginsTabDrawExpanded: css`
       width: ${size[48]};
       border-right: 1px solid ${colors.gray[700]};
     `,
-    pluginsTabSidebar: css`
-      width: ${size[48]};
-      overflow-y: auto;
-      transition: transform 0.3s ease;
-      transform: translateX(-100%);
-    `,
+    pluginsTabSidebar: (animationMs: number) => {
+      const base = css`
+        width: ${size[48]};
+        overflow-y: auto;
+        transition: transform ${mSecondsToCssSeconds(animationMs)} ease;
+        transform: translateX(-100%);
+      `
+      return base
+    },
     pluginsTabSidebarExpanded: css`
       transform: translateX(0);
     `,
