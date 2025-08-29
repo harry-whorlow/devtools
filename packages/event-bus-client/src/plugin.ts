@@ -42,11 +42,16 @@ export class EventClient<
     )
   }
   #connectFunction = () => {
+    this.#eventTarget().addEventListener(
+      'tanstack-connect-success',
+      this.#onConnected,
+    )
     if (this.#retryCount < this.#maxRetries) {
       this.#retryCount++
       this.#eventTarget().dispatchEvent(new CustomEvent('tanstack-connect'))
       return
     }
+
     this.#eventTarget().removeEventListener(
       'tanstack-connect',
       this.#connectFunction,
@@ -71,10 +76,6 @@ export class EventClient<
     this.#connectIntervalId = null
     this.#connectEveryMs = 500
 
-    this.#eventTarget().addEventListener(
-      'tanstack-connect-success',
-      this.#onConnected,
-    )
     this.#connectFunction()
     this.startConnectLoop()
   }

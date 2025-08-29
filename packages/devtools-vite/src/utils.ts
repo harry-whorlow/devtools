@@ -1,4 +1,5 @@
 import { normalizePath } from 'vite'
+// import fs from 'node:fs/promises'
 import type { Connect } from 'vite'
 import type { IncomingMessage, ServerResponse } from 'node:http'
 
@@ -47,3 +48,24 @@ export const handleDevToolsViteRequest = (
     res.write('OK')
   })
 }
+
+/* export const tryReadFile = async (
+  filePath: string
+) => {
+  try {
+    const data = await fs.readFile(filePath, 'utf-8')
+    return data
+  } catch (error) {
+
+    return null
+  }
+}
+
+export const tryParseJson = (jsonString: string) => {
+  try {
+    const result = JSON.parse(jsonString)
+    return result
+  } catch (error) {
+    return null
+  }
+} */

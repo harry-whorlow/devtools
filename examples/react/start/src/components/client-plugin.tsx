@@ -1,5 +1,5 @@
-import { queryPlugin } from '@/plugin'
 import { useEffect, useState } from 'react'
+import { queryPlugin } from '@/plugin'
 
 export default function ClientPlugin() {
   const [events, setEvents] = useState<
