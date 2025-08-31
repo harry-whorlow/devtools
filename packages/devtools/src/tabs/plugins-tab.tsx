@@ -54,6 +54,7 @@ export const PluginsTab = () => {
           <For each={plugins()}>
             {(plugin) => {
               let pluginHeading: HTMLHeadingElement | undefined
+
               createEffect(() => {
                 if (pluginHeading) {
                   typeof plugin.name === 'string'
@@ -75,7 +76,10 @@ export const PluginsTab = () => {
                     active: isActive(),
                   })}
                 >
-                  <h3 id={PLUGIN_TITLE_CONTAINER_ID} ref={pluginHeading} />
+                  <h3
+                    id={`${PLUGIN_TITLE_CONTAINER_ID}-${plugin.id}`}
+                    ref={pluginHeading}
+                  />
                 </div>
               )
             }}
@@ -87,13 +91,13 @@ export const PluginsTab = () => {
         {(pluginId) => (
           <div
             id={`${PLUGIN_CONTAINER_ID}-${pluginId}`}
-            ref={(el) =>
+            ref={(el) => {
               setPluginRefs((prev) => {
                 const updated = new Map(prev)
                 updated.set(pluginId, el)
                 return updated
               })
-            }
+            }}
             class={styles().pluginsTabContent}
           />
         )}
