@@ -65,7 +65,7 @@ export type DevtoolsStore = {
   state: {
     activeTab: TabName
     height: number
-    activePlugin?: string | undefined
+    activePlugins: Array<string>
     persistOpen: boolean
   }
   plugins?: Array<TanStackDevtoolsPlugin>
@@ -89,7 +89,7 @@ export const initialState: DevtoolsStore = {
   state: {
     activeTab: 'plugins',
     height: 400,
-    activePlugin: undefined,
+    activePlugins: [],
     persistOpen: false,
   },
 }

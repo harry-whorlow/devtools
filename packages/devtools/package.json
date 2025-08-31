@@ -55,6 +55,7 @@
     "build": "tsup"
   },
   "dependencies": {
+    "@neodrag/solid": "3.0.0-next.8",
     "@solid-primitives/keyboard": "^1.2.8",
     "@tanstack/devtools-event-bus": "workspace:*",
     "@tanstack/devtools-ui": "workspace:*",
