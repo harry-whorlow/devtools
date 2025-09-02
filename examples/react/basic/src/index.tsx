@@ -171,6 +171,14 @@ function App() {
     <div>
       <Context.Provider value={{ count: state, setCount: setState }}>
         <QueryClientProvider client={queryClient}>
+          <h1>TanStack Devtools React Basic Example</h1>
+          current count: {state}
+          <Button onClick={() => setState(state + 1)}>Click me</Button>
+          <Button onClick={() => setWin(window.open('', '', 'popup'))}>
+            Click me to open new window
+          </Button>
+          {win && createPortal(<Mounted />, win.document.body)}
+          <Feature />
           <p>
             As you visit the posts below, you will notice them in a loading
             state the first time you load them. However, after you return to
@@ -189,14 +197,6 @@ function App() {
           )}
           <Devtools />
         </QueryClientProvider>
-        <h1>TanStack Devtools React Basic Example</h1>
-        current count: {state}
-        <Button onClick={() => setState(state + 1)}>Click me</Button>
-        <Button onClick={() => setWin(window.open('', '', 'popup'))}>
-          Click me to open new window
-        </Button>
-        {win && createPortal(<Mounted />, win.document.body)}
-        <Feature />
       </Context.Provider>
     </div>
   )

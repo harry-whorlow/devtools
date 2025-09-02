@@ -102,6 +102,9 @@ importers:
         specifier: ^4.0.14
         version: 4.0.14
     devDependencies:
+      '@tanstack/devtools-ui':
+        specifier: 0.3.2
+        version: link:../../../packages/devtools-ui
       '@tanstack/devtools-vite':
         specifier: 0.2.10
         version: link:../../../packages/devtools-vite
@@ -245,6 +248,8 @@ importers:
       web-vitals:
         specifier: ^4.2.4
         version: 4.2.4
+
+  examples/react/start/generated/prisma: {}
 
   examples/react/time-travel:
     dependencies:

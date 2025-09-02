@@ -20,6 +20,7 @@
     "zod": "^4.0.14"
   },
   "devDependencies": {
+    "@tanstack/devtools-ui": "0.3.2",
     "@tanstack/devtools-vite": "0.2.10",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
