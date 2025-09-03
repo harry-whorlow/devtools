@@ -15,7 +15,12 @@ export const handleDevToolsViteRequest = (
     if (!source) {
       return
     }
-    const [file, line, column] = source.split(':')
+
+    const parsed = parseOpenSourceParam(source)
+    if (!parsed) {
+      return
+    }
+    const { file, line, column } = parsed
 
     cb({
       type: 'open-source',
@@ -47,6 +52,17 @@ export const handleDevToolsViteRequest = (
     } catch (e) {}
     res.write('OK')
   })
+}
+
+export const parseOpenSourceParam = (source: string) => {
+  // Capture everything up to the last two colon-separated numeric parts as the file.
+  // This supports filenames that may themselves contain colons.
+  const parts = source.match(/^(.+):(\d+):(\d+)$/)
+
+  if (!parts) return null
+
+  const [, file, line, column] = parts
+  return { file, line, column }
 }
 
 /* export const tryReadFile = async (
