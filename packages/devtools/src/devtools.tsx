@@ -1,10 +1,12 @@
 import { Show, createEffect, createSignal, onCleanup } from 'solid-js'
 import { createShortcut } from '@solid-primitives/keyboard'
 import { Portal } from 'solid-js/web'
+import { ThemeContextProvider } from '@tanstack/devtools-ui'
 import {
   useDevtoolsSettings,
   useHeight,
   usePersistOpen,
+  useTheme,
 } from './context/use-devtools-context'
 import { useDisableTabbing } from './hooks/use-disable-tabbing'
 import { TANSTACK_DEVTOOLS } from './utils/storage'
@@ -182,31 +184,34 @@ export default function DevTools() {
       window.removeEventListener('click', openSourceHandler)
     })
   })
+  const { theme } = useTheme()
 
   return (
-    <Portal mount={(pip().pipWindow ?? window).document.body}>
-      <div ref={setRootEl} data-testid={TANSTACK_DEVTOOLS}>
-        <Show
-          when={
-            pip().pipWindow !== null
-              ? true
-              : settings().requireUrlFlag
-                ? window.location.search.includes(settings().urlFlag)
-                : true
-          }
-        >
-          <Trigger isOpen={isOpen} setIsOpen={toggleOpen} />
-          <MainPanel isResizing={isResizing} isOpen={isOpen}>
-            <ContentPanel
-              ref={(ref) => (panelRef = ref)}
-              handleDragStart={(e) => handleDragStart(panelRef, e)}
-            >
-              <Tabs toggleOpen={toggleOpen} />
-              <TabContent />
-            </ContentPanel>
-          </MainPanel>
-        </Show>
-      </div>
-    </Portal>
+    <ThemeContextProvider theme={theme()}>
+      <Portal mount={(pip().pipWindow ?? window).document.body}>
+        <div ref={setRootEl} data-testid={TANSTACK_DEVTOOLS}>
+          <Show
+            when={
+              pip().pipWindow !== null
+                ? true
+                : settings().requireUrlFlag
+                  ? window.location.search.includes(settings().urlFlag)
+                  : true
+            }
+          >
+            <Trigger isOpen={isOpen} setIsOpen={toggleOpen} />
+            <MainPanel isResizing={isResizing} isOpen={isOpen}>
+              <ContentPanel
+                ref={(ref) => (panelRef = ref)}
+                handleDragStart={(e) => handleDragStart(panelRef, e)}
+              >
+                <Tabs toggleOpen={toggleOpen} />
+                <TabContent />
+              </ContentPanel>
+            </MainPanel>
+          </Show>
+        </div>
+      </Portal>
+    </ThemeContextProvider>
   )
 }
