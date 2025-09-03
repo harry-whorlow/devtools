@@ -158,7 +158,7 @@ importers:
         specifier: ^0.2.3
         version: link:../../../packages/event-bus-client
       '@tanstack/react-devtools':
-        specifier: ^0.5.5
+        specifier: ^0.6.0
         version: link:../../../packages/react-devtools
       '@tanstack/react-query':
         specifier: ^5.83.0
@@ -183,7 +183,7 @@ importers:
         version: 4.0.14
     devDependencies:
       '@tanstack/devtools-ui':
-        specifier: 0.3.3
+        specifier: 0.3.4
         version: link:../../../packages/devtools-ui
       '@tanstack/devtools-vite':
         specifier: 0.2.10
