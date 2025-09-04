@@ -55,7 +55,7 @@ export class ClientEventBus {
     this.#connectToServerBus = connectToServerBus
     this.#eventTarget = this.getGlobalTarget()
     this.#broadcastChannel.onmessage = (e) => {
-      this.emitToClients(e.data, true)
+      this.emitToClients(JSON.parse(e.data), true)
     }
     this.debugLog('Initializing client event bus')
   }
@@ -74,7 +74,7 @@ export class ClientEventBus {
     // We only emit the events if they didn't come from the broadcast channel
     // otherwise it would infinitely send events between
     if (!fromBroadcastChannel) {
-      this.#broadcastChannel?.postMessage(event)
+      this.#broadcastChannel?.postMessage(JSON.stringify(event))
     }
     this.debugLog('Emitting event to global client listeners', event)
     this.#eventTarget.dispatchEvent(globalEvent)
