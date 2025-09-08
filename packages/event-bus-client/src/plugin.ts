@@ -119,9 +119,27 @@ export class EventClient<
 
       return window
     }
+    // Protect against non-web environments like react-native
+    const eventTarget =
+      typeof EventTarget !== 'undefined' ? new EventTarget() : undefined
+
+    // For non-web environments like react-native
+    if (
+      typeof eventTarget === 'undefined' ||
+      typeof eventTarget.addEventListener === 'undefined'
+    ) {
+      this.debugLog(
+        'No event mechanism available, running in non-web environment',
+      )
+      return {
+        addEventListener: () => {},
+        removeEventListener: () => {},
+        dispatchEvent: () => false,
+      }
+    }
 
     this.debugLog('Using new EventTarget as fallback')
-    return new EventTarget()
+    return eventTarget
   }
 
   getPluginId() {
