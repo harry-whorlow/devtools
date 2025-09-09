@@ -138,14 +138,13 @@ export const TanStackDevtools = ({
               typeof plugin.name === 'string'
                 ? plugin.name
                 : (e, theme) => {
-                    const target = e.ownerDocument.getElementById(
-                      e.getAttribute('id')!,
-                    )
+                    const id = e.getAttribute('id')!
+                    const target = e.ownerDocument.getElementById(id)
 
                     if (target) {
                       setTitleContainers((prev) => ({
                         ...prev,
-                        [e.getAttribute('id') as string]: e,
+                        [id]: e,
                       }))
                     }
 
@@ -157,14 +156,13 @@ export const TanStackDevtools = ({
                     )
                   },
             render: (e, theme) => {
-              const target = e.ownerDocument.getElementById(
-                e.getAttribute('id')!,
-              )
+              const id = e.getAttribute('id')!
+              const target = e.ownerDocument.getElementById(id)
 
               if (target) {
                 setPluginContainers((prev) => ({
                   ...prev,
-                  [e.getAttribute('id') as string]: e,
+                  [id]: e,
                 }))
               }
 
