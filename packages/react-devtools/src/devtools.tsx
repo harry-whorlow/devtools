@@ -95,13 +95,13 @@ export interface TanStackDevtoolsReactInit {
 
 const convertRender = (
   Component: PluginRender,
-  setComponent: React.Dispatch<React.SetStateAction<JSX.Element | null>>,
+  setComponents: React.Dispatch<React.SetStateAction<Array<JSX.Element>>>,
   e: HTMLElement,
   theme: 'dark' | 'light',
 ) => {
-  setComponent(
-    typeof Component === 'function' ? Component(e, theme) : Component,
-  )
+  const element =
+    typeof Component === 'function' ? Component(e, theme) : Component
+  setComponents((prev) => [...prev, element])
 }
 
 export const TanStackDevtools = ({
@@ -130,41 +130,29 @@ export const TanStackDevtools = ({
             name:
               typeof plugin.name === 'string'
                 ? plugin.name
-                : // The check above confirms that `plugin.name` is of Render type
-                  (e, theme) => {
+                : (e, theme) => {
                     const target = e.ownerDocument.getElementById(
-                      // @ts-ignore just testing
-                      `${PLUGIN_TITLE_CONTAINER_ID}-${generatePluginId(plugin, index)}`,
+                      `${PLUGIN_TITLE_CONTAINER_ID}-${generatePluginId(plugin as TanStackDevtoolsPlugin, index)}`,
                     )
                     if (target) {
                       setTitleContainers((prev) => [...prev, target])
                     }
                     convertRender(
                       plugin.name as PluginRender,
-                      (newVal) =>
-                        // @ts-ignore just testing
-                        setTitleComponents((prev) => [...prev, newVal]),
+                      setTitleComponents,
                       e,
                       theme,
                     )
                   },
             render: (e, theme) => {
               const target = e.ownerDocument.getElementById(
-                // @ts-ignore just testing
-                `${PLUGIN_CONTAINER_ID}-${generatePluginId(plugin, index)}`,
+                `${PLUGIN_CONTAINER_ID}-${generatePluginId(plugin as TanStackDevtoolsPlugin, index)}`,
               )
               if (target) {
                 setPluginContainers((prev) => [...prev, target])
               }
 
-              convertRender(
-                plugin.render,
-                (newVal) =>
-                  // @ts-ignore just testing
-                  setPluginComponents((prev) => [...prev, newVal]),
-                e,
-                theme,
-              )
+              convertRender(plugin.render, setPluginComponents, e, theme)
             },
           }
         }),
