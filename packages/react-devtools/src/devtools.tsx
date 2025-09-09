@@ -90,13 +90,19 @@ export interface TanStackDevtoolsReactInit {
 
 const convertRender = (
   Component: PluginRender,
-  setComponents: React.Dispatch<React.SetStateAction<Array<JSX.Element>>>,
+  setComponents: React.Dispatch<
+    React.SetStateAction<Record<string, JSX.Element>>
+  >,
   e: HTMLElement,
   theme: 'dark' | 'light',
 ) => {
   const element =
     typeof Component === 'function' ? Component(e, theme) : Component
-  setComponents((prev) => [...prev, element])
+
+  setComponents((prev) => ({
+    ...prev,
+    [e.getAttribute('id') as string]: element,
+  }))
 }
 
 export const TanStackDevtools = ({
@@ -105,14 +111,19 @@ export const TanStackDevtools = ({
   eventBusConfig,
 }: TanStackDevtoolsReactInit): ReactElement | null => {
   const devToolRef = useRef<HTMLDivElement>(null)
-  const [pluginContainers, setPluginContainers] = useState<Array<HTMLElement>>(
-    [],
-  )
-  const [titleContainers, setTitleContainers] = useState<Array<HTMLElement>>([])
-  const [PluginComponents, setPluginComponents] = useState<Array<JSX.Element>>(
-    [],
-  )
-  const [TitleComponents, setTitleComponents] = useState<Array<JSX.Element>>([])
+  const [pluginContainers, setPluginContainers] = useState<
+    Record<string, HTMLElement>
+  >({})
+  const [titleContainers, setTitleContainers] = useState<
+    Record<string, HTMLElement>
+  >({})
+
+  const [PluginComponents, setPluginComponents] = useState<
+    Record<string, JSX.Element>
+  >({})
+  const [TitleComponents, setTitleComponents] = useState<
+    Record<string, JSX.Element>
+  >({})
 
   const [devtools] = useState(
     () =>
@@ -131,7 +142,10 @@ export const TanStackDevtools = ({
                     )
 
                     if (target) {
-                      setTitleContainers((prev) => [...prev, target])
+                      setTitleContainers((prev) => ({
+                        ...prev,
+                        [e.getAttribute('id') as string]: e,
+                      }))
                     }
 
                     convertRender(
@@ -147,7 +161,10 @@ export const TanStackDevtools = ({
               )
 
               if (target) {
-                setPluginContainers((prev) => [...prev, target])
+                setPluginContainers((prev) => ({
+                  ...prev,
+                  [e.getAttribute('id') as string]: e,
+                }))
               }
 
               convertRender(plugin.render, setPluginComponents, e, theme)
@@ -169,15 +186,17 @@ export const TanStackDevtools = ({
     <>
       <div style={{ position: 'absolute' }} ref={devToolRef} />
 
-      {pluginContainers.length > 0 && PluginComponents.length > 0
-        ? pluginContainers.map((pluginContainer, index) =>
-            createPortal(<>{PluginComponents[index]}</>, pluginContainer),
+      {Object.values(pluginContainers).length > 0 &&
+      Object.values(PluginComponents).length > 0
+        ? Object.entries(pluginContainers).map(([key, pluginContainer]) =>
+            createPortal(<>{PluginComponents[key]}</>, pluginContainer),
           )
         : null}
 
-      {titleContainers.length > 0 && TitleComponents.length > 0
-        ? titleContainers.map((titleContainer, index) =>
-            createPortal(<>{TitleComponents[index]}</>, titleContainer),
+      {Object.values(titleContainers).length > 0 &&
+      Object.values(TitleComponents).length > 0
+        ? Object.entries(titleContainers).map(([key, titleContainer]) =>
+            createPortal(<>{TitleComponents[key]}</>, titleContainer),
           )
         : null}
     </>

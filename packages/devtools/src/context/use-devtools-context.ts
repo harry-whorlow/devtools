@@ -37,9 +37,9 @@ export const usePlugins = () => {
 
   createEffect(() => {
     if (activePlugins().length > 0) {
-      setForceExpand(false)
-    } else {
       setForceExpand(true)
+    } else {
+      setForceExpand(false)
     }
   })
 
