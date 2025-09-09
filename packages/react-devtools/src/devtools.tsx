@@ -111,6 +111,7 @@ export const TanStackDevtools = ({
   eventBusConfig,
 }: TanStackDevtoolsReactInit): ReactElement | null => {
   const devToolRef = useRef<HTMLDivElement>(null)
+
   const [pluginContainers, setPluginContainers] = useState<
     Record<string, HTMLElement>
   >({})
