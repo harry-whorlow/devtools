@@ -1,10 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import {
-  PLUGIN_CONTAINER_ID,
-  PLUGIN_TITLE_CONTAINER_ID,
-  TanStackDevtoolsCore,
-  generatePluginId,
-} from '@tanstack/devtools'
+import { TanStackDevtoolsCore } from '@tanstack/devtools'
 import { createPortal } from 'react-dom'
 import type { JSX, ReactElement } from 'react'
 import type {
@@ -124,7 +119,7 @@ export const TanStackDevtools = ({
       new TanStackDevtoolsCore({
         config,
         eventBusConfig,
-        plugins: plugins?.map((plugin, index) => {
+        plugins: plugins?.map((plugin) => {
           return {
             ...plugin,
             name:
@@ -132,11 +127,13 @@ export const TanStackDevtools = ({
                 ? plugin.name
                 : (e, theme) => {
                     const target = e.ownerDocument.getElementById(
-                      `${PLUGIN_TITLE_CONTAINER_ID}-${generatePluginId(plugin as TanStackDevtoolsPlugin, index)}`,
+                      e.getAttribute('id')!,
                     )
+
                     if (target) {
                       setTitleContainers((prev) => [...prev, target])
                     }
+
                     convertRender(
                       plugin.name as PluginRender,
                       setTitleComponents,
@@ -146,8 +143,9 @@ export const TanStackDevtools = ({
                   },
             render: (e, theme) => {
               const target = e.ownerDocument.getElementById(
-                `${PLUGIN_CONTAINER_ID}-${generatePluginId(plugin as TanStackDevtoolsPlugin, index)}`,
+                e.getAttribute('id')!,
               )
+
               if (target) {
                 setPluginContainers((prev) => [...prev, target])
               }

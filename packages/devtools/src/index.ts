@@ -5,4 +5,3 @@ export type {
   TanStackDevtoolsPlugin,
   TanStackDevtoolsConfig,
 } from './context/devtools-context'
-export { generatePluginId } from './context/devtools-context'
