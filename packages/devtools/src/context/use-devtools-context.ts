@@ -44,15 +44,13 @@ export const usePlugins = () => {
   })
 
   const toggleActivePlugins = (pluginId: string) => {
-    if (store.state.activePlugins.length === 3) return
-
     setStore((prev) => {
       const isActive = prev.state.activePlugins.includes(pluginId)
 
       const updatedPlugins = isActive
         ? prev.state.activePlugins.filter((id) => id !== pluginId)
         : [...prev.state.activePlugins, pluginId]
-
+      if (updatedPlugins.length > 3) return prev
       return {
         ...prev,
         state: {
