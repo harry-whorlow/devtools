@@ -181,19 +181,24 @@ export const TanStackDevtools = ({
     return () => devtools.unmount()
   }, [devtools])
 
+  const hasPlugins =
+    Object.values(pluginContainers).length > 0 &&
+    Object.values(PluginComponents).length > 0
+  const hasTitles =
+    Object.values(titleContainers).length > 0 &&
+    Object.values(TitleComponents).length > 0
+
   return (
     <>
       <div style={{ position: 'absolute' }} ref={devToolRef} />
 
-      {Object.values(pluginContainers).length > 0 &&
-      Object.values(PluginComponents).length > 0
+      {hasPlugins
         ? Object.entries(pluginContainers).map(([key, pluginContainer]) =>
             createPortal(<>{PluginComponents[key]}</>, pluginContainer),
           )
         : null}
 
-      {Object.values(titleContainers).length > 0 &&
-      Object.values(TitleComponents).length > 0
+      {hasTitles
         ? Object.entries(titleContainers).map(([key, titleContainer]) =>
             createPortal(<>{TitleComponents[key]}</>, titleContainer),
           )
