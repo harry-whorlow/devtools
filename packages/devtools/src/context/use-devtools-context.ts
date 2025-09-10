@@ -36,7 +36,7 @@ export const usePlugins = () => {
   const activePlugins = createMemo(() => store.state.activePlugins)
 
   createEffect(() => {
-    if (activePlugins().length > 0) {
+    if (activePlugins().length === 0) {
       setForceExpand(true)
     } else {
       setForceExpand(false)
