@@ -393,6 +393,7 @@ const stylesFactory = (theme: Theme = 'dark') => {
       `,
       expander: css`
         position: absolute;
+        cursor: pointer;
         left: -16px;
         top: 3px;
         & path {
