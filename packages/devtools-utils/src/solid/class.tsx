@@ -28,8 +28,7 @@ export function constructCoreClass(Component: () => JSX.Element) {
       }
       const mountTo = el
       const dispose = render(() => {
-        // eslint-disable-next-line @typescript-eslint/require-await
-        this.#Component = lazy(async () => ({ default: Component }))
+        this.#Component = Component
 
         this.#ThemeProvider = lazy(() =>
           import('@tanstack/devtools-ui').then((mod) => ({
