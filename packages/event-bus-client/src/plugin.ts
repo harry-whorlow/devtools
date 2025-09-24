@@ -47,7 +47,7 @@ export class EventClient<
     )
     if (this.#retryCount < this.#maxRetries) {
       this.#retryCount++
-      this.#eventTarget().dispatchEvent(new CustomEvent('tanstack-connect'))
+      this.dispatchCustomEvent('tanstack-connect', {})
       return
     }
 
@@ -150,11 +150,28 @@ export class EventClient<
     return this.#pluginId
   }
 
+  private dispatchCustomEventShim(eventName: string, detail: any) {
+    try {
+      const event = new Event(eventName, {
+        detail: detail,
+      } as any)
+      this.#eventTarget().dispatchEvent(event)
+    } catch (e) {
+      this.debugLog('Failed to dispatch shim event')
+    }
+  }
+
+  private dispatchCustomEvent(eventName: string, detail?: any) {
+    try {
+      this.#eventTarget().dispatchEvent(new CustomEvent(eventName, { detail }))
+    } catch (e) {
+      this.dispatchCustomEventShim(eventName, detail)
+    }
+  }
+
   private emitEventToBus(event: TanStackDevtoolsEvent<string, any>) {
     this.debugLog('Emitting event to client bus', event)
-    this.#eventTarget().dispatchEvent(
-      new CustomEvent('tanstack-dispatch-event', { detail: event }),
-    )
+    this.dispatchCustomEvent('tanstack-dispatch-event', event)
   }
 
   emit<
