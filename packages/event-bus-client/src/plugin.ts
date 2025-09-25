@@ -74,11 +74,6 @@ export class EventClient<
     this.#connected = false
     this.#connectIntervalId = null
     this.#connectEveryMs = 500
-
-    if (typeof CustomEvent !== 'undefined') {
-      this.#connectFunction()
-      this.startConnectLoop()
-    }
   }
 
   private startConnectLoop() {
@@ -188,11 +183,17 @@ export class EventClient<
     // wait to connect to the bus
     if (!this.#connected) {
       this.debugLog('Bus not available, will be pushed as soon as connected')
-      return this.#queuedEvents.push({
+      this.#queuedEvents.push({
         type: `${this.#pluginId}:${eventSuffix}`,
         payload,
         pluginId: this.#pluginId,
       })
+      // start connection to event bus
+      if (typeof CustomEvent !== 'undefined') {
+        this.#connectFunction()
+        this.startConnectLoop()
+      }
+      return
     }
     // emit right now
     return this.emitEventToBus({
