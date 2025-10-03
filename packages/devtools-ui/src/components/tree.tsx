@@ -8,7 +8,7 @@ export function JsonTree<TData, TName extends CollapsiblePaths<TData>>(props: {
   value: TData
   copyable?: boolean
   defaultExpansionDepth?: number
-  collapsePath?: TName
+  collapsePaths?: Array<TName>
 }) {
   return (
     <JsonValue
@@ -18,7 +18,7 @@ export function JsonTree<TData, TName extends CollapsiblePaths<TData>>(props: {
       depth={0}
       defaultExpansionDepth={props.defaultExpansionDepth ?? 1}
       path=""
-      collapsePath={props.collapsePath}
+      collapsePaths={props.collapsePaths}
     />
   )
 }
@@ -33,7 +33,7 @@ function JsonValue(props: {
   defaultExpansionDepth: number
   depth: number
 
-  collapsePath?: string
+  collapsePaths?: Array<string>
   path: string
 }) {
   const {
@@ -44,12 +44,10 @@ function JsonValue(props: {
     copyable,
     defaultExpansionDepth,
     depth,
-    collapsePath,
+    collapsePaths,
     path,
   } = props
   const styles = useStyles()
-
-  console.log('path jsonval', path, collapsePath)
 
   return (
     <span class={styles().tree.valueContainer(isRoot)}>
@@ -87,7 +85,7 @@ function JsonValue(props: {
               copyable={copyable}
               keyName={keyName}
               value={value}
-              collapsePath={collapsePath}
+              collapsePaths={collapsePaths}
               path={path}
             />
           )
@@ -100,7 +98,7 @@ function JsonValue(props: {
               copyable={copyable}
               keyName={keyName}
               value={value}
-              collapsePath={collapsePath}
+              collapsePaths={collapsePaths}
               path={path}
             />
           )
@@ -123,7 +121,7 @@ const ArrayValue = ({
   copyable,
   defaultExpansionDepth,
   depth,
-  collapsePath,
+  collapsePaths,
   path,
 }: {
   value: Array<any>
@@ -131,13 +129,13 @@ const ArrayValue = ({
   keyName?: string
   defaultExpansionDepth: number
   depth: number
-  collapsePath?: string
+  collapsePaths?: Array<string>
   path: string
 }) => {
   const styles = useStyles()
 
   const [expanded, setExpanded] = createSignal(
-    depth <= defaultExpansionDepth && collapsePath !== path,
+    depth <= defaultExpansionDepth && !collapsePaths?.includes(path),
   )
 
   if (value.length === 0) {
@@ -148,6 +146,7 @@ const ArrayValue = ({
             &quot;{keyName}&quot;:{' '}
           </span>
         )}
+
         <span class={styles().tree.valueBraces}>[]</span>
       </span>
     )
@@ -158,6 +157,7 @@ const ArrayValue = ({
         onClick={() => setExpanded(!expanded())}
         expanded={expanded()}
       />
+
       {keyName && (
         <span
           onclick={(e) => {
@@ -171,7 +171,9 @@ const ArrayValue = ({
           <span class={styles().tree.info}>{value.length} items</span>
         </span>
       )}
+
       <span class={styles().tree.valueBraces}>[</span>
+
       <Show when={expanded()}>
         <span class={styles().tree.expandedLine(Boolean(keyName))}>
           <For each={value}>
@@ -184,7 +186,7 @@ const ArrayValue = ({
                   isLastKey={isLastKey}
                   defaultExpansionDepth={defaultExpansionDepth}
                   depth={depth + 1}
-                  collapsePath={collapsePath}
+                  collapsePaths={collapsePaths}
                   path={path ? `${path}[${i()}]` : `[${i()}]`}
                 />
               )
@@ -216,7 +218,7 @@ const ObjectValue = ({
   copyable,
   defaultExpansionDepth,
   depth,
-  collapsePath,
+  collapsePaths,
   path,
 }: {
   value: Record<string, any>
@@ -224,13 +226,13 @@ const ObjectValue = ({
   copyable?: boolean
   defaultExpansionDepth: number
   depth: number
-  collapsePath?: string
+  collapsePaths?: Array<string>
   path: string
 }) => {
   const styles = useStyles()
 
   const [expanded, setExpanded] = createSignal(
-    depth <= defaultExpansionDepth && collapsePath !== path,
+    depth <= defaultExpansionDepth && !collapsePaths?.includes(path),
   )
 
   const keys = Object.keys(value)
@@ -244,6 +246,7 @@ const ObjectValue = ({
             &quot;{keyName}&quot;:{' '}
           </span>
         )}
+
         <span class={styles().tree.valueBraces}>{'{}'}</span>
       </span>
     )
@@ -257,6 +260,7 @@ const ObjectValue = ({
           expanded={expanded()}
         />
       )}
+
       {keyName && (
         <span
           onClick={(e) => {
@@ -270,7 +274,9 @@ const ObjectValue = ({
           <span class={styles().tree.info}>{keys.length} items</span>
         </span>
       )}
+
       <span class={styles().tree.valueBraces}>{'{'}</span>
+
       <Show when={expanded()}>
         <span class={styles().tree.expandedLine(Boolean(keyName))}>
           <For each={keys}>
@@ -283,7 +289,7 @@ const ObjectValue = ({
                   copyable={copyable}
                   defaultExpansionDepth={defaultExpansionDepth}
                   depth={depth + 1}
-                  collapsePath={collapsePath}
+                  collapsePaths={collapsePaths}
                   path={`${path}${path ? '.' : ''}${k}`}
                 />
               </>
@@ -304,6 +310,7 @@ const ObjectValue = ({
           {`...`}
         </span>
       </Show>
+
       <span class={styles().tree.valueBraces}>{'}'}</span>
     </span>
   )
