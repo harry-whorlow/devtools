@@ -1,4 +1,4 @@
-export type CollapsibleKeys<T, TPrefix extends string = ''> =
+type CollapsibleKeys<T, TPrefix extends string = ''> =
   T extends ReadonlyArray<infer U>
     ?
         | (TPrefix extends '' ? '' : TPrefix)
