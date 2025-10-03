@@ -2,9 +2,9 @@ import { For, Match, Show, Switch, createSignal } from 'solid-js'
 import clsx from 'clsx'
 import { css, useStyles } from '../styles/use-styles'
 import { CopiedCopier, Copier, ErrorCopier } from './icons'
-import type { DeepKeys } from '../utils/deep-keys'
+import type { CollapsiblePaths } from '../utils/deep-keys'
 
-export function JsonTree<TData, TName extends DeepKeys<TData>>(props: {
+export function JsonTree<TData, TName extends CollapsiblePaths<TData>>(props: {
   value: TData
   copyable?: boolean
   defaultExpansionDepth?: number
