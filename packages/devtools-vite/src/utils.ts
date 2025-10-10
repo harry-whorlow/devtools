@@ -1,7 +1,8 @@
+import fs from 'node:fs/promises'
 import { normalizePath } from 'vite'
-// import fs from 'node:fs/promises'
 import type { Connect } from 'vite'
 import type { IncomingMessage, ServerResponse } from 'node:http'
+import type { PackageJson } from '@tanstack/devtools-client'
 
 export const handleDevToolsViteRequest = (
   req: Connect.IncomingMessage,
@@ -66,23 +67,28 @@ export const parseOpenSourceParam = (source: string) => {
   return { file, line, column }
 }
 
-/* export const tryReadFile = async (
-  filePath: string
-) => {
+const tryReadFile = async (filePath: string) => {
   try {
     const data = await fs.readFile(filePath, 'utf-8')
     return data
   } catch (error) {
-
     return null
   }
 }
 
-export const tryParseJson = (jsonString: string) => {
+export const tryParseJson = <T extends any>(
+  jsonString: string | null | undefined,
+) => {
+  if (!jsonString) {
+    return null
+  }
   try {
     const result = JSON.parse(jsonString)
-    return result
+    return result as T
   } catch (error) {
     return null
   }
-} */
+}
+
+export const readPackageJson = async () =>
+  tryParseJson<PackageJson>(await tryReadFile(process.cwd() + '/package.json'))

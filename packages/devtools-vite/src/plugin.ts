@@ -1,11 +1,18 @@
+import { exec } from 'node:child_process'
+import { devtoolsEventClient } from '@tanstack/devtools-client'
 import { ServerEventBus } from '@tanstack/devtools-event-bus/server'
 import { normalizePath } from 'vite'
 import chalk from 'chalk'
-import { handleDevToolsViteRequest } from './utils'
+import {
+  handleDevToolsViteRequest,
+  readPackageJson,
+  tryParseJson,
+} from './utils'
 import { DEFAULT_EDITOR_CONFIG, handleOpenSource } from './editor'
 import { removeDevtools } from './remove-devtools'
 import { addSourceToJsx } from './inject-source'
 import { enhanceConsoleLog } from './enhance-logs'
+import type { OutdatedDeps } from '@tanstack/devtools-client'
 import type { Plugin } from 'vite'
 import type { EditorConfig } from './editor'
 import type { ServerEventBusConfig } from '@tanstack/devtools-event-bus/server'
@@ -18,7 +25,13 @@ export type TanStackDevtoolsViteConfig = {
   /**
    * The configuration options for the server event bus
    */
-  eventBusConfig?: ServerEventBusConfig
+  eventBusConfig?: ServerEventBusConfig & {
+    /**
+     * Should the server event bus be enabled or not
+     * @default true
+     */
+    enabled?: boolean // defaults to true
+  }
   /**
    * Configuration for enhanced logging.
    */
@@ -55,12 +68,31 @@ export type TanStackDevtoolsViteConfig = {
 export const defineDevtoolsConfig = (config: TanStackDevtoolsViteConfig) =>
   config
 
+const emitOutdatedDeps = async () => {
+  return await new Promise<OutdatedDeps | null>((resolve) => {
+    exec('npm outdated --json', (_, stdout) => {
+      // npm outdated exits with code 1 if there are outdated packages, but still outputs valid JSON
+      if (stdout) {
+        const newOutdatedDeps = tryParseJson<OutdatedDeps>(stdout)
+        if (!newOutdatedDeps) {
+          return
+        }
+        devtoolsEventClient.emit('outdated-deps-read', {
+          outdatedDeps: newOutdatedDeps,
+        })
+        resolve(newOutdatedDeps)
+      }
+    })
+  })
+}
+
 export const devtools = (args?: TanStackDevtoolsViteConfig): Array<Plugin> => {
   let port = 5173
   const logging = args?.logging ?? true
   const enhancedLogsConfig = args?.enhancedLogs ?? { enabled: true }
   const injectSourceConfig = args?.injectSource ?? { enabled: true }
   const removeDevtoolsOnBuild = args?.removeDevtoolsOnBuild ?? true
+  const serverBusEnabled = args?.eventBusConfig?.enabled ?? true
   const bus = new ServerEventBus(args?.eventBusConfig)
 
   return [
@@ -117,7 +149,9 @@ export const devtools = (args?: TanStackDevtoolsViteConfig): Array<Plugin> => {
         return config.mode === 'development'
       },
       configureServer(server) {
-        bus.start()
+        if (serverBusEnabled) {
+          bus.start()
+        }
 
         server.middlewares.use((req, _res, next) => {
           if (req.socket.localPort && req.socket.localPort !== port) {
@@ -180,6 +214,41 @@ export const devtools = (args?: TanStackDevtoolsViteConfig): Array<Plugin> => {
           )
         }
         return transform
+      },
+    },
+    {
+      name: '@tanstack/devtools:event-client-setup',
+      apply(config, { command }) {
+        if (
+          process.env.CI ||
+          process.env.NODE_ENV !== 'development' ||
+          command !== 'serve'
+        )
+          return false
+        return config.mode === 'development'
+      },
+      async configureServer() {
+        const packageJson = await readPackageJson()
+        const outdatedDeps = emitOutdatedDeps().then((deps) => deps)
+
+        // whenever a client mounts we send all the current info to the subscribers
+        devtoolsEventClient.on('mounted', async () => {
+          devtoolsEventClient.emit('outdated-deps-read', {
+            outdatedDeps: await outdatedDeps,
+          })
+          devtoolsEventClient.emit('package-json-read', {
+            packageJson,
+          })
+        })
+      },
+      async handleHotUpdate({ file }) {
+        if (file.endsWith('package.json')) {
+          const newPackageJson = await readPackageJson()
+          devtoolsEventClient.emit('package-json-read', {
+            packageJson: newPackageJson,
+          })
+          emitOutdatedDeps()
+        }
       },
     },
     {
