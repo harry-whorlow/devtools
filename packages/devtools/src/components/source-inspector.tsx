@@ -150,7 +150,7 @@ export const SourceInspector = () => {
         ref={setNameTagRef}
         style={{ ...fileNameStyles(), 'pointer-events': 'none' }}
       >
-        {highlightState.dataSource.split(':')[0]}
+        {highlightState.dataSource}
       </div>
       <div style={{ ...currentElementBoxStyles(), 'pointer-events': 'none' }} />
     </>

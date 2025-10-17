@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { TanStackDevtoolsCore } from '@tanstack/devtools'
 import { createPortal } from 'react-dom'
 import type { JSX, ReactElement } from 'react'
@@ -126,52 +126,64 @@ export const TanStackDevtools = ({
     Record<string, JSX.Element>
   >({})
 
+  const pluginsMap: Array<TanStackDevtoolsPlugin> = useMemo(
+    () =>
+      plugins?.map((plugin) => {
+        return {
+          ...plugin,
+          name:
+            typeof plugin.name === 'string'
+              ? plugin.name
+              : (e, theme) => {
+                  const id = e.getAttribute('id')!
+                  const target = e.ownerDocument.getElementById(id)
+
+                  if (target) {
+                    setTitleContainers((prev) => ({
+                      ...prev,
+                      [id]: e,
+                    }))
+                  }
+
+                  convertRender(
+                    plugin.name as PluginRender,
+                    setTitleComponents,
+                    e,
+                    theme,
+                  )
+                },
+          render: (e, theme) => {
+            const id = e.getAttribute('id')!
+            const target = e.ownerDocument.getElementById(id)
+
+            if (target) {
+              setPluginContainers((prev) => ({
+                ...prev,
+                [id]: e,
+              }))
+            }
+
+            convertRender(plugin.render, setPluginComponents, e, theme)
+          },
+        }
+      }) ?? [],
+    [plugins],
+  )
+
   const [devtools] = useState(
     () =>
       new TanStackDevtoolsCore({
         config,
         eventBusConfig,
-        plugins: plugins?.map((plugin) => {
-          return {
-            ...plugin,
-            name:
-              typeof plugin.name === 'string'
-                ? plugin.name
-                : (e, theme) => {
-                    const id = e.getAttribute('id')!
-                    const target = e.ownerDocument.getElementById(id)
-
-                    if (target) {
-                      setTitleContainers((prev) => ({
-                        ...prev,
-                        [id]: e,
-                      }))
-                    }
-
-                    convertRender(
-                      plugin.name as PluginRender,
-                      setTitleComponents,
-                      e,
-                      theme,
-                    )
-                  },
-            render: (e, theme) => {
-              const id = e.getAttribute('id')!
-              const target = e.ownerDocument.getElementById(id)
-
-              if (target) {
-                setPluginContainers((prev) => ({
-                  ...prev,
-                  [id]: e,
-                }))
-              }
-
-              convertRender(plugin.render, setPluginComponents, e, theme)
-            },
-          }
-        }),
+        plugins: pluginsMap,
       }),
   )
+
+  useEffect(() => {
+    devtools.setConfig({
+      plugins: pluginsMap,
+    })
+  }, [devtools, pluginsMap])
 
   useEffect(() => {
     if (devToolRef.current) {
