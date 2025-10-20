@@ -178,18 +178,18 @@ export const devtools = (args?: TanStackDevtoolsViteConfig): Array<Plugin> => {
     },
     {
       name: '@tanstack/devtools:remove-devtools-on-build',
-      apply(_, { command }) {
-        return command === 'build' && removeDevtoolsOnBuild
+      apply(config, { command }) {
+        // Check both command and mode to support various hosting providers
+        // Some providers (Cloudflare, Netlify, Heroku) might not use 'build' command
+        // but will always set mode to 'production' for production builds
+        return (
+          (command !== 'serve' || config.mode === 'production') &&
+          removeDevtoolsOnBuild
+        )
       },
       enforce: 'pre',
       transform(code, id) {
-        if (
-          id.includes('node_modules') ||
-          id.includes('?raw') ||
-          id.includes('dist') ||
-          id.includes('build')
-        )
-          return
+        if (id.includes('node_modules') || id.includes('?raw')) return
         const transform = removeDevtools(code, id)
         if (!transform) return
         if (logging) {
