@@ -9,7 +9,7 @@
     "test:types": "tsc"
   },
   "dependencies": {
-    "@tanstack/devtools-client": "0.0.4",
+    "@tanstack/devtools-client": "^0.0.4",
     "@tanstack/devtools-event-client": "0.3.4",
     "@tanstack/react-devtools": "^0.8.0",
     "@tanstack/react-form": "^1.23.7",
