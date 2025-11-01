@@ -80,7 +80,7 @@ importers:
   examples/react/basic:
     dependencies:
       '@tanstack/devtools-client':
-        specifier: ^0.0.4
+        specifier: 0.0.4
         version: link:../../../packages/devtools-client
       '@tanstack/devtools-event-client':
         specifier: 0.3.4
@@ -252,7 +252,7 @@ importers:
         version: 4.1.11
     devDependencies:
       '@tanstack/devtools-ui':
-        specifier: ^0.4.4
+        specifier: 0.4.4
         version: link:../../../packages/devtools-ui
       '@tanstack/devtools-vite':
         specifier: 0.3.11
@@ -471,7 +471,7 @@ importers:
   examples/solid/devtools-ui:
     dependencies:
       '@tanstack/devtools-ui':
-        specifier: ^0.4.4
+        specifier: 0.4.4
         version: link:../../../packages/devtools-ui
       '@tanstack/solid-devtools':
         specifier: ^0.7.13
