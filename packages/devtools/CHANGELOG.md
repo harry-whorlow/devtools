@@ -1,5 +1,36 @@
 # @tanstack/devtools
 
+## 0.10.8
+
+### Patch Changes
+
+- Changed default `inspectHotkey` from `["Shift", "CtrlOrMeta"]` to `["Shift", "Alt", "CtrlOrMeta"]` to avoid conflicts with browser shortcuts (Ctrl/Cmd + Shift + Click opens links in new tabs). ([#357](https://github.com/TanStack/devtools/pull/357))
+
+## 0.10.7
+
+### Patch Changes
+
+- prevent sidebar icons from collapsing ([#352](https://github.com/TanStack/devtools/pull/352))
+
+## 0.10.6
+
+### Patch Changes
+
+- Updated dependencies [[`da41a59`](https://github.com/TanStack/devtools/commit/da41a598a94fbab0b4d4515345059c5ed62ae6fd)]:
+  - @tanstack/devtools-event-bus@0.4.1
+
+## 0.10.5
+
+### Patch Changes
+
+- Fix a UI bug ([#337](https://github.com/TanStack/devtools/pull/337))
+
+## 0.10.4
+
+### Patch Changes
+
+- Ignore the hotkey while focus is in an editable element by guarding the createShortcut callback ([#325](https://github.com/TanStack/devtools/pull/325))
+
 ## 0.10.3
 
 ### Patch Changes
